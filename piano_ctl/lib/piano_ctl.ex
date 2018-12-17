@@ -1,18 +1,17 @@
 defmodule PianoCtl do
   @moduledoc """
-  Documentation for PianoCtl.
+  Control pianobar from Elixir
+
+  Architecture for reading:
+
+  pianobar -> event_cmd (bash) -> input.pipe -> PianoCtl.PianoInputReader
+
+  Architecuture for writing:
+
+  PianoCtl.CommandRunner -> pianobar ctl pipe -> pianobar
   """
 
-  @doc """
-  Hello world.
+  defdelegate cmd(command), to: PianoCtl.CommandRunner
 
-  ## Examples
-
-      iex> PianoCtl.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
+  def config_folder, do: "#{System.user_home!()}/.config/pianobar"
 end
