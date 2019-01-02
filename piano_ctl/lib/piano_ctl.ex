@@ -14,4 +14,6 @@ defmodule PianoCtl do
   defdelegate cmd(command), to: PianoCtl.CommandRunner
 
   def config_folder, do: "#{System.user_home!()}/.config/pianobar"
+
+  def ui_node, do: :ui@localhost
 end

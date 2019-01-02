@@ -6,31 +6,42 @@ defmodule PianoCtl.PianoInputReader do
   """
   use GenServer
 
-  @impl true
+  # TODO:
+  # [ ] Record the currently playing song in the process state (unless that should be in a different process)
+
+  def start_link(state) do
+    IO.inspect(self(), label: "start_link self()")
+    GenServer.start_link(__MODULE__, state)
+  end
+
+  @impl GenServer
   def init(_args) do
+    IO.puts "Input Reader Starting!"
     schedule_work()
     {:ok, :default}
   end
 
-  @impl true
+  @impl GenServer
   def handle_info({:read_pipe}, state) do
-    IO.puts "Reading pipe"
-    case File.read(input_file()) do
-      {:ok, input} ->
-        IO.puts "got input: #{input}"
-        schedule_work()
-        {:noreply, state}
-      {:error, msg} ->
-        IO.puts "Got error message: #{msg}"
+    case PianoCtl.PianoParser.read_file() do
+      {:ok, record} ->
+        %{event_name: event_name, title: title, cover_art: cover_art} = record
+        IO.inspect(record, label: "record")
+        PianoCtl.Visualizer.show(record)
+        # GenServer.cast(PianoUi.Scene.Splash, {:update_title, title})
+      {:error, _msg} ->
         Process.sleep(1000)
-        schedule_work()
-        {:noreply, state}
     end
+
+    schedule_work()
+    {:noreply, state}
   end
 
   defp schedule_work do
-    Process.send_after(self(), {:read_pipe}, 0)
+    IO.puts "Scheduling"
+    # The first time this needs to be about 1000 for some reason
+    Process.send_after(self(), {:read_pipe}, 1000)
   end
 
-  defp input_file, do: "../input.pipe"
+  defp input_file, do: "/Users/jason/dev/piano_ex/input.pipe"
 end

@@ -14,6 +14,7 @@ defmodule PianoCtl.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
+      mod: {PianoCtl.Application, []},
       extra_applications: [:logger]
     ]
   end
@@ -21,7 +22,10 @@ defmodule PianoCtl.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:exsync, github: "axelson/exsync", only: :dev}
+      {:libcluster, "~> 3.0.3"},
+      # {:exsync, github: "axelson/exsync", only: :dev},
+      {:exsync, path: "/Users/jason/dev/forks/exsync", only: :dev},
+      {:dialyxir, "1.0.0-rc.4", only: :dev, runtime: false}
     ]
   end
 end
