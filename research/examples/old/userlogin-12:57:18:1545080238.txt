@@ -1,0 +1,15 @@
+userlogin\nartist=
+title=
+album=
+coverArt=
+stationName=
+songStationName=
+pRet=1
+pRetStr=Everything is fine :)
+wRet=0
+wRetStr=No error
+songDuration=0
+songPlayed=0
+rating=0
+detailUrl=
+stationCount=0\nEND_STREAM
