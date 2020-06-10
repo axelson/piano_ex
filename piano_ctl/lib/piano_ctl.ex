@@ -19,5 +19,5 @@ defmodule PianoCtl do
 
   def config_folder, do: "#{System.user_home!()}/.config/pianobar"
 
-  def ui_node, do: :ui@localhost
+  def ui_node, do: Application.fetch_env!(:piano_ctl, :ui_node)
 end

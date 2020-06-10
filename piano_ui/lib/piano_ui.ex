@@ -5,5 +5,5 @@ defmodule PianoUi do
 
   use Boundary, deps: [PianoCtl], exports: []
 
-  def ctl_node, do: :ctl@localhost
+  def ctl_node, do: Application.fetch_env!(:piano_ui, :ctl_node)
 end

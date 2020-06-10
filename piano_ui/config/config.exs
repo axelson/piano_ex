@@ -1,5 +1,7 @@
 use Mix.Config
 
+config :piano_ui, :ctl_node, :ctl@localhost
+
 config :piano_ui, :viewport, %{
   name: :main_viewport,
   size: {500, 500},
