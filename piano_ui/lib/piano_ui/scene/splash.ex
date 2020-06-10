@@ -31,11 +31,10 @@ defmodule PianoUi.Scene.Splash do
       |> render_text("", id: :title_text, t: {label_width, 0}, width: 100)
       |> render_label.("Artist: ", :artist_label, @default_font_size * 3)
       |> render_text("", id: :artist_text, t: {label_width, @default_font_size * 3})
-      |> push_graph()
 
     Task.start(fn -> show_example() end)
 
-    {:ok, %State{graph: initial_graph}}
+    {:ok, %State{graph: initial_graph}, push: initial_graph}
   end
 
   def handle_cast({:update_song, song_description_attrs}, state) do
@@ -48,13 +47,12 @@ defmodule PianoUi.Scene.Splash do
       graph
       |> Graph.modify(:title_text, gen_render_text(song_description.title))
       |> Graph.modify(:artist_text, gen_render_text(song_description.artist))
-      |> push_graph()
 
     IO.inspect(graph, label: "graph")
 
     state = %{state | graph: graph}
 
-    {:noreply, state}
+    {:noreply, state, push: graph}
   end
 
   def show_example do
