@@ -1,4 +1,4 @@
-defmodule PianoCtx.Models.Song do
+defmodule PianoCtl.Models.Song do
   use TypedStruct
 
   typedstruct do

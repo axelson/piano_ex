@@ -3,16 +3,5 @@ defmodule PianoUi do
   Documentation for PianoUi.
   """
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> PianoUi.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
+  use Boundary, deps: [PianoCtl], exports: []
 end

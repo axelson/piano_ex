@@ -6,6 +6,7 @@ defmodule PianoUi.MixProject do
       app: :piano_ui,
       version: "0.1.0",
       elixir: "~> 1.7",
+      compilers: [:boundary] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -14,7 +15,7 @@ defmodule PianoUi.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      mod: {PianoUi.Application, []},
+      mod: {PianoUiApplication, []},
       extra_applications: [:logger]
     ]
   end
@@ -22,8 +23,10 @@ defmodule PianoUi.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:boundary, "~> 0.4.0", runtime: false},
       {:libcluster, "~> 3.2.1"},
       {:exsync, github: "falood/exsync", only: :dev, override: true},
+      {:piano_ctl, path: "../piano_ctl", runtime: false},
       {:scenic, "~> 0.10.0"},
       {:scenic_driver_glfw, "~> 0.10.0"},
       {:scenic_live_reload, "~> 0.2", only: :dev},

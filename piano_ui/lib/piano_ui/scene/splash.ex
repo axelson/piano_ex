@@ -40,7 +40,7 @@ defmodule PianoUi.Scene.Splash do
   def handle_cast({:update_song, song_description_attrs}, state) do
     %State{graph: graph} = state
 
-    song_description = PlayUi.SongDescription.new(song_description_attrs)
+    song_description = PianoUi.SongDescription.new(song_description_attrs)
     IO.inspect(song_description, label: "song_description")
 
     graph =
@@ -56,7 +56,7 @@ defmodule PianoUi.Scene.Splash do
   end
 
   def show_example do
-    description = %PlayUi.SongDescription{
+    description = %PianoUi.SongDescription{
       artist: "Johann Strauss II",
       title:
         "An Der Schönen, Blauen Donau (On The Beautiful, Blue Danube), Waltz For Orchestra (With Chorus Ad Lib), Op. 314 (Rv 314)"

@@ -1,4 +1,4 @@
-defmodule PlayUi.SongDescription do
+defmodule PianoUi.SongDescription do
   defstruct [
     :title,
     :artist

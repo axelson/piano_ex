@@ -1,5 +1,7 @@
-defmodule PianoCtl.Application do
+defmodule PianoCtlApplication do
   use Application
+
+  use Boundary, deps: [PianoCtl]
 
   def start(_, _) do
     import Supervisor.Spec, warn: false

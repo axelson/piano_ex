@@ -1,4 +1,8 @@
-defmodule PianoUi.Application do
+defmodule PianoUiApplication do
+  use Application
+
+  use Boundary, deps: [PianoUi]
+
   def start(_, _) do
     import Supervisor.Spec, warn: false
 

@@ -7,6 +7,7 @@ defmodule PianoCtl.MixProject do
       version: "0.1.0",
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
+      compilers: [:boundary] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -15,7 +16,7 @@ defmodule PianoCtl.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      mod: {PianoCtl.Application, []},
+      mod: {PianoCtlApplication, []},
       extra_applications: [:logger]
     ]
   end
@@ -26,6 +27,7 @@ defmodule PianoCtl.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:boundary, "~> 0.4.0", runtime: false},
       {:libcluster, "~> 3.2.1"},
       {:exsync, github: "falood/exsync", only: :dev},
       {:dialyxir, "1.0.0", only: :dev, runtime: false},

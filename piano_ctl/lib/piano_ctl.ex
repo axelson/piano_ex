@@ -11,6 +11,8 @@ defmodule PianoCtl do
   PianoCtl.CommandRunner -> pianobar ctl pipe -> pianobar
   """
 
+  use Boundary, deps: [], exports: []
+
   defdelegate cmd(command), to: PianoCtl.CommandRunner
 
   def config_folder, do: "#{System.user_home!()}/.config/pianobar"
