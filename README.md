@@ -13,6 +13,9 @@ To test:
 
 - [x] Change PianoParser to be able to accurately detect events
 - [x] Display the current song in the scenic scene
+- [ ] Nodes should be configured from config
+- [ ] Fetch and display cover art
+- [ ] Extract text into a separate scene
 - [ ] PianoCtl.CommandRunner is broken
 
 ## EventCmd format

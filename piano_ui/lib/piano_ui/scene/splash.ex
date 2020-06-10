@@ -32,23 +32,34 @@ defmodule PianoUi.Scene.Splash do
       |> render_label.("Artist: ", :artist_label, @default_font_size * 3)
       |> render_text("", id: :artist_text, t: {label_width, @default_font_size * 3})
 
-    Task.start(fn -> show_example() end)
+    case get_current_song() do
+      {:ok, song} ->
+        update_song(song)
+
+      _ ->
+        Task.start(fn -> show_example() end)
+    end
 
     {:ok, %State{graph: initial_graph}, push: initial_graph}
   end
 
-  def handle_cast({:update_song, song_description_attrs}, state) do
-    %State{graph: graph} = state
+  def update_song(server \\ __MODULE__, song) do
+    GenServer.cast(server, {:update_song, song})
+  end
 
-    song_description = PianoUi.SongDescription.new(song_description_attrs)
-    IO.inspect(song_description, label: "song_description")
+  defp get_current_song do
+    :rpc.call(PianoUi.ctl_node(), PianoCtl, :get_current_song, [])
+  end
+
+  def handle_cast({:update_song, song}, state) do
+    %State{graph: graph} = state
 
     graph =
       graph
-      |> Graph.modify(:title_text, gen_render_text(song_description.title))
-      |> Graph.modify(:artist_text, gen_render_text(song_description.artist))
+      |> Graph.modify(:title_text, gen_render_text(song.title))
+      |> Graph.modify(:artist_text, gen_render_text(song.artist))
 
-    IO.inspect(graph, label: "graph")
+    # IO.inspect(graph, label: "graph")
 
     state = %{state | graph: graph}
 
@@ -76,7 +87,7 @@ defmodule PianoUi.Scene.Splash do
 
   defp render_text(graph, text, attributes) do
     attributes = text_attributes(attributes)
-    IO.inspect(attributes, label: "attributes")
+    # IO.inspect(attributes, label: "attributes")
     Scenic.Primitives.text(graph, text, attributes)
   end
 

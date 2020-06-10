@@ -26,6 +26,10 @@ defmodule PianoCtl.Server do
     GenServer.cast(server, {:input, input})
   end
 
+  def get_current_song(server \\ __MODULE__) do
+    GenServer.call(server, :get_current_song)
+  end
+
   @impl GenServer
   def init(_opts) do
     {:ok, %State{}}
@@ -39,7 +43,11 @@ defmodule PianoCtl.Server do
       {:ok, :event, event, parser_state} ->
         print_event(event)
         notify_ui(event)
-        state = %State{state | parser_state: parser_state}
+
+        state =
+          %State{state | parser_state: parser_state}
+          |> update_state_for_event(event)
+
         {:noreply, state}
 
       {:ok, :in_progress, parser_state} ->
@@ -47,6 +55,19 @@ defmodule PianoCtl.Server do
         {:noreply, state}
     end
   end
+
+  @impl GenServer
+  def handle_call(:get_current_song, _from, state) do
+    {:reply, {:ok, state.current_song}, state}
+  end
+
+  defp update_state_for_event(state, %PianoParser.Event{event_name: "songstart"} = event) do
+    song = Models.Song.from_event(event)
+
+    %State{state | current_song: song}
+  end
+
+  defp update_state_for_event(state, %PianoParser.Event{}), do: state
 
   defp print_event(%PianoParser.Event{} = event) do
     %PianoParser.Event{event_name: event_name, title: title, artist: artist, album: album} = event

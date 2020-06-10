@@ -4,4 +4,6 @@ defmodule PianoUi do
   """
 
   use Boundary, deps: [PianoCtl], exports: []
+
+  def ctl_node, do: :ctl@localhost
 end

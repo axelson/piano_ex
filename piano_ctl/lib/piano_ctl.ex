@@ -15,6 +15,8 @@ defmodule PianoCtl do
 
   defdelegate cmd(command), to: PianoCtl.CommandRunner
 
+  defdelegate get_current_song, to: PianoCtl.Server
+
   def config_folder, do: "#{System.user_home!()}/.config/pianobar"
 
   def ui_node, do: :ui@localhost
