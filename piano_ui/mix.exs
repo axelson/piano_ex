@@ -22,12 +22,13 @@ defmodule PianoUi.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:libcluster, "~> 3.0.3"},
-      # {:exsync, github: "axelson/exsync", branch: "my-full-changes", only: :dev},
-      {:exsync, path: "/Users/jason/dev/forks/exsync", only: :dev},
+      {:libcluster, "~> 3.2.1"},
+      {:exsync, github: "falood/exsync", only: :dev},
       {:scenic, "~> 0.9.0"},
+      # {:scenic, github: "boydm/scenic", branch: "master", override: true},
       {:scenic_driver_glfw, "~> 0.9"},
-      # {:dialyxir, "1.0.0-rc.4", only: :dev, runtime: false}
+      # {:scenic_driver_glfw, github: "boydm/scenic_driver_glfw", branch: "master"}
+      {:dialyxir, "1.0.0", only: :dev, runtime: false}
     ]
   end
 end

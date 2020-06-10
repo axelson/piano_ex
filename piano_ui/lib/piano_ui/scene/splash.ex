@@ -28,7 +28,7 @@ defmodule PianoUi.Scene.Splash do
     initial_graph =
       @graph
       |> render_label.("Title: ", :title_label, 0)
-      |> render_text("", id: :title_text, t: {label_width, 0})
+      |> render_text("", id: :title_text, t: {label_width, 0}, width: 100)
       |> render_label.("Artist: ", :artist_label, @default_font_size * 3)
       |> render_text("", id: :artist_text, t: {label_width, @default_font_size * 3})
       |> push_graph()
@@ -40,6 +40,7 @@ defmodule PianoUi.Scene.Splash do
 
   def handle_cast({:update_song, song_description_attrs}, state) do
     %State{graph: graph} = state
+
     song_description = PlayUi.SongDescription.new(song_description_attrs)
     IO.inspect(song_description, label: "song_description")
 
@@ -59,8 +60,8 @@ defmodule PianoUi.Scene.Splash do
   def show_example do
     description = %PlayUi.SongDescription{
       artist: "Johann Strauss II",
-      title: 
-      "An Der Schönen, Blauen Donau (On The Beautiful, Blue Danube), Waltz For Orchestra (With Chorus Ad Lib), Op. 314 (Rv 314)"
+      title:
+        "An Der Schönen, Blauen Donau (On The Beautiful, Blue Danube), Waltz For Orchestra (With Chorus Ad Lib), Op. 314 (Rv 314)"
       # "Some text\r\nMore text"
       # title:
       #   "abcdefghijklmnopqrstuvwxyz1abcdefghijklmnopqrstuvwxyz2abcdefghijklmnopqrstuvwxyz3abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz\nabc"
