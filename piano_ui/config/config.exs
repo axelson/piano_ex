@@ -17,8 +17,8 @@ config :piano_ui, :viewport, %{
 case Mix.env() do
   :dev ->
     config :exsync,
-      reload_timeout: 75,
-      reload_callback: {GenServer, :call, [SceneReloader, :reload_current_scene]}
+      reload_timeout: 50,
+      reload_callback: {ScenicLiveReload, :reload_current_scene, []}
 
   _ ->
     nil

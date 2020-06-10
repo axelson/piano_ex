@@ -23,11 +23,10 @@ defmodule PianoUi.MixProject do
   defp deps do
     [
       {:libcluster, "~> 3.2.1"},
-      {:exsync, github: "falood/exsync", only: :dev},
+      {:exsync, github: "falood/exsync", only: :dev, override: true},
       {:scenic, "~> 0.10.0"},
-      # {:scenic, github: "boydm/scenic", branch: "master", override: true},
       {:scenic_driver_glfw, "~> 0.10.0"},
-      # {:scenic_driver_glfw, github: "boydm/scenic_driver_glfw", branch: "master"}
+      {:scenic_live_reload, "~> 0.2", only: :dev},
       {:dialyxir, "1.0.0", only: :dev, runtime: false}
     ]
   end

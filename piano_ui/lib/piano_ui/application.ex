@@ -5,7 +5,7 @@ defmodule PianoUi.Application do
     topologies = [
       example: [
         strategy: Cluster.Strategy.Epmd,
-        config: [hosts: [:"ctl@localhost"]],
+        config: [hosts: [:ctl@localhost]]
       ]
     ]
 
@@ -14,7 +14,7 @@ defmodule PianoUi.Application do
     children = [
       {Cluster.Supervisor, [topologies, [name: PianoUi.ClusterSupervisor]]},
       {DynamicSupervisor, name: PianoUi.MainSupervisor, strategy: :one_for_one},
-      SceneReloader,
+      {ScenicLiveReload, viewports: [viewport_config]},
       supervisor(Scenic, viewports: [viewport_config])
     ]
 
