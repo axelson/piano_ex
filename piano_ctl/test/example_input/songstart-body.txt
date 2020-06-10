@@ -1,5 +1,3 @@
-songstart
-
 artist=Johann Strauss II
 title=An Der Schönen, Blauen Donau (On The Beautiful, Blue Danube), Waltz For Orchestra (With Chorus Ad Lib), Op. 314 (Rv 314)
 album=Weiner Philharmoniker, New Year's Day Concert In Vienna, 1979 [Australia]

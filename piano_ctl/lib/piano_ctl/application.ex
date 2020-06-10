@@ -7,12 +7,13 @@ defmodule PianoCtl.Application do
     topologies = [
       example: [
         strategy: Cluster.Strategy.Epmd,
-        config: [hosts: [:"ui@localhost"]],
+        config: [hosts: Application.fetch_env!(:piano_ctl, :libcluster_hosts)]
       ]
     ]
 
     children = [
       {Cluster.Supervisor, [topologies, [name: PianoCtl.ClusterSupervisor]]},
+      PianoCtl.Server,
       PianoCtl.PianoInputReader
     ]
 

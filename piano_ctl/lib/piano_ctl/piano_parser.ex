@@ -17,24 +17,55 @@ defmodule PianoCtl.PianoParser do
     "stationCount" => :station_count
   }
 
-  def read_file() do
-    case File.read(input_file()) do
-      {:ok, input} ->
-        IO.puts "with ok!"
-        {:ok, parse(input)}
+  @type state :: any()
 
-      {:error, msg} ->
-        IO.inspect(msg, label: "error msg")
-        {:error, msg}
+  defmodule Event do
+    use TypedStruct
+
+    typedstruct do
+      field :event_name, String.t()
+      field :artist, String.t()
+      field :title, String.t()
+      field :album, String.t()
+      field :cover_art, String.t()
+      field :station_name, String.t()
+      field :song_station_name, String.t()
+      field :p_ret, String.t()
+      field :p_ret_str, String.t()
+      field :w_ret, String.t()
+      field :w_ret_str, String.t()
+      field :song_duration, String.t()
+      field :song_played, String.t()
+      field :rating, String.t()
+      field :detail_url, String.t()
+      field :station_count, String.t()
+      field :stations, [any()]
     end
   end
 
-  def parse(input) do
-    lines = String.split(input, "\n", trim: true)
-    [event_name | lines] = lines
+  def parse(state \\ :empty, input)
 
-    parse_lines(lines)
-    |> Map.put(:event_name, event_name)
+  def parse(:empty, input) do
+    # This is the beginning of parsing so we're receiving a new event
+    # [event_name, "", ""] = String.split(input, "\n")
+
+    case String.split(input, "\n") do
+      [event_name, ""] ->
+        {:ok, :in_progress, {:event_name, event_name}}
+
+      [event_name | lines] ->
+        parse({:event_name, event_name}, Enum.join(lines, "\n"))
+    end
+  end
+
+  def parse({:event_name, event_name}, input) do
+    lines = String.split(input, "\n", trim: true)
+
+    map =
+      parse_lines(lines)
+      |> Map.put(:event_name, event_name)
+
+    {:ok, :event, struct(Event, map), :empty}
   end
 
   defp parse_lines(lines) do
@@ -64,6 +95,4 @@ defmodule PianoCtl.PianoParser do
     {station_number, "=" <> station_name} = Integer.parse(rest, 10)
     {:station, station_number, station_name}
   end
-
-  defp input_file, do: "/Users/jason/dev/piano_ex/input.pipe"
 end
