@@ -12,6 +12,8 @@ To test:
 ## TODO
 
 - [x] Change PianoParser to be able to accurately detect events
+- [x] Display the current song in the scenic scene
+- [ ] PianoCtl.CommandRunner is broken
 
 ## EventCmd format
 
