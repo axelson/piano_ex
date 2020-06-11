@@ -9,7 +9,10 @@ defmodule PianoUi.Scene.Splash do
     fill: :white
   ]
 
+  require Logger
+
   alias Scenic.Graph
+  alias PianoCtl.Models.Song
 
   @graph Graph.build()
 
@@ -17,27 +20,40 @@ defmodule PianoUi.Scene.Splash do
     defstruct [:graph]
   end
 
+  @impl Scenic.Scene
   def init(_, _opts) do
     Process.register(self(), __MODULE__)
-    label_width = 80
+    label_width = 70
+    # FIXME: This should be 10 and still line up with the album art
+    left_padding = 15
 
     render_label = fn graph, text, id, height ->
-      render_text(graph, text, id: id, t: {label_width, height}, text_align: :right_top)
+      render_text(graph, text, id: id, t: {left_padding, height}, text_align: :left_top)
     end
+
+    line_height = @default_font_size * 1.2
+    text_start = left_padding + label_width
 
     initial_graph =
       @graph
-      |> render_label.("Title: ", :title_label, 0)
-      |> render_text("", id: :title_text, t: {label_width, 0}, width: 100)
-      |> render_label.("Artist: ", :artist_label, @default_font_size * 3)
-      |> render_text("", id: :artist_text, t: {label_width, @default_font_size * 3})
+      # Title
+      |> render_label.("Title: ", :title_label, line_height * 0)
+      |> render_text("", id: :title_text, t: {text_start, line_height * 0}, width: 100)
+      # Artist
+      |> render_label.("Artist: ", :artist_label, line_height * 1)
+      |> render_text("",
+        id: :artist_text,
+        t: {text_start, line_height * 1}
+      )
+      |> render_label.("Album: ", :album_label, line_height * 2)
+      |> render_text("", id: :album_text, t: {text_start, line_height * 2}, width: 100)
 
     case get_current_song() do
       {:ok, song} ->
         update_song(song)
 
       _ ->
-        Task.start(fn -> show_example() end)
+        nil
     end
 
     {:ok, %State{graph: initial_graph}, push: initial_graph}
@@ -51,33 +67,75 @@ defmodule PianoUi.Scene.Splash do
     :rpc.call(PianoUi.ctl_node(), PianoCtl, :get_current_song, [])
   end
 
+  @impl Scenic.Scene
+  def handle_cast({:update_song, nil}, state) do
+    {:noreply, state}
+  end
+
   def handle_cast({:update_song, song}, state) do
     %State{graph: graph} = state
+
+    Logger.info("Displaying new song: #{inspect(song)}")
+
+    start_download_cover_art(song)
 
     graph =
       graph
       |> Graph.modify(:title_text, gen_render_text(song.title))
       |> Graph.modify(:artist_text, gen_render_text(song.artist))
-
-    # IO.inspect(graph, label: "graph")
+      |> Graph.modify(:album_text, gen_render_text(song.album))
 
     state = %{state | graph: graph}
 
     {:noreply, state, push: graph}
   end
 
-  def show_example do
-    description = %PianoUi.SongDescription{
-      artist: "Johann Strauss II",
-      title:
-        "An Der Schönen, Blauen Donau (On The Beautiful, Blue Danube), Waltz For Orchestra (With Chorus Ad Lib), Op. 314 (Rv 314)"
-      # "Some text\r\nMore text"
-      # title:
-      #   "abcdefghijklmnopqrstuvwxyz1abcdefghijklmnopqrstuvwxyz2abcdefghijklmnopqrstuvwxyz3abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz\nabc"
-    }
+  @impl Scenic.Scene
+  def handle_info({:downloaded_cover_art, image_binary}, state) do
+    %State{graph: graph} = state
 
-    GenServer.cast(__MODULE__, {:update_song, description})
+    with {1, {:ok, image_hash}} <- {1, Scenic.Cache.Support.Hash.binary(image_binary, :sha)},
+         {2, {:ok, ^image_hash}} <-
+           {2, Scenic.Cache.Static.Texture.put_new(image_hash, image_binary)} do
+      width = 500
+      height = 500
+
+      translate = {10, 70}
+
+      graph =
+        Scenic.Primitives.rect(graph, {width, height},
+          fill: {:image, image_hash},
+          t: translate,
+          pin: translate,
+          s: 0.6
+        )
+
+      state = %State{state | graph: graph}
+      {:noreply, state, push: graph}
+    else
+      _ ->
+        {:noreply, state}
+    end
   end
+
+  defp start_download_cover_art(%Song{cover_art_url: cover_art_url}) do
+    parent = self()
+
+    Logger.debug("downloading: #{cover_art_url}")
+
+    Task.start_link(fn ->
+      case Mojito.get(cover_art_url) do
+        {:ok, %Mojito.Response{status_code: 200, body: body}} ->
+          Logger.info("Successfully downloaded cover art for #{cover_art_url}")
+          send(parent, {:downloaded_cover_art, body})
+
+        err ->
+          Logger.error("unable to download cover art. #{inspect(err)}")
+      end
+    end)
+  end
+
+  defp start_download_cover_art(_), do: nil
 
   defp gen_render_text(text, attributes \\ []) do
     fn graph ->
@@ -87,7 +145,6 @@ defmodule PianoUi.Scene.Splash do
 
   defp render_text(graph, text, attributes) do
     attributes = text_attributes(attributes)
-    # IO.inspect(attributes, label: "attributes")
     Scenic.Primitives.text(graph, text, attributes)
   end
 

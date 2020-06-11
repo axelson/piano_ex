@@ -5,13 +5,10 @@ defmodule PianoCtl.Visualizer do
   Currently operates by sending distributed messages to the other node
   """
 
-  def show(record) do
-    node = PianoCtl.ui_node()
-    attrs = render_song_attributes(record)
-    Node.spawn(node, GenServer, :cast, [PianoUi.Scene.Splash, {:update_song, attrs}])
-  end
+  alias PianoCtl.Models.Song
 
-  defp render_song_attributes(%{title: title, artist: artist}) do
-    %{title: title, artist: artist}
+  def show(%Song{} = song) do
+    node = PianoCtl.ui_node()
+    Node.spawn(node, GenServer, :cast, [PianoUi.Scene.Splash, {:update_song, song}])
   end
 end
