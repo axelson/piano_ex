@@ -1,6 +1,7 @@
 use Mix.Config
 
 config :piano_ui, :ctl_node, :ctl@localhost
+config :piano_ui, :album_cache_dir, System.tmp_dir!() <> "/piano_ex_album_art/"
 
 config :piano_ui, :viewport, %{
   name: :main_viewport,

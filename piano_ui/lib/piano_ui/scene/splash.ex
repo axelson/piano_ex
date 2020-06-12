@@ -15,6 +15,7 @@ defmodule PianoUi.Scene.Splash do
 
   alias Scenic.Graph
   alias PianoCtl.Models.Song
+  alias PianoUi.FileCache
 
   @graph Graph.build()
 
@@ -116,7 +117,9 @@ defmodule PianoUi.Scene.Splash do
       state = %State{state | graph: graph}
       {:noreply, state, push: graph}
     else
-      _ ->
+      error ->
+        Logger.error("Error downloading cover art: #{inspect(error)}")
+
         {:noreply, state}
     end
   end
@@ -129,18 +132,28 @@ defmodule PianoUi.Scene.Splash do
   defp start_download_cover_art(%Song{cover_art_url: cover_art_url}) do
     parent = self()
 
-    Logger.debug("downloading: #{cover_art_url}")
+    if FileCache.has?(cover_art_url) do
+      {:ok, body} = FileCache.read(cover_art_url)
+      Logger.debug("Read from cache: #{cover_art_url}")
 
-    Task.start_link(fn ->
-      case Mojito.get(cover_art_url) do
-        {:ok, %Mojito.Response{status_code: 200, body: body}} ->
-          Logger.info("Successfully downloaded cover art for #{cover_art_url}")
-          send(parent, {:downloaded_cover_art, body})
+      send(parent, {:downloaded_cover_art, body})
+    else
+      Task.start_link(fn ->
+        Logger.debug("downloading: #{cover_art_url}")
 
-        err ->
-          Logger.error("unable to download cover art. #{inspect(err)}")
-      end
-    end)
+        case Mojito.get(cover_art_url) do
+          {:ok, %Mojito.Response{status_code: 200, body: body}} ->
+            Logger.info("Successfully downloaded cover art for #{cover_art_url}")
+            send(parent, {:downloaded_cover_art, body})
+
+            FileCache.put(cover_art_url, body)
+            |> IO.inspect(label: "put_cover_art")
+
+          err ->
+            Logger.error("unable to download cover art. #{inspect(err)}")
+        end
+      end)
+    end
   end
 
   defp start_download_cover_art(_), do: nil
