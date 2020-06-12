@@ -41,7 +41,6 @@ defmodule PianoCtl.Server do
 
     case PianoParser.parse(parser_state, input) do
       {:ok, :event, event, parser_state} ->
-        print_event(event)
         notify_ui(event)
 
         state =
@@ -68,12 +67,6 @@ defmodule PianoCtl.Server do
   end
 
   defp update_state_for_event(state, %PianoParser.Event{}), do: state
-
-  defp print_event(%PianoParser.Event{} = event) do
-    %PianoParser.Event{event_name: event_name, title: title, artist: artist, album: album} = event
-    IO.puts("\nevent: #{event_name}")
-    IO.puts("#{title} by #{artist} on #{album}")
-  end
 
   defp notify_ui(event) do
     case event do
