@@ -100,7 +100,7 @@ defmodule PianoUi.Scene.Splash do
 
     with {1, {:ok, image_hash}} <- {1, Scenic.Cache.Support.Hash.binary(image_binary, :sha)},
          {2, {:ok, ^image_hash}} <-
-           {2, Scenic.Cache.Static.Texture.put_new(image_hash, image_binary)} do
+           {2, Scenic.Cache.Static.Texture.put_new(image_hash, image_binary, :global)} do
       width = 500
       height = 500
 
