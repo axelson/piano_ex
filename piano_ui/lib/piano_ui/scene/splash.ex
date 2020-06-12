@@ -9,6 +9,8 @@ defmodule PianoUi.Scene.Splash do
     fill: :white
   ]
 
+  @refresh_rate round(1_000 / 30)
+
   require Logger
 
   alias Scenic.Graph
@@ -23,6 +25,7 @@ defmodule PianoUi.Scene.Splash do
   @impl Scenic.Scene
   def init(_, _opts) do
     Process.register(self(), __MODULE__)
+    schedule_refresh()
     label_width = 70
     # FIXME: This should be 10 and still line up with the album art
     left_padding = 15
@@ -118,6 +121,11 @@ defmodule PianoUi.Scene.Splash do
     end
   end
 
+  def handle_info(:refresh, state) do
+    schedule_refresh()
+    {:noreply, state, push: state.graph}
+  end
+
   defp start_download_cover_art(%Song{cover_art_url: cover_art_url}) do
     parent = self()
 
@@ -150,5 +158,9 @@ defmodule PianoUi.Scene.Splash do
 
   defp text_attributes(opts) do
     Keyword.merge(@default_text_attributes, opts)
+  end
+
+  defp schedule_refresh do
+    Process.send_after(self(), :refresh, @refresh_rate)
   end
 end
