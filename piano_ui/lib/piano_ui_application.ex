@@ -13,15 +13,27 @@ defmodule PianoUiApplication do
       ]
     ]
 
-    viewport_config = Application.get_env(:piano_ui, :viewport)
-
-    children = [
-      {Cluster.Supervisor, [topologies, [name: PianoUi.ClusterSupervisor]]},
-      {DynamicSupervisor, name: PianoUi.MainSupervisor, strategy: :one_for_one},
-      {ScenicLiveReload, viewports: [viewport_config]},
-      supervisor(Scenic, viewports: [viewport_config])
-    ]
+    children =
+      [
+        {Cluster.Supervisor, [topologies, [name: PianoUi.ClusterSupervisor]]},
+        {DynamicSupervisor, name: PianoUi.MainSupervisor, strategy: :one_for_one},
+        maybe_start_scenic()
+      ]
+      |> List.flatten()
 
     Supervisor.start_link(children, strategy: :one_for_one)
+  end
+
+  defp maybe_start_scenic do
+    main_viewport_config = Application.get_env(:piano_ui, :viewport)
+
+    if main_viewport_config do
+      [
+        {Scenic, viewports: [main_viewport_config]},
+        {ScenicLiveReload, viewports: [main_viewport_config]}
+      ]
+    else
+      []
+    end
   end
 end

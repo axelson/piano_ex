@@ -51,6 +51,7 @@ defmodule PianoUi.Scene.Splash do
       )
       |> render_label.("Album: ", :album_label, line_height * 2)
       |> render_text("", id: :album_text, t: {text_start, line_height * 2}, width: 100)
+      |> Launcher.HiddenHomeButton.add_to_graph([])
 
     case get_current_song() do
       {:ok, song} ->
