@@ -9,7 +9,7 @@ defmodule PianoUiApplication do
     topologies = [
       example: [
         strategy: Cluster.Strategy.Epmd,
-        config: [hosts: [:ctl@localhost]]
+        config: [hosts: Application.fetch_env!(:piano_ui, :libcluster_hosts)]
       ]
     ]
 
