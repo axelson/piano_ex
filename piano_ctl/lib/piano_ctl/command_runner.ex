@@ -13,9 +13,12 @@ defmodule PianoCtl.CommandRunner do
   def cmd(command) do
     case Map.get(@commands, command) do
       command_string when not is_nil(command_string) ->
-        ctl_file_path = "#{PianoCtl.config_folder()}/ctl"
-        File.write!(ctl_file_path, command_string)
+        # `File.write/3` would be more straightforward here but we're not using
+        # PianoCtl.PipeReader yet so we need to do this instead
+
+        "echo -n \"#{command_string}\" > #{PianoCtl.Config.control_pipe_path()}"
+        |> to_charlist()
+        |> :os.cmd()
     end
   end
-
 end

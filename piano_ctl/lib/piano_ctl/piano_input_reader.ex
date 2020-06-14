@@ -28,7 +28,7 @@ defmodule PianoCtl.PianoInputReader do
 
   @impl GenServer
   def handle_info(:read_pipe, state) do
-    case File.read(input_file()) do
+    case read_pipe() do
       {:ok, input} ->
         PianoCtl.Server.input(input)
 
@@ -40,11 +40,12 @@ defmodule PianoCtl.PianoInputReader do
     {:noreply, state}
   end
 
-  defp schedule_work(delay \\ 1000) do
-    Process.send_after(self(), :read_pipe, delay)
+  # NOTE: This blocks all file I/O. A different approach should be used for named pipes
+  defp read_pipe do
+    File.read(PianoCtl.Config.input_pipe_path())
   end
 
-  defp input_file do
-    Path.join([__DIR__, "../../../input.pipe"])
+  defp schedule_work(delay) do
+    Process.send_after(self(), :read_pipe, delay)
   end
 end

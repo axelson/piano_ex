@@ -15,9 +15,13 @@ To test:
 - [x] Display the current song in the scenic scene
 - [x] Nodes should be configured from config
 - [x] Fetch and display cover art
+- [x] write the OS pid to `~/.config/pianobar/piano_ctl_pid`
+- [x] command.sh should check the pid, and only write to the pipe if the process is still running
 - [ ] Extract text into a separate scene
-- [ ] PianoCtl.CommandRunner is broken
+- [x] PianoCtl.CommandRunner is broken
 - [ ] Find a good name for the Splash scene
+- [ ] Use PianoCtl.PipeReader to avoid blocking input/output
+  - Will require re-writing some of the input parsing
 
 ## EventCmd format
 

@@ -15,6 +15,7 @@ defmodule PianoCtlApplication do
 
     children = [
       {Cluster.Supervisor, [topologies, [name: PianoCtl.ClusterSupervisor]]},
+      PianoCtl.Initializer,
       PianoCtl.Server,
       PianoCtl.PianoInputReader
     ]

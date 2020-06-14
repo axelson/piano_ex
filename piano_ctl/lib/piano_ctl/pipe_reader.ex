@@ -3,6 +3,17 @@ defmodule PianoCtl.PipeReader do
   @moduledoc """
   Proxy for Pipe IO operations.
 
+  usage:
+
+      # Start the Pipe
+      {:ok, pid} = PipeWorker.start_link("/tmp/test.pipe")
+      # Start an asynchronous read of 10 bytes
+      ref = PipeWorker.read(pid, 10)
+      # This can obviously be done in `handle_info` of a GenServer or other OTP behaviour.
+      receive do
+        {PipeWorker, ^ref, {:ok, <<protocol_pattern_match>> = data} -> handle_data(data)
+      end
+
   Based on code from:
   https://elixirforum.com/t/help-with-file-blocking-genserver-process/19646/14
   """

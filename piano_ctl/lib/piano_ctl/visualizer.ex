@@ -8,7 +8,7 @@ defmodule PianoCtl.Visualizer do
   alias PianoCtl.Models.Song
 
   def show(%Song{} = song) do
-    node = PianoCtl.ui_node()
+    node = PianoCtl.Config.ui_node()
     Node.spawn(node, GenServer, :cast, [PianoUi.Scene.Splash, {:update_song, song}])
   end
 end
