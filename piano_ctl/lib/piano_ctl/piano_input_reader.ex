@@ -11,11 +11,7 @@ defmodule PianoCtl.PianoInputReader do
   use GenServer
   require Logger
 
-  # TODO:
-  # [ ] Record the currently playing song in the process state (unless that should be in a different process)
-
   def start_link(state) do
-    IO.inspect(self(), label: "start_link self()")
     GenServer.start_link(__MODULE__, state)
   end
 
