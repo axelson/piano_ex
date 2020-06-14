@@ -30,7 +30,7 @@ defmodule PianoUi.MixProject do
       {:mojito, "~> 0.6.4"},
       {:piano_ctl, path: "../piano_ctl", runtime: false},
       {:scenic, "~> 0.10.0"},
-      {:scenic_driver_glfw, "~> 0.10.0"},
+      {:scenic_driver_glfw, "~> 0.10", only: :dev},
       {:scenic_live_reload, "~> 0.2", only: :dev},
       {:dialyxir, "1.0.0", only: :dev, runtime: false}
     ]
