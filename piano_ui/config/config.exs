@@ -12,8 +12,7 @@ config :piano_ui, :album_cache_dir, System.tmp_dir!() <> "/piano_ex_album_art/"
 
 config :piano_ui, :viewport, %{
   name: :main_viewport,
-  size: {500, 500},
-  # size: {500 * 3, 500 * 3},
+  size: {800, 480},
   default_scene: {PianoUi.Scene.Splash, nil},
   drivers: [
     %{

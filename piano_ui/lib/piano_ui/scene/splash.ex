@@ -19,12 +19,16 @@ defmodule PianoUi.Scene.Splash do
 
   @graph Graph.build()
 
+  @pause_play_image_path :code.priv_dir(:piano_ui) |> Path.join("/pause_play_icon.png")
+  @pause_play_image_hash Scenic.Cache.Support.Hash.file!(@pause_play_image_path, :sha)
+
   defmodule State do
     defstruct [:graph]
   end
 
   @impl Scenic.Scene
   def init(_, _opts) do
+    # FIXME: This probably indicates a race condition and should instead happen via Scenic.Sensor
     Process.register(self(), __MODULE__)
     schedule_refresh()
     label_width = 70
@@ -37,6 +41,14 @@ defmodule PianoUi.Scene.Splash do
 
     line_height = @default_font_size * 1.2
     text_start = left_padding + label_width
+
+    pause_play_image_path = :code.priv_dir(:piano_ui) |> Path.join("/pause_play_icon.png")
+    hash = Scenic.Cache.Support.Hash.file!(pause_play_image_path, :sha)
+
+    {:ok, @pause_play_image_hash} =
+      Scenic.Cache.Static.Texture.load(pause_play_image_path, @pause_play_image_hash,
+        scope: :global
+      )
 
     initial_graph =
       @graph
@@ -51,6 +63,12 @@ defmodule PianoUi.Scene.Splash do
       )
       |> render_label.("Album: ", :album_label, line_height * 2)
       |> render_text("", id: :album_text, t: {text_start, line_height * 2}, width: 100)
+      |> Scenic.Primitives.rect(
+        {100, 100},
+        id: :btn_pause_play,
+        t: {500, 300},
+        fill: {:image, hash}
+      )
       |> Launcher.HiddenHomeButton.add_to_graph([])
 
     case get_current_song() do
