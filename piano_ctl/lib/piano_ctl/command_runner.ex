@@ -4,9 +4,10 @@ defmodule PianoCtl.CommandRunner do
   """
 
   @commands %{
-    :pause => "p",
-    :next_song => "n",
+    :play_pause => "p",
+    :next => "n",
     :play => "P",
+    :stop => "S",
     :quit => "q"
   }
 
