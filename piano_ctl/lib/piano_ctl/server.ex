@@ -66,7 +66,7 @@ defmodule PianoCtl.Server do
 
   def handle_call({:cmd, command}, _from, state) do
     result = PianoCtl.cmd(command)
-    {:repy, result, state}
+    {:reply, result, state}
   end
 
   defp update_state_for_event(state, %PianoParser.Event{event_name: "songstart"} = event) do
