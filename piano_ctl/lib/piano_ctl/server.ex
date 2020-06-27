@@ -26,6 +26,10 @@ defmodule PianoCtl.Server do
     GenServer.cast(server, {:input, input})
   end
 
+  def cmd(server \\ __MODULE__, command) do
+    GenServer.call(server, {:cmd, command})
+  end
+
   def get_current_song(server \\ __MODULE__) do
     GenServer.call(server, :get_current_song)
   end
@@ -58,6 +62,11 @@ defmodule PianoCtl.Server do
   @impl GenServer
   def handle_call(:get_current_song, _from, state) do
     {:reply, {:ok, state.current_song}, state}
+  end
+
+  def handle_call({:cmd, command}, _from, state) do
+    result = PianoCtl.cmd(command)
+    {:repy, result, state}
   end
 
   defp update_state_for_event(state, %PianoParser.Event{event_name: "songstart"} = event) do
