@@ -37,7 +37,7 @@ defmodule PianoUi.Scene.MusicControls do
     {:ok, state, push: graph}
   end
 
-  defp on_play, do: PianoCtl.cmd(:play)
-  defp on_stop, do: PianoCtl.cmd(:stop)
-  defp on_next, do: PianoCtl.cmd(:next)
+  defp on_play, do: PianoCtl.remote_cmd(:play)
+  defp on_stop, do: PianoCtl.remote_cmd(:stop)
+  defp on_next, do: PianoCtl.remote_cmd(:next)
 end

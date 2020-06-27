@@ -16,4 +16,13 @@ defmodule PianoCtl do
   defdelegate cmd(command), to: PianoCtl.CommandRunner
 
   defdelegate get_current_song, to: PianoCtl.Server
+
+  def remote_cmd(command) do
+    Node.list()
+    |> Enum.each(fn node ->
+      Node.spawn_link(node, fn ->
+        PianoCtl.cmd(command)
+      end)
+    end)
+  end
 end
