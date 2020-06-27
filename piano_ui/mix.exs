@@ -26,7 +26,6 @@ defmodule PianoUi.MixProject do
       {:boundary, "~> 0.4.0", runtime: false},
       {:libcluster, "~> 3.2.1"},
       {:launcher, github: "axelson/scenic_launcher"},
-      {:exsync, github: "falood/exsync", only: :dev, override: true},
       {:mojito, "~> 0.6.4"},
       {:piano_ctl, path: "../piano_ctl", runtime: false},
       {:scenic, "~> 0.10.0"},
