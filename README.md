@@ -1,9 +1,16 @@
+# PianoEx
 
+A simple Pandora player visualizer and controller.
 
+![Screenshot](screenshot.png)
+
+Rough diagram
+```
 pianobar -> input.pipe <- PianoCtl.PianoInputReader
                       reads         |
                                     v
                                PianoCtl.Server -> PianoUi
+```
 
 To test:
 
@@ -17,7 +24,7 @@ To test:
 - [x] Fetch and display cover art
 - [x] write the OS pid to `~/.config/pianobar/piano_ctl_pid`
 - [x] command.sh should check the pid, and only write to the pipe if the process is still running
-- [ ] Add play/pause and next buttons
+- [x] Add play/pause and next buttons
 - [ ] Extract text into a separate scene
 - [x] PianoCtl.CommandRunner is broken
 - [ ] Find a good name for the Splash scene
