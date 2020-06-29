@@ -58,10 +58,3 @@ stationfetchplaylist
 
 songstart
 <song starting details>
-
-# Attributions
-
-* pause play by Darrin Loeliger from the Noun Project
-* Next by SBTS from the Noun Project
-* stop button by Rizky Mapat Waluya from the Noun Project
-* play by RAAJA from the Noun Project

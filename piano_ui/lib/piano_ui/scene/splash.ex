@@ -53,8 +53,8 @@ defmodule PianoUi.Scene.Splash do
       |> render_label.("Album: ", :album_label, line_height * 2)
       |> render_text("", id: :album_text, t: {text_start, line_height * 2}, width: 100)
       |> PianoUi.Scene.MusicControls.add_to_graph(
-        t: {340, 380},
-        space_between: 165
+        t: {370, 365},
+        space_between: 130
       )
       |> Launcher.HiddenHomeButton.add_to_graph([])
 
