@@ -3,7 +3,7 @@ defmodule PianoUi do
   Documentation for PianoUi.
   """
 
-  use Boundary, deps: [PianoCtl], exports: []
+  use Boundary, deps: [PianoCtl, ScenicContrib], exports: []
 
   def ctl_node, do: Application.fetch_env!(:piano_ui, :ctl_node)
 

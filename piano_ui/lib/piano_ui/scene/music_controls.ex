@@ -17,28 +17,28 @@ defmodule PianoUi.Scene.MusicControls do
 
     graph =
       Graph.build()
-      |> PianoUi.Scene.Icon.add_to_graph(
+      |> ScenicContrib.IconComponent.add_to_graph(
         [
-          filename: "stop.png",
-          on_press_filename: "stop-selected.png",
+          icon: PianoUi.StopIcon,
+          on_press_icon: PianoUi.StopPressedIcon,
           on_click: &on_stop/0
         ],
         id: :btn_stop,
         t: {base_x, base_y}
       )
-      |> PianoUi.Scene.Icon.add_to_graph(
+      |> ScenicContrib.IconComponent.add_to_graph(
         [
-          filename: "play.png",
-          on_press_filename: "play-selected.png",
+          icon: PianoUi.PlayIcon,
+          on_press_icon: PianoUi.PlayPressedIcon,
           on_click: &on_play/0
         ],
         id: :btn_play,
         t: {base_x + space_between, base_y}
       )
-      |> PianoUi.Scene.Icon.add_to_graph(
+      |> ScenicContrib.IconComponent.add_to_graph(
         [
-          filename: "next.png",
-          on_press_filename: "next-selected.png",
+          icon: PianoUi.NextIcon,
+          on_press_icon: PianoUi.NextPressedIcon,
           on_click: &on_next/0
         ],
         id: :btn_next,

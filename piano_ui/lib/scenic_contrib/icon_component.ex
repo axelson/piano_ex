@@ -1,4 +1,9 @@
-defmodule PianoUi.Scene.Icon do
+defmodule ScenicContrib.IconComponent do
+  @moduledoc """
+  Responsible for displaying an image, tracking clicks to it, and when clicked
+  it displays an alternate image (depressed state)
+  """
+
   use Scenic.Component, has_children: true
 
   alias Scenic.Graph
@@ -12,27 +17,20 @@ defmodule PianoUi.Scene.Icon do
 
   @impl Scenic.Scene
   def init(opts, _scenic_opts) do
-    filename = Keyword.get(opts, :filename)
-    on_press_filename = Keyword.get(opts, :on_press_filename)
+    icon = Keyword.get(opts, :icon)
+    on_press_icon = Keyword.get(opts, :on_press_icon)
 
+    icon.load(scope: :global)
+    on_press_icon.load(scope: :global)
     on_click = Keyword.get(opts, :on_click)
 
-    path = :code.priv_dir(:piano_ui) |> Path.join("/#{filename}")
-    on_press_path = :code.priv_dir(:piano_ui) |> Path.join("/#{on_press_filename}")
+    graph = render(icon.compile_hash(), on_press_icon.compile_hash(), false)
 
-    # This is a little hacky. Scenic would prefer us to build the hash at
-    # compile time which we could do but it would require creating a macro
-    hash = Scenic.Cache.Support.Hash.file!(path, :sha)
-    {:ok, ^hash} = Scenic.Cache.Static.Texture.load(path, hash, scope: :global)
-
-    on_press_hash = Scenic.Cache.Support.Hash.file!(on_press_path, :sha)
-
-    {:ok, ^on_press_hash} =
-      Scenic.Cache.Static.Texture.load(on_press_path, on_press_hash, scope: :global)
-
-    graph = render(hash, on_press_hash, false)
-
-    state = %State{hash: hash, on_press_hash: on_press_hash, on_click: on_click}
+    state = %State{
+      hash: icon.compile_hash(),
+      on_press_hash: on_press_icon.compile_hash(),
+      on_click: on_click
+    }
 
     {:ok, state, push: graph}
   end
