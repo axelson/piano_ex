@@ -12,5 +12,5 @@
   "pid_file": {:hex, :pid_file, "0.1.1", "66eb4dc73c15852405d99ccf0982f8fdac8fa7084b8ec82057c2b3391e8e6b0d", [:mix], [], "hexpm", "10bc02c6fde8a51e6c0c8404703fdc63e035dea41d5bc97d518135dd0fa10266"},
   "scenic": {:hex, :scenic, "0.9.0", "129594f918b4e2dd97465b95b4fb3582294ac6bb3e931f12edd09913743964eb", [:make, :mix], [{:elixir_make, "~> 0.4", [hex: :elixir_make, repo: "hexpm", optional: false]}], "hexpm"},
   "scenic_driver_glfw": {:hex, :scenic_driver_glfw, "0.9.0", "4c7a8300b71ec7174bc7f7d142d1eefbfe345520ed303bab2716a65fc9a21a8c", [:make, :mix], [{:elixir_make, "~> 0.4", [hex: :elixir_make, repo: "hexpm", optional: false]}, {:scenic, "~> 0.9", [hex: :scenic, repo: "hexpm", optional: false]}], "hexpm"},
-  "typed_struct": {:hex, :typed_struct, "0.2.0", "503c75208919891137f38a9f043715947fa11659b7f0c5f773bc185ebdd3f957", [:mix], [], "hexpm", "2332942218afc06a1eefed58107d9ecdd8a157d783e04ec10cf5c71d1004be19"},
+  "typed_struct": {:hex, :typed_struct, "0.2.1", "e1993414c371f09ff25231393b6430bd89d780e2a499ae3b2d2b00852f593d97", [:mix], [], "hexpm", "8f5218c35ec38262f627b2c522542f1eae41f625f92649c0af701a6fab2e11b3"},
 }
