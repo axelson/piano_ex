@@ -147,8 +147,8 @@ defmodule PianoUi.Scene.Splash do
       Task.start_link(fn ->
         Logger.debug("downloading: #{cover_art_url}")
 
-        case Mojito.get(cover_art_url) do
-          {:ok, %Mojito.Response{status_code: 200, body: body}} ->
+        case Finch.build(:get, cover_art_url) |> Finch.request(MyFinch) do
+          {:ok, %Finch.Response{status: 200, body: body}} ->
             Logger.info("Successfully downloaded cover art for #{cover_art_url}")
             send(parent, {:downloaded_cover_art, body})
 

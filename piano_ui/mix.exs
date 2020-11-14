@@ -26,7 +26,7 @@ defmodule PianoUi.MixProject do
       {:boundary, "~> 0.7.0", runtime: false},
       {:libcluster, "~> 3.2.1"},
       {:launcher, github: "axelson/scenic_launcher"},
-      {:mojito, "~> 0.6.4"},
+      {:finch, "~> 0.5"},
       {:piano_ctl, path: "../piano_ctl", runtime: false},
       {:scenic, "~> 0.10.0"},
       {:scenic_driver_glfw, "~> 0.10", only: :dev},

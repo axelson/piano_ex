@@ -15,6 +15,7 @@ defmodule PianoUiApplication do
 
     children =
       [
+        {Finch, name: MyFinch},
         {Cluster.Supervisor, [topologies, [name: PianoUi.ClusterSupervisor]]},
         {DynamicSupervisor, name: PianoUi.MainSupervisor, strategy: :one_for_one},
         maybe_start_scenic()
