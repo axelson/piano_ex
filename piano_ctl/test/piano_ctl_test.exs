@@ -3,7 +3,7 @@ defmodule PianoCtlTest do
   doctest PianoCtl
 
   test "greets the world" do
-    IO.puts "hi"
+    IO.puts("hi")
     # assert PianoCtl.hello() == :world
   end
 end

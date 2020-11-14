@@ -104,5 +104,4 @@ defmodule PianoCtl.PianoParser do
   # stationdeletesongseed, stationfetchinfo, stationfetchplaylist,
   # stationfetchgenre stationquickmixtoggle, stationrename, userlogin,
   # usergetstations
-
 end
