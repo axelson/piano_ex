@@ -23,7 +23,7 @@ defmodule PianoUi.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:boundary, "~> 0.4.0", runtime: false},
+      {:boundary, "~> 0.7.0", runtime: false},
       {:libcluster, "~> 3.2.1"},
       {:launcher, github: "axelson/scenic_launcher"},
       {:mojito, "~> 0.6.4"},
