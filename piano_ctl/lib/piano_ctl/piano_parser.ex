@@ -95,4 +95,14 @@ defmodule PianoCtl.PianoParser do
     {station_number, "=" <> station_name} = Integer.parse(rest, 10)
     {:station, station_number, station_name}
   end
+
+  # TODO: Support usergetstations
+  # Also: Currently supported events are: artistbookmark, songban, songbookmark,
+  # songexplain, songfinish, songlove, songmove, songshelf, songstart,
+  # stationaddgenre, stationaddmusic, stationaddshared, stationcreate,
+  # stationdelete, stationdeleteartistseed, stationdeletefeedback,
+  # stationdeletesongseed, stationfetchinfo, stationfetchplaylist,
+  # stationfetchgenre stationquickmixtoggle, stationrename, userlogin,
+  # usergetstations
+
 end
