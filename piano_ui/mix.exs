@@ -27,10 +27,12 @@ defmodule PianoUi.MixProject do
       {:libcluster, "~> 3.2.1"},
       {:launcher, github: "axelson/scenic_launcher"},
       {:finch, "~> 0.5"},
+      {:pomodoro, github: "axelson/pomodoro"},
       {:piano_ctl, path: "../piano_ctl", runtime: false},
       {:scenic, "~> 0.10.0"},
       {:scenic_driver_glfw, "~> 0.10", only: :dev},
       {:scenic_live_reload, "~> 0.2", only: :dev},
+      # {:exsync, path: "~/dev/forks/exsync", only: :dev, override: true},
       {:dialyxir, "1.0.0", only: :dev, runtime: false}
     ]
   end

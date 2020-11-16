@@ -14,6 +14,7 @@ defmodule PianoUi.Scene.Splash do
   require Logger
 
   alias Scenic.Graph
+  alias Scenic.ViewPort
   alias PianoCtl.Models.Song
   alias PianoUi.FileCache
 
@@ -24,10 +25,13 @@ defmodule PianoUi.Scene.Splash do
   end
 
   @impl Scenic.Scene
-  def init(_, _opts) do
+  def init(_, scenic_opts) do
     # FIXME: This probably indicates a race condition and should instead happen via Scenic.Sensor
     Process.register(self(), __MODULE__)
     schedule_refresh()
+
+    viewport = scenic_opts[:viewport]
+    {:ok, %ViewPort.Status{size: {width, _height}}} = ViewPort.info(viewport)
     label_width = 70
     # FIXME: This should be 10 and still line up with the album art
     left_padding = 15
@@ -38,6 +42,8 @@ defmodule PianoUi.Scene.Splash do
 
     line_height = @default_font_size * 1.2
     text_start = left_padding + label_width
+
+    mini_timer_t = {width - 100, 150}
 
     initial_graph =
       @graph
@@ -55,6 +61,13 @@ defmodule PianoUi.Scene.Splash do
       |> PianoUi.Scene.MusicControls.add_to_graph(
         t: {370, 365},
         space_between: 130
+      )
+      |> PomodoroUi.Scene.MiniComponent.add_to_graph(
+        [
+          t: mini_timer_t
+        ],
+        scale: 0.7,
+        pin: mini_timer_t
       )
       |> Launcher.HiddenHomeButton.add_to_graph([])
 
