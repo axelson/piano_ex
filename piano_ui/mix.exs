@@ -29,6 +29,7 @@ defmodule PianoUi.MixProject do
       {:finch, "~> 0.5"},
       {:pomodoro, github: "axelson/pomodoro"},
       {:piano_ctl, path: "../piano_ctl", runtime: false},
+      {:govee_semaphore, path: "~/dev/govee_semaphore"},
       {:scenic, "~> 0.10.0"},
       {:scenic_driver_glfw, "~> 0.10", only: :dev},
       {:scenic_live_reload, "~> 0.2", only: :dev},

@@ -9,8 +9,11 @@ defmodule ScenicContrib.IconComponent do
   alias Scenic.Graph
 
   defmodule State do
-    defstruct [:hash, :on_press_hash, :on_click, depressed: false]
+    defstruct [:icon, :on_press_icon, :on_click, :width, :height, depressed: false]
   end
+
+  @default_width 100
+  @default_height 100
 
   @impl Scenic.Component
   def verify(data), do: {:ok, data}
@@ -19,28 +22,32 @@ defmodule ScenicContrib.IconComponent do
   def init(opts, _scenic_opts) do
     icon = Keyword.get(opts, :icon)
     on_press_icon = Keyword.get(opts, :on_press_icon)
+    width = Keyword.get(opts, :width, @default_width)
+    height = Keyword.get(opts, :height, @default_height)
 
     icon.load(scope: :global)
-    on_press_icon.load(scope: :global)
+    if on_press_icon, do: on_press_icon.load(scope: :global)
     on_click = Keyword.get(opts, :on_click)
 
-    graph = render(icon.compile_hash(), on_press_icon.compile_hash(), false)
-
     state = %State{
-      hash: icon.compile_hash(),
-      on_press_hash: on_press_icon.compile_hash(),
-      on_click: on_click
+      icon: icon,
+      on_press_icon: on_press_icon,
+      on_click: on_click,
+      width: width,
+      height: height
     }
+
+    graph = render(state, false)
 
     {:ok, state, push: graph}
   end
 
   @impl Scenic.Scene
   def handle_input({:cursor_button, {_, :press, _, _}}, _context, state) do
-    %State{hash: hash, on_press_hash: on_press_hash, on_click: on_click} = state
+    %State{on_click: on_click} = state
     if on_click, do: on_click.()
 
-    graph = render(hash, on_press_hash, true)
+    graph = render(state, true)
 
     # I would've preferred to let these events bubble up to the MusicControls
     # component but {:cont, state} here appears to result in an infinite loop
@@ -49,8 +56,7 @@ defmodule ScenicContrib.IconComponent do
   end
 
   def handle_input({:cursor_button, {_, :release, _, _}}, _context, state) do
-    %State{hash: hash, on_press_hash: on_press_hash} = state
-    graph = render(hash, on_press_hash, false)
+    graph = render(state, false)
     {:noreply, state, push: graph}
   end
 
@@ -58,17 +64,19 @@ defmodule ScenicContrib.IconComponent do
     {:noreply, state}
   end
 
-  defp render(hash, on_press_hash, depressed) do
+  defp render(state, depressed) do
+    %State{icon: icon, on_press_icon: on_press_icon, width: width, height: height} = state
+
     fill =
-      if depressed do
-        {:image, on_press_hash}
+      if depressed && on_press_icon do
+        {:image, on_press_icon.compile_hash()}
       else
-        {:image, hash}
+        {:image, icon.compile_hash()}
       end
 
     Graph.build()
     |> Scenic.Primitives.rect(
-      {100, 100},
+      {width, height},
       fill: fill
     )
   end

@@ -44,6 +44,7 @@ defmodule PianoUi.Scene.Splash do
     text_start = left_padding + label_width
 
     mini_timer_t = {width - 100, 150}
+    semaphore_t = {width - 462, 165}
 
     initial_graph =
       @graph
@@ -58,6 +59,18 @@ defmodule PianoUi.Scene.Splash do
       )
       |> render_label.("Album: ", :album_label, line_height * 2)
       |> render_text("", id: :album_text, t: {text_start, line_height * 2}, width: 100)
+      # FIXME: This doesn't take exactly the same space as the actual album art
+      |> ScenicContrib.IconComponent.add_to_graph(
+        [
+          icon: PianoUi.EmptySongIcon,
+          width: 500,
+          height: 500
+        ],
+        id: :empty_icon,
+        t: {10, 160},
+        p: {10, 117},
+        s: 0.6
+      )
       |> PianoUi.Scene.MusicControls.add_to_graph(
         t: {370, 365},
         space_between: 130
@@ -69,6 +82,7 @@ defmodule PianoUi.Scene.Splash do
         scale: 0.7,
         pin: mini_timer_t
       )
+      |> PianoUi.SemaphoreDisplay.add_to_graph(t: semaphore_t)
       |> Launcher.HiddenHomeButton.add_to_graph([])
 
     case get_current_song() do
@@ -132,6 +146,7 @@ defmodule PianoUi.Scene.Splash do
           pin: translate,
           s: 0.6
         )
+      |> Graph.delete(:empty_icon)
 
       state = %State{state | graph: graph}
       {:noreply, state, push: graph}
@@ -148,7 +163,8 @@ defmodule PianoUi.Scene.Splash do
     {:noreply, state, push: state.graph}
   end
 
-  defp start_download_cover_art(%Song{cover_art_url: cover_art_url}) do
+  defp start_download_cover_art(%Song{cover_art_url: cover_art_url})
+       when not is_nil(cover_art_url) do
     parent = self()
 
     if FileCache.has?(cover_art_url) do

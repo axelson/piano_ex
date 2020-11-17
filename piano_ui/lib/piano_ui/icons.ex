@@ -21,3 +21,7 @@ end
 defmodule PianoUi.NextPressedIcon do
   use ScenicContrib.Image, {:piano_ui, "next-selected.png"}
 end
+
+defmodule PianoUi.EmptySongIcon do
+  use ScenicContrib.Image, {:piano_ui, "empty-song.jpg"}
+end

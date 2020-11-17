@@ -13,6 +13,7 @@ defmodule ScenicContrib.Image do
       @path :code.priv_dir(unquote(otp_app))
             |> Path.join(unquote(path_fragment))
 
+      @external_resource @path
       @hash Scenic.Cache.Support.Hash.file!(@path, :sha)
 
       def compile_path do
