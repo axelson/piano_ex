@@ -75,6 +75,7 @@ defmodule PianoUi.SemaphoreDisplay do
   def handle_info({:govee_semaphore, :submit_note, note}, state) do
     %State{graph: graph} = state
 
+    note = note || ""
     graph = Graph.modify(graph, :semaphore_note, &Primitives.text(&1, note))
 
     state = %State{state | graph: graph}
