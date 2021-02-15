@@ -1,7 +1,3 @@
-TODO:
-- [ ] Gracefully handle when the image cannot be downloaded (should have a placeholder)
-- [ ] Cover art should be resized to fit
-- [x] Tap on cover art to hide
 
 # PianoEx
 
@@ -23,6 +19,14 @@ To test:
 
 ## TODO
 
+- [ ] Gracefully handle when the image cannot be downloaded (should have a placeholder)
+- [ ] Cover art should be resized to fit
+- [ ] Extract text into a separate scene
+- [ ] Find a good name for the Splash scene
+- [ ] Use PianoCtl.PipeReader to avoid blocking input/output
+  - Will require re-writing some of the input parsing
+
+Done:
 - [x] Change PianoParser to be able to accurately detect events
 - [x] Display the current song in the scenic scene
 - [x] Nodes should be configured from config
@@ -30,11 +34,8 @@ To test:
 - [x] write the OS pid to `~/.config/pianobar/piano_ctl_pid`
 - [x] command.sh should check the pid, and only write to the pipe if the process is still running
 - [x] Add play/pause and next buttons
-- [ ] Extract text into a separate scene
 - [x] PianoCtl.CommandRunner is broken
-- [ ] Find a good name for the Splash scene
-- [ ] Use PianoCtl.PipeReader to avoid blocking input/output
-  - Will require re-writing some of the input parsing
+- [x] Tap on cover art to hide
 
 ## EventCmd format
 
