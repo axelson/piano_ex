@@ -163,6 +163,9 @@ defmodule PianoUi.Scene.Splash do
     {:noreply, state, push: state.graph}
   end
 
+  defp start_download_cover_art(%Song{cover_art_url: nil}), do: nil
+  defp start_download_cover_art(%Song{cover_art_url: ""}), do: nil
+
   defp start_download_cover_art(%Song{cover_art_url: cover_art_url})
        when not is_nil(cover_art_url) do
     parent = self()
