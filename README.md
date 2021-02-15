@@ -20,7 +20,7 @@ To test:
 ## TODO
 
 - [ ] Gracefully handle when the image cannot be downloaded (should have a placeholder)
-- [ ] Cover art should be resized to fit
+- [x] Cover art should be resized to fit
 - [ ] Extract text into a separate scene
 - [ ] Find a good name for the Splash scene
 - [ ] Use PianoCtl.PipeReader to avoid blocking input/output

@@ -174,6 +174,7 @@ defmodule PianoUi.Scene.Splash do
   defp start_download_cover_art(%Song{cover_art_url: cover_art_url})
        when not is_nil(cover_art_url) do
     parent = self()
+    cover_art_url = PianoUi.CoverArtUrl.adjust_size(cover_art_url)
 
     if FileCache.has?(cover_art_url) do
       {:ok, body} = FileCache.read(cover_art_url)

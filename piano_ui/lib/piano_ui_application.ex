@@ -25,16 +25,21 @@ defmodule PianoUiApplication do
     Supervisor.start_link(children, strategy: :one_for_one)
   end
 
-  defp maybe_start_scenic do
-    main_viewport_config = Application.get_env(:piano_ui, :viewport)
+  if Mix.env() == :test do
+    defp maybe_start_scenic, do: []
+  else
+    defp maybe_start_scenic do
+      main_viewport_config = Application.get_env(:piano_ui, :viewport)
 
-    if main_viewport_config do
-      [
-        {Scenic, viewports: [main_viewport_config]},
-        {ScenicLiveReload, viewports: [main_viewport_config]}
-      ]
-    else
-      []
+      if main_viewport_config do
+        [
+          {Scenic, viewports: [main_viewport_config]},
+          {ScenicLiveReload, viewports: [main_viewport_config]}
+        ]
+        |> List.flatten()
+      else
+        []
+      end
     end
   end
 end

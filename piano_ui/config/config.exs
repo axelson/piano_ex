@@ -29,6 +29,9 @@ case Mix.env() do
       reload_timeout: 50,
       reload_callback: {ScenicLiveReload, :reload_current_scene, []}
 
+  :test ->
+    config :piano_ui, libcluster_hosts: []
+
   _ ->
     nil
 end
