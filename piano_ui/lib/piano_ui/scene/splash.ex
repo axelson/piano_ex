@@ -59,18 +59,7 @@ defmodule PianoUi.Scene.Splash do
       )
       |> render_label.("Album: ", :album_label, line_height * 2)
       |> render_text("", id: :album_text, t: {text_start, line_height * 2}, width: 100)
-      # FIXME: This doesn't take exactly the same space as the actual album art
-      |> ScenicContrib.IconComponent.add_to_graph(
-        [
-          icon: PianoUi.EmptySongIcon,
-          width: 500,
-          height: 500
-        ],
-        id: :empty_icon,
-        t: {10, 160},
-        p: {10, 117},
-        s: 0.6
-      )
+      |> render_empty_icon()
       |> PianoUi.Scene.MusicControls.add_to_graph(
         t: {370, 365},
         space_between: 130
@@ -141,12 +130,13 @@ defmodule PianoUi.Scene.Splash do
 
       graph =
         Scenic.Primitives.rect(graph, {width, height},
+          id: :album_art,
           fill: {:image, image_hash},
           t: translate,
           pin: translate,
           s: 0.6
         )
-      |> Graph.delete(:empty_icon)
+        |> Graph.delete(:empty_icon)
 
       state = %State{state | graph: graph}
       {:noreply, state, push: graph}
@@ -163,6 +153,21 @@ defmodule PianoUi.Scene.Splash do
     {:noreply, state, push: state.graph}
   end
 
+  @impl Scenic.Scene
+  def handle_input({:cursor_button, {_, :press, _, _}}, %{id: :album_art}, state) do
+    %State{graph: graph} = state
+
+    graph =
+      graph
+      |> render_empty_icon()
+      |> Graph.delete(:album_art)
+
+    state = %State{state | graph: graph}
+    {:noreply, state, push: state.graph}
+  end
+
+  def handle_input(input, _context, state), do: {:noreply, state}
+
   defp start_download_cover_art(%Song{cover_art_url: nil}), do: nil
   defp start_download_cover_art(%Song{cover_art_url: ""}), do: nil
 
@@ -177,7 +182,7 @@ defmodule PianoUi.Scene.Splash do
       send(parent, {:downloaded_cover_art, body})
     else
       Task.start_link(fn ->
-        Logger.debug("downloading: #{inspect cover_art_url}")
+        Logger.debug("downloading: #{inspect(cover_art_url)}")
 
         case Finch.build(:get, cover_art_url) |> Finch.request(MyFinch) do
           {:ok, %Finch.Response{status: 200, body: body}} ->
@@ -205,6 +210,22 @@ defmodule PianoUi.Scene.Splash do
   defp render_text(graph, text, attributes) do
     attributes = text_attributes(attributes)
     Scenic.Primitives.text(graph, text, attributes)
+  end
+
+  defp render_empty_icon(graph) do
+    # FIXME: This doesn't take exactly the same space as the actual album art
+    graph
+    |> ScenicContrib.IconComponent.add_to_graph(
+      [
+        icon: PianoUi.EmptySongIcon,
+        width: 500,
+        height: 500
+      ],
+      id: :empty_icon,
+      t: {10, 160},
+      p: {10, 117},
+      s: 0.6
+    )
   end
 
   defp text_attributes(opts) do

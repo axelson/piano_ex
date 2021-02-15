@@ -1,3 +1,8 @@
+TODO:
+- [ ] Gracefully handle when the image cannot be downloaded (should have a placeholder)
+- [ ] Cover art should be resized to fit
+- [x] Tap on cover art to hide
+
 # PianoEx
 
 A simple Pandora player visualizer and controller.
