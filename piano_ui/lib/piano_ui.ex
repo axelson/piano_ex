@@ -12,6 +12,7 @@ defmodule PianoUi do
     Logger.info("Running remote command: #{inspect command}")
     Node.list()
     |> Enum.each(fn node ->
+      Logger.info("Sending command to node #{inspect node}")
       :rpc.call(node, PianoCtl.Server, :cmd, [command])
     end)
   end
