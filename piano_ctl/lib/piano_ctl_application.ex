@@ -4,8 +4,6 @@ defmodule PianoCtlApplication do
   use Boundary, deps: [PianoCtl]
 
   def start(_, _) do
-    import Supervisor.Spec, warn: false
-
     topologies = [
       example: [
         strategy: Cluster.Strategy.Epmd,
