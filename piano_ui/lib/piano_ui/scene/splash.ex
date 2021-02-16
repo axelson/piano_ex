@@ -43,7 +43,7 @@ defmodule PianoUi.Scene.Splash do
     line_height = @default_font_size * 1.2
     text_start = left_padding + label_width
 
-    mini_timer_t = {width - 100, 150}
+    mini_timer_t = {width - 110, 120}
     semaphore_t = {width - 462, 165}
 
     initial_graph =
@@ -68,7 +68,7 @@ defmodule PianoUi.Scene.Splash do
         [
           t: mini_timer_t
         ],
-        scale: 0.7,
+        scale: 1.0,
         pin: mini_timer_t
       )
       |> PianoUi.SemaphoreDisplay.add_to_graph(t: semaphore_t)

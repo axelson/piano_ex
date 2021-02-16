@@ -28,6 +28,7 @@ defmodule PianoUi.MixProject do
       {:launcher, github: "axelson/scenic_launcher"},
       {:finch, "~> 0.5"},
       {:pomodoro, github: "axelson/pomodoro"},
+      # {:pomodoro, path: "~/dev/pomodoro"},
       {:piano_ctl, path: "../piano_ctl", runtime: false},
       # {:govee_semaphore, path: "~/dev/govee_semaphore"},
       {:govee_semaphore, github: "axelson/govee_semaphore"},

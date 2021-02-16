@@ -6,6 +6,8 @@ defmodule PianoUi.SemaphoreDisplay do
   alias Scenic.Graph
   alias Scenic.Primitives
 
+  @button_font_size 30
+
   defmodule State do
     defstruct [:graph]
   end
@@ -18,8 +20,8 @@ defmodule PianoUi.SemaphoreDisplay do
     {base_x, base_y} = Keyword.get(opts, :t)
 
     start_meeting_btn_t = {base_x, base_y}
-    finish_meeting_btn_t = {base_x + 85, base_y}
-    clear_meeting_btn_t = {base_x + 156, base_y}
+    finish_meeting_btn_t = {base_x + 135, base_y}
+    clear_meeting_btn_t = {base_x, base_y + 80}
 
     text_t = {base_x, base_y + 70}
 
@@ -38,17 +40,17 @@ defmodule PianoUi.SemaphoreDisplay do
       |> Scenic.Components.button("Begin",
         id: :btn_start_meeting,
         t: start_meeting_btn_t,
-        button_font_size: 20
+        button_font_size: @button_font_size
       )
       |> Scenic.Components.button("End",
         id: :btn_finish_meeting,
         t: finish_meeting_btn_t,
-        button_font_size: 20
+        button_font_size: @button_font_size
       )
       |> Scenic.Components.button("Clear",
         id: :btn_clear_meeting,
         t: clear_meeting_btn_t,
-        button_font_size: 20
+        button_font_size: @button_font_size
       )
 
     state = %State{graph: graph}
