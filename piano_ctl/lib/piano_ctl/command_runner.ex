@@ -14,6 +14,12 @@ defmodule PianoCtl.CommandRunner do
   }
 
   def cmd(command) do
+    if pianobar_running?() do
+      run_command(command)
+    end
+  end
+
+  defp run_command(command) do
     case Map.get(@commands, command) do
       command_string when not is_nil(command_string) ->
         pipe_path = PianoCtl.Config.control_pipe_path()
@@ -25,5 +31,9 @@ defmodule PianoCtl.CommandRunner do
         |> to_charlist()
         |> :os.cmd()
     end
+  end
+
+  def pianobar_running? do
+    :os.cmd('ps -u $(id -u) -o comm | grep -q "^pianobar$"; echo $?') == '0\n'
   end
 end
