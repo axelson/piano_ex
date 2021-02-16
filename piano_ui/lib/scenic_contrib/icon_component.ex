@@ -53,7 +53,7 @@ defmodule ScenicContrib.IconComponent do
   @impl Scenic.Scene
   def handle_input({:cursor_button, {_, :press, _, _}}, _context, %State{pressed_time: nil} = state) do
     %State{on_click: on_click} = state
-    if on_click, do: on_click.()
+    Task.async(on_click)
 
     graph = render(state, true)
     state = %State{state | pressed_time: System.monotonic_time(:millisecond)}
