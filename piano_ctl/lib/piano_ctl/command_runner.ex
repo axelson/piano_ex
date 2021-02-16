@@ -21,7 +21,7 @@ defmodule PianoCtl.CommandRunner do
         # `File.write/3` would be more straightforward here but we're not using
         # PianoCtl.PipeReader yet so we need to do this instead
 
-        "echo -n \"#{command_string}\" > #{pipe_path}"
+        "echo \"#{command_string}\" > #{pipe_path}"
         |> to_charlist()
         |> :os.cmd()
     end
