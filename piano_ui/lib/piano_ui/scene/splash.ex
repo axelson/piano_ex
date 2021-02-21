@@ -43,7 +43,7 @@ defmodule PianoUi.Scene.Splash do
     line_height = @default_font_size * 1.2
     text_start = left_padding + label_width
 
-    mini_timer_t = {width - 110, 120}
+    mini_timer_t = {width - 110, 60}
     semaphore_t = {width - 462, 165}
 
     initial_graph =
