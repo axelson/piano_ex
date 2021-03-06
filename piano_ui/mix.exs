@@ -36,7 +36,7 @@ defmodule PianoUi.MixProject do
       {:scenic_driver_glfw, "~> 0.10", only: :dev},
       {:scenic_live_reload, "~> 0.2", only: :dev},
       # {:exsync, path: "~/dev/forks/exsync", only: :dev, override: true},
-      {:dialyxir, "1.0.0", only: :dev, runtime: false}
+      {:dialyxir, "~> 1.1", only: :dev, runtime: false}
     ]
   end
 end

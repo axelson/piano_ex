@@ -7,6 +7,7 @@ defmodule ScenicContrib.IconComponent do
   use Scenic.Component, has_children: true
 
   alias Scenic.Graph
+
   defmodule State do
     defstruct [
       :icon,
