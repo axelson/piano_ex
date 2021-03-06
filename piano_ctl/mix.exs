@@ -30,7 +30,7 @@ defmodule PianoCtl.MixProject do
       {:boundary, "~> 0.8", runtime: false},
       {:libcluster, "~> 3.2.1"},
       {:exsync, github: "falood/exsync", only: :dev},
-      {:dialyxir, "1.0.0", only: :dev, runtime: false},
+      {:dialyxir, "~> 1.1", only: :dev, runtime: false},
       {:pid_file, "~> 0.1.1"},
       {:typed_struct, "~> 0.2.0"}
     ]
