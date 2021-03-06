@@ -51,8 +51,8 @@ defmodule PianoUi.FileCache do
   defp remove_excess_files(_), do: :ok
 
   defp cached_files do
-    File.ls!(cache_dir)
-    |> Enum.map(&Path.join(cache_dir, &1))
+    File.ls!(cache_dir())
+    |> Enum.map(&Path.join(cache_dir(), &1))
     |> Enum.sort_by(fn file -> File.stat!(file).ctime end)
   end
 

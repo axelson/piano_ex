@@ -166,7 +166,7 @@ defmodule PianoUi.Scene.Splash do
     {:noreply, state, push: state.graph}
   end
 
-  def handle_input(input, _context, state), do: {:noreply, state}
+  def handle_input(_input, _context, state), do: {:noreply, state}
 
   defp start_download_cover_art(%Song{cover_art_url: nil}), do: nil
   defp start_download_cover_art(%Song{cover_art_url: ""}), do: nil
