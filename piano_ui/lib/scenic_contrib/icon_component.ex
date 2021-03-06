@@ -52,7 +52,11 @@ defmodule ScenicContrib.IconComponent do
   end
 
   @impl Scenic.Scene
-  def handle_input({:cursor_button, {_, :press, _, _}}, _context, %State{pressed_time: nil} = state) do
+  def handle_input(
+        {:cursor_button, {_, :press, _, _}},
+        _context,
+        %State{pressed_time: nil} = state
+      ) do
     %State{on_click: on_click} = state
     Task.async(on_click)
 
@@ -66,9 +70,16 @@ defmodule ScenicContrib.IconComponent do
   end
 
   def handle_input({:cursor_button, {_, :release, _, _}}, _context, state) do
-    %State{pressed_time: pressed_time} = state
-    now = System.monotonic_time(:millisecond)
-    release_delay = max(@minimum_press_time - (now - pressed_time), 0)
+    release_delay =
+      case state do
+        %State{pressed_time: nil} ->
+          @minimum_press_time
+
+        %State{pressed_time: pressed_time} ->
+          now = System.monotonic_time(:millisecond)
+          max(@minimum_press_time - (now - pressed_time), 0)
+      end
+
     Process.send_after(self(), :release_button, release_delay)
     {:noreply, state}
   end
