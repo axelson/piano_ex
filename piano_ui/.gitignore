@@ -24,3 +24,5 @@ piano_ui-*.tar
 
 # Env file
 .env
+
+/priv/database.*

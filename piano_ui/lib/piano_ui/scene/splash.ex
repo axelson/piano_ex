@@ -103,7 +103,13 @@ defmodule PianoUi.Scene.Splash do
 
     Logger.info("Displaying new song: #{inspect(song)}")
 
-    start_download_cover_art(song)
+    graph =
+      if PianoUi.AlbumArtBlacklist.banned?(song.album) do
+        render_empty_icon(graph)
+      else
+        start_download_cover_art(song)
+        graph
+      end
 
     graph =
       graph
@@ -160,6 +166,7 @@ defmodule PianoUi.Scene.Splash do
     graph =
       graph
       |> render_empty_icon()
+      |> render_ban_button()
       |> Graph.delete(:album_art)
 
     state = %State{state | graph: graph}
@@ -167,6 +174,21 @@ defmodule PianoUi.Scene.Splash do
   end
 
   def handle_input(_input, _context, state), do: {:noreply, state}
+
+  @impl Scenic.Scene
+  def filter_event({:click, :btn_ban_album_art}, _from, state) do
+    case get_current_song() do
+      {:ok, song} ->
+        Logger.warn("Banned! #{song.album}")
+
+        PianoUi.AlbumArtBlacklist.ban(song.album)
+
+      _ ->
+        nil
+    end
+
+    {:noreply, state}
+  end
 
   defp start_download_cover_art(%Song{cover_art_url: nil}), do: nil
   defp start_download_cover_art(%Song{cover_art_url: ""}), do: nil
@@ -191,7 +213,6 @@ defmodule PianoUi.Scene.Splash do
             send(parent, {:downloaded_cover_art, body})
 
             FileCache.put(cover_art_url, body)
-            |> IO.inspect(label: "put_cover_art")
 
           err ->
             Logger.error("unable to download cover art. #{inspect(err)}")
@@ -226,6 +247,15 @@ defmodule PianoUi.Scene.Splash do
       t: {10, 160},
       p: {10, 117},
       s: 0.6
+    )
+  end
+
+  defp render_ban_button(graph) do
+    graph
+    |> Scenic.Components.button("Ban",
+      id: :btn_ban_album_art,
+      t: {15, 410},
+      button_font_size: @default_font_size
     )
   end
 
