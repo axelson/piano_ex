@@ -90,7 +90,13 @@ defmodule PianoUi.Scene.Splash do
   end
 
   defp get_current_song do
-    :rpc.call(PianoUi.ctl_node(), PianoCtl, :get_current_song, [])
+    Node.list() |> Enum.reduce_while(nil, fn node, _acc ->
+      Logger.info("Getting song from node #{inspect node}")
+      case :rpc.call(node, PianoCtl, :get_current_song, []) do
+        {:ok, nil} -> {:cont, nil}
+        {:ok, song} -> {:halt, {:ok, song}}
+      end
+    end)
   end
 
   @impl Scenic.Scene

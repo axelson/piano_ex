@@ -39,7 +39,7 @@ defmodule PianoUi.MixProject do
       {:dialyxir, "~> 1.1", only: :dev, runtime: false},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
-      {:exqlite, "~> 0.4.8"}
+      {:ecto_sqlite3, "~> 0.5.4"}
     ]
   end
 end
