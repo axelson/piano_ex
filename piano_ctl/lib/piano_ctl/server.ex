@@ -15,6 +15,7 @@ defmodule PianoCtl.Server do
     typedstruct do
       field :parser_state, PianoParser.state(), default: :empty
       field :current_song, Models.Song.t()
+      field :updated_at, NaiveDateTime.t()
     end
   end
 
@@ -61,7 +62,7 @@ defmodule PianoCtl.Server do
 
   @impl GenServer
   def handle_call(:get_current_song, _from, state) do
-    {:reply, {:ok, state.current_song}, state}
+    {:reply, do_get_current_song(state), state}
   end
 
   def handle_call({:cmd, command}, _from, state) do
@@ -71,11 +72,24 @@ defmodule PianoCtl.Server do
 
   defp update_state_for_event(state, %PianoParser.Event{event_name: "songstart"} = event) do
     song = Models.Song.from_event(event)
+    now = NaiveDateTime.utc_now()
 
-    %State{state | current_song: song}
+    %State{state | current_song: song, updated_at: now}
   end
 
   defp update_state_for_event(state, %PianoParser.Event{}), do: state
+
+  defp do_get_current_song(%State{updated_at: nil}), do: nil
+
+  defp do_get_current_song(%State{} = state) do
+    now = NaiveDateTime.utc_now()
+
+    if NaiveDateTime.diff(now, state.updated_at, :second) > 60 * 10 do
+      nil
+    else
+      {:ok, state.current_song}
+    end
+  end
 
   defp notify_ui(event) do
     case event do
