@@ -25,10 +25,14 @@ defmodule PianoUi.Scene.Splash do
   end
 
   @impl Scenic.Scene
-  def init(_, scenic_opts) do
+  def init(opts, scenic_opts) do
     # FIXME: This probably indicates a race condition and should instead happen via Scenic.Sensor
     Process.register(self(), __MODULE__)
-    schedule_refresh()
+    refresh = Keyword.get(opts, :refresh, false)
+
+    if refresh do
+      schedule_refresh()
+    end
 
     viewport = scenic_opts[:viewport]
     {:ok, %ViewPort.Status{size: {width, _height}}} = ViewPort.info(viewport)
@@ -90,10 +94,12 @@ defmodule PianoUi.Scene.Splash do
   end
 
   defp get_current_song do
-    Node.list() |> Enum.reduce_while(nil, fn node, _acc ->
-      Logger.info("Getting song from node #{inspect node}")
+    Node.list()
+    |> Enum.reduce_while(nil, fn node, _acc ->
+      Logger.info("Getting song from node #{inspect(node)}")
+
       case :rpc.call(node, PianoCtl, :get_current_song, []) do
-        {:ok, nil} -> {:cont, nil}
+        nil -> {:cont, nil}
         {:ok, song} -> {:halt, {:ok, song}}
       end
     end)

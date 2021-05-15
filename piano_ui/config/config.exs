@@ -22,7 +22,7 @@ config :piano_ui, PianoUi.Repo,
 config :piano_ui, :viewport, %{
   name: :main_viewport,
   size: {800, 480},
-  default_scene: {PianoUi.Scene.Splash, nil},
+  default_scene: {PianoUi.Scene.Splash, []},
   drivers: [
     %{
       module: Scenic.Driver.Glfw,
