@@ -33,6 +33,8 @@ defmodule PianoUi.MixProject do
       # {:govee_semaphore, path: "~/dev/govee_semaphore"},
       {:govee_semaphore, github: "axelson/govee_semaphore"},
       {:scenic, "~> 0.10.0"},
+      # Backport https://github.com/boydm/scenic/pull/219/files
+      {:font_metrics, "~> 0.3.0"},
       {:scenic_driver_glfw, "~> 0.10", only: :dev},
       {:scenic_live_reload, "~> 0.2", only: :dev},
       # {:exsync, path: "~/dev/forks/exsync", only: :dev, override: true},
