@@ -2,16 +2,13 @@ defmodule PianoUi.Scene.MusicControls do
   use Scenic.Component
 
   alias Scenic.Graph
-
-  defmodule State do
-    defstruct []
-  end
+  alias PianoUi.Icons
 
   @impl Scenic.Component
-  def verify(data), do: {:ok, data}
+  def validate(data), do: {:ok, data}
 
   @impl Scenic.Scene
-  def init(opts, _scenic_opts) do
+  def init(scene, opts, _scenic_opts) do
     {base_x, base_y} = Keyword.get(opts, :t)
     space_between = Keyword.get(opts, :space_between)
 
@@ -19,8 +16,8 @@ defmodule PianoUi.Scene.MusicControls do
       Graph.build()
       |> ScenicContrib.IconComponent.add_to_graph(
         [
-          icon: PianoUi.StopIcon,
-          on_press_icon: PianoUi.StopPressedIcon,
+          icon: Icons.icon(:stop),
+          on_press_icon: Icons.icon(:stop_pressed),
           on_click: &on_stop/0
         ],
         id: :btn_stop,
@@ -28,8 +25,8 @@ defmodule PianoUi.Scene.MusicControls do
       )
       |> ScenicContrib.IconComponent.add_to_graph(
         [
-          icon: PianoUi.PlayIcon,
-          on_press_icon: PianoUi.PlayPressedIcon,
+          icon: Icons.icon(:play),
+          on_press_icon: Icons.icon(:play_pressed),
           on_click: &on_play/0
         ],
         id: :btn_play,
@@ -37,16 +34,17 @@ defmodule PianoUi.Scene.MusicControls do
       )
       |> ScenicContrib.IconComponent.add_to_graph(
         [
-          icon: PianoUi.NextIcon,
-          on_press_icon: PianoUi.NextPressedIcon,
+          icon: Icons.icon(:next),
+          on_press_icon: Icons.icon(:next_pressed),
           on_click: &on_next/0
         ],
         id: :btn_next,
         t: {base_x + space_between * 2, base_y}
       )
 
-    state = %State{}
-    {:ok, state, push: graph}
+    scene = push_graph(scene, graph)
+
+    {:ok, scene}
   end
 
   defp on_play, do: PianoUi.remote_cmd(:play)

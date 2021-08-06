@@ -13,10 +13,10 @@ defmodule PianoUi.SemaphoreDisplay do
   end
 
   @impl Scenic.Component
-  def verify(data), do: {:ok, data}
+  def validate(data), do: {:ok, data}
 
   @impl Scenic.Scene
-  def init(opts, _scenic_opts) do
+  def init(scene, opts, _scenic_opts) do
     {base_x, base_y} = Keyword.get(opts, :t)
 
     start_meeting_btn_t = {base_x, base_y}
@@ -54,33 +54,46 @@ defmodule PianoUi.SemaphoreDisplay do
       )
 
     state = %State{graph: graph}
-    {:ok, state, push: graph}
+
+    scene =
+      scene
+      |> assign(:state, state)
+      |> push_graph(graph)
+
+    {:ok, scene}
   end
 
   @impl Scenic.Scene
-  def filter_event({:click, :btn_start_meeting}, _from, state) do
+  def handle_event({:click, :btn_start_meeting}, _from, scene) do
     GoveeSemaphore.start_meeting()
-    {:noreply, state}
+    {:noreply, scene}
   end
 
-  def filter_event({:click, :btn_finish_meeting}, _from, state) do
+  def handle_event({:click, :btn_finish_meeting}, _from, scene) do
     GoveeSemaphore.finish_meeting()
-    {:noreply, state}
+    {:noreply, scene}
   end
 
-  def filter_event({:click, :btn_clear_meeting}, _from, state) do
+  def handle_event({:click, :btn_clear_meeting}, _from, scene) do
     GoveeSemaphore.clear_note()
-    {:noreply, state}
+    {:noreply, scene}
   end
 
-  @impl Scenic.Scene
-  def handle_info({:govee_semaphore, :submit_note, note}, state) do
+  @impl GenServer
+  def handle_info({:govee_semaphore, :submit_note, note}, scene) do
+    state = scene.assigns.state
     %State{graph: graph} = state
 
     note = note || ""
     graph = Graph.modify(graph, :semaphore_note, &Primitives.text(&1, note))
 
     state = %State{state | graph: graph}
-    {:noreply, state, push: graph}
+
+    scene =
+      scene
+      |> assign(:state, state)
+      |> push_graph(graph)
+
+    {:noreply, scene}
   end
 end

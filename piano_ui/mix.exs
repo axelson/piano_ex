@@ -24,24 +24,49 @@ defmodule PianoUi.MixProject do
   defp deps do
     [
       {:boundary, "~> 0.8.0", runtime: false},
-      {:libcluster, "~> 3.2.1"},
-      {:launcher, github: "axelson/scenic_launcher"},
+      {:libcluster, "~> 3.3.0"},
       {:finch, "~> 0.5"},
-      {:pomodoro, github: "axelson/pomodoro"},
-      # {:pomodoro, path: "~/dev/pomodoro"},
       {:piano_ctl, path: "../piano_ctl", runtime: false},
       # {:govee_semaphore, path: "~/dev/govee_semaphore"},
       {:govee_semaphore, github: "axelson/govee_semaphore"},
-      {:scenic, "~> 0.10.0"},
-      # Backport https://github.com/boydm/scenic/pull/219/files
-      {:font_metrics, "~> 0.3.0"},
-      {:scenic_driver_glfw, "~> 0.10", only: :dev},
-      {:scenic_live_reload, "~> 0.2", only: :dev},
-      # {:exsync, path: "~/dev/forks/exsync", only: :dev, override: true},
+      {:font_metrics, "~> 0.5.0"},
+      dep(:launcher, :github),
+      dep(:pomodoro, :github),
+      dep(:scenic, :github),
+      dep(:scenic_driver_glfw, :github),
+      dep(:scenic_live_reload, :path),
       {:dialyxir, "~> 1.1", only: :dev, runtime: false},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
       {:ecto_sqlite3, "~> 0.5.4"}
     ]
   end
+
+  defp dep(:launcher, :github), do: {:launcher, github: "axelson/scenic_launcher"}
+  defp dep(:launcher, :path), do: {:launcher, path: "~/dev/launcher"}
+
+  defp dep(:pomodoro, :github), do: {:pomodoro, github: "axelson/pomodoro"}
+  defp dep(:pomodoro, :path), do: {:pomodoro, path: "~/dev/pomodoro"}
+
+  defp dep(:scenic, :hex), do: {:scenic, "~> 0.10"}
+
+  defp dep(:scenic, :github),
+    do: {:scenic, github: "boydm/scenic", branch: "v0.11", override: true}
+
+  defp dep(:scenic, :path), do: {:scenic, path: "../forks/scenic", override: true}
+
+  defp dep(:scenic_driver_glfw, :hex), do: {:scenic_driver_glfw, "~> 0.10", only: :dev}
+
+  defp dep(:scenic_driver_glfw, :github),
+    do:
+      {:scenic_driver_glfw,
+       github: "boydm/scenic_driver_glfw", branch: "v0.11", only: :dev, override: true}
+
+  defp dep(:scenic_driver_glfw, :path),
+    do: {:scenic_driver_glfw, path: "../forks/scenic_driver_glfw", only: :dev, override: true}
+
+  defp dep(:scenic_live_reload, :hex), do: {:scenic_live_reload, "~> 0.2.0", only: :dev}
+
+  defp dep(:scenic_live_reload, :path),
+    do: {:scenic_live_reload, path: "~/dev/scenic_live_reload", only: :dev}
 end

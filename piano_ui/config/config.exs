@@ -1,5 +1,8 @@
 use Mix.Config
 
+config :tzdata, :autoupdate, :disabled
+config :scenic, :assets, module: PianoUi.Assets
+
 ctl_node =
   case System.get_env("CTL_NODE") do
     nil -> nil
@@ -19,18 +22,18 @@ config :piano_ui, PianoUi.Repo,
   temp_store: :memory,
   pool_size: 1
 
-config :piano_ui, :viewport, %{
+config :piano_ui, :viewport,
   name: :main_viewport,
   size: {800, 480},
   default_scene: {PianoUi.Scene.Splash, []},
   drivers: [
-    %{
+    [
       module: Scenic.Driver.Glfw,
       name: :glfw,
-      opts: [resizeable: false, title: "Piano"]
-    }
+      resizeable: false,
+      title: "Piano"
+    ]
   ]
-}
 
 case Mix.env() do
   :dev ->
