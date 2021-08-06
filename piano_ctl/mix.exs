@@ -28,7 +28,7 @@ defmodule PianoCtl.MixProject do
   defp deps do
     [
       {:boundary, "~> 0.8", runtime: false},
-      {:libcluster, "~> 3.2.1"},
+      {:libcluster, "~> 3.3.0"},
       {:exsync, github: "falood/exsync", only: :dev},
       {:dialyxir, "~> 1.1", only: :dev, runtime: false},
       {:pid_file, "~> 0.1.1"},
