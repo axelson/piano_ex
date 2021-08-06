@@ -44,7 +44,7 @@ defmodule PianoUi.FileCache do
   defp remove_excess_files(files) when length(files) > @max_files do
     [file | rest] = files
     result = File.rm(file)
-    Logger.info("Removed excess file with result: #{inspect result}")
+    Logger.info("Removed excess file with result: #{inspect(result)}")
     remove_excess_files(rest)
   end
 
