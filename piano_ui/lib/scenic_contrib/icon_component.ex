@@ -25,17 +25,15 @@ defmodule ScenicContrib.IconComponent do
   @minimum_press_time 150
 
   @impl Scenic.Component
-  def verify(data), do: {:ok, data}
+  def validate(data), do: {:ok, data}
 
   @impl Scenic.Scene
-  def init(opts, _scenic_opts) do
+  def init(scene, opts, _scenic_opts) do
     icon = Keyword.get(opts, :icon)
     on_press_icon = Keyword.get(opts, :on_press_icon)
     width = Keyword.get(opts, :width, @default_width)
     height = Keyword.get(opts, :height, @default_height)
 
-    icon.load(scope: :global)
-    if on_press_icon, do: on_press_icon.load(scope: :global)
     on_click = Keyword.get(opts, :on_click)
 
     state = %State{
@@ -48,15 +46,21 @@ defmodule ScenicContrib.IconComponent do
 
     graph = render(state, false)
 
-    {:ok, state, push: graph}
+    scene =
+      scene
+      |> assign(:state, state)
+      |> push_graph(graph)
+
+    {:ok, scene}
   end
 
   @impl Scenic.Scene
   def handle_input(
         {:cursor_button, {_, :press, _, _}},
         _context,
-        %State{pressed_time: nil} = state
+        %{assigns: %{state: %State{pressed_time: nil}}} = scene
       ) do
+    state = scene.assigns.state
     %State{on_click: on_click} = state
     Task.async(on_click)
 
@@ -66,10 +70,17 @@ defmodule ScenicContrib.IconComponent do
     # I would've preferred to let these events bubble up to the MusicControls
     # component but {:cont, state} here appears to result in an infinite loop
 
-    {:noreply, state, push: graph}
+    scene =
+      scene
+      |> assign(:state, state)
+      |> push_graph(graph)
+
+    {:noreply, scene}
   end
 
-  def handle_input({:cursor_button, {_, :release, _, _}}, _context, state) do
+  def handle_input({:cursor_button, {_, :release, _, _}}, _context, scene) do
+    state = scene.assigns.state
+
     release_delay =
       case state do
         %State{pressed_time: nil} ->
@@ -81,36 +92,45 @@ defmodule ScenicContrib.IconComponent do
       end
 
     Process.send_after(self(), :release_button, release_delay)
-    {:noreply, state}
+    {:noreply, scene}
   end
 
-  def handle_input(_input, _context, state) do
-    {:noreply, state}
+  def handle_input(_input, _context, scene) do
+    {:noreply, scene}
   end
 
-  @impl Scenic.Scene
-  def handle_info(:release_button, state) do
+  @impl GenServer
+  def handle_info(:release_button, scene) do
+    state = scene.assigns.state
     graph = render(state, false)
     state = %State{state | pressed_time: nil}
-    {:noreply, state, push: graph}
+
+    scene =
+      scene
+      |> assign(:state, state)
+      |> push_graph(graph)
+
+    {:noreply, scene}
   end
 
-  def handle_info(_, state), do: {:noreply, state}
+  def handle_info(_, scene), do: {:noreply, scene}
 
   defp render(state, depressed) do
     %State{icon: icon, on_press_icon: on_press_icon, width: width, height: height} = state
 
     fill =
       if depressed && on_press_icon do
-        {:image, on_press_icon.compile_hash()}
+        {:image, on_press_icon}
       else
-        {:image, icon.compile_hash()}
+        {:image, icon}
       end
 
     Graph.build()
     |> Scenic.Primitives.rect(
       {width, height},
-      fill: fill
+      fill: fill,
+      id: :icon_component,
+      input: [:cursor_button]
     )
   end
 end

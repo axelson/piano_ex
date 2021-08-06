@@ -1,27 +1,13 @@
-defmodule PianoUi.StopIcon do
-  use ScenicContrib.Image, {:piano_ui, "stop.png"}
-end
+defmodule PianoUi.Icons do
+  @icons %{
+    stop: "images/stop.png",
+    stop_pressed: "images/stop-selected.png",
+    play: "images/play.png",
+    play_pressed: "images/play-selected.png",
+    next: "images/next.png",
+    next_pressed: "images/next-selected.png",
+    empty_song: "images/empty-song.jpg"
+  }
 
-defmodule PianoUi.StopPressedIcon do
-  use ScenicContrib.Image, {:piano_ui, "stop-selected.png"}
-end
-
-defmodule PianoUi.PlayIcon do
-  use ScenicContrib.Image, {:piano_ui, "play.png"}
-end
-
-defmodule PianoUi.PlayPressedIcon do
-  use ScenicContrib.Image, {:piano_ui, "play-selected.png"}
-end
-
-defmodule PianoUi.NextIcon do
-  use ScenicContrib.Image, {:piano_ui, "next.png"}
-end
-
-defmodule PianoUi.NextPressedIcon do
-  use ScenicContrib.Image, {:piano_ui, "next-selected.png"}
-end
-
-defmodule PianoUi.EmptySongIcon do
-  use ScenicContrib.Image, {:piano_ui, "empty-song.jpg"}
+  def icon(name), do: Map.get(@icons, name)
 end
