@@ -38,7 +38,7 @@ defmodule PianoUi.Scene.Splash do
     end
 
     %ViewPort{size: {width, _height}} = scene.viewport
-    label_width = 70
+    label_width = 80
     # FIXME: This should be 10 and still line up with the album art
     left_padding = 15
 
