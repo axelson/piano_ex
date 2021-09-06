@@ -8,4 +8,7 @@ defmodule PianoUi.Assets do
     alias: [
       roboto: {:scenic, "fonts/roboto.ttf"}
     ]
+
+  def asset_path, do:
+    Path.join([__DIR__, "..", "..", "assets"]) |> Path.expand()
 end
