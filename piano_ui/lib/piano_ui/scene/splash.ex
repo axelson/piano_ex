@@ -32,6 +32,7 @@ defmodule PianoUi.Scene.Splash do
     # FIXME: This probably indicates a race condition and should instead happen via Scenic.PubSub
     Process.register(self(), __MODULE__)
     refresh = Keyword.get(opts, :refresh, false)
+    pomodoro_timer_pid = Keyword.get(opts, :pomodoro_timer_pid)
 
     if refresh do
       schedule_refresh()
@@ -77,7 +78,8 @@ defmodule PianoUi.Scene.Splash do
       )
       |> PomodoroUi.Scene.MiniComponent.add_to_graph(
         [
-          t: mini_timer_t
+          t: mini_timer_t,
+          pomodoro_timer_pid: pomodoro_timer_pid
         ],
         scale: 1.0,
         pin: mini_timer_t
