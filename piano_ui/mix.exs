@@ -46,7 +46,7 @@ defmodule PianoUi.MixProject do
   defp dep(:launcher, :path), do: {:launcher, path: "~/dev/launcher"}
 
   defp dep(:pomodoro, :github), do: {:pomodoro, github: "axelson/pomodoro", sparse: "pomodoro"}
-  defp dep(:pomodoro, :path), do: {:pomodoro, path: "~/dev/pomodoro"}
+  defp dep(:pomodoro, :path), do: {:pomodoro, path: "~/dev/pomodoro/pomodoro"}
 
   defp dep(:scenic, :hex), do: {:scenic, "~> 0.10"}
 

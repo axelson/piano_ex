@@ -38,7 +38,7 @@
   "parse_trans": {:hex, :parse_trans, "3.3.1", "16328ab840cc09919bd10dab29e431da3af9e9e7e7e6f0089dd5a2d2820011d8", [:rebar3], [], "hexpm", "07cd9577885f56362d414e8c4c4e6bdf10d43a8767abb92d24cbe8b24c54888b"},
   "phoenix_pubsub": {:hex, :phoenix_pubsub, "2.0.0", "a1ae76717bb168cdeb10ec9d92d1480fec99e3080f011402c0a2d68d47395ffb", [:mix], [], "hexpm", "c52d948c4f261577b9c6fa804be91884b381a7f8f18450c5045975435350f771"},
   "pid_file": {:hex, :pid_file, "0.1.1", "66eb4dc73c15852405d99ccf0982f8fdac8fa7084b8ec82057c2b3391e8e6b0d", [:mix], [], "hexpm", "10bc02c6fde8a51e6c0c8404703fdc63e035dea41d5bc97d518135dd0fa10266"},
-  "pomodoro": {:git, "https://github.com/axelson/pomodoro.git", "a579786d4664faea1cb8e0e96669af6e9841ce3b", [sparse: "pomodoro"]},
+  "pomodoro": {:git, "https://github.com/axelson/pomodoro.git", "f463718c19d15b36077d1a0a7a5c28a80d528f65", [sparse: "pomodoro"]},
   "scenic": {:git, "https://github.com/boydm/scenic.git", "23c84e5a4650171ae4945b7ccc9440c05c9d128c", [branch: "v0.11"]},
   "scenic_driver_glfw": {:git, "https://github.com/boydm/scenic_driver_glfw.git", "93f31327c42b73b629f2a12e4f4637f4865056fd", [branch: "v0.11"]},
   "scenic_live_reload": {:hex, :scenic_live_reload, "0.2.0", "9eb0ed039fd021ee70c27de4c1196bee421294014b88e418654fa759e62c516a", [:mix], [{:exsync, "~> 0.2", [hex: :exsync, repo: "hexpm", optional: false]}, {:scenic, "~> 0.10", [hex: :scenic, repo: "hexpm", optional: false]}], "hexpm", "f711d2e254404527793b715bef5d0fccca0001547305f9166000f1022279cb33"},

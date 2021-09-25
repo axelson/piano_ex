@@ -78,9 +78,9 @@ defmodule PianoUi.Scene.Splash do
       )
       |> PomodoroUi.Scene.MiniComponent.add_to_graph(
         [
-          t: mini_timer_t,
-          pomodoro_timer_pid: pomodoro_timer_pid
-        ],
+          t: mini_timer_t
+        ]
+        |> maybe_add_pomodoro_timer_pid(pomodoro_timer_pid),
         scale: 1.0,
         pin: mini_timer_t
       )
@@ -103,6 +103,12 @@ defmodule PianoUi.Scene.Splash do
       |> push_graph(initial_graph)
 
     {:ok, scene}
+  end
+
+  defp maybe_add_pomodoro_timer_pid(opts, nil), do: opts
+
+  defp maybe_add_pomodoro_timer_pid(opts, pomodoro_timer_pid) do
+    Keyword.put(opts, :pomodoro_pid, pomodoro_timer_pid)
   end
 
   def update_song(server \\ __MODULE__, song) do
