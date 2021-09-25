@@ -108,7 +108,7 @@ defmodule PianoUi.Scene.Splash do
   defp maybe_add_pomodoro_timer_pid(opts, nil), do: opts
 
   defp maybe_add_pomodoro_timer_pid(opts, pomodoro_timer_pid) do
-    Keyword.put(opts, :pomodoro_pid, pomodoro_timer_pid)
+    Keyword.put(opts, :pomodoro_timer_pid, pomodoro_timer_pid)
   end
 
   def update_song(server \\ __MODULE__, song) do
