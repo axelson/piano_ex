@@ -10,6 +10,8 @@ defmodule PianoUi.AlbumArtBlacklist do
     |> Repo.insert()
   end
 
+  def banned?(nil), do: false
+
   def banned?(album_name) do
     query = from e in AlbumArtBlacklistEntry, where: e.album_name == ^album_name
     Repo.exists?(query)
