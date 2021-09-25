@@ -211,7 +211,7 @@ defmodule PianoUi.Scene.Splash do
   end
 
   @impl Scenic.Scene
-  def handle_input({:cursor_button, {_, :press, _, _}}, %{id: :album_art}, scene) do
+  def handle_input({:cursor_button, {:btn_left, 1, _, _}}, %{id: :album_art}, scene) do
     state = scene.assigns.state
     %State{graph: graph} = state
 
@@ -231,7 +231,11 @@ defmodule PianoUi.Scene.Splash do
     {:noreply, scene}
   end
 
-  def handle_input(_input, _context, scene), do: {:noreply, scene}
+  # def handle_input(_input, _context, scene), do: {:noreply, scene}
+  def handle_input(input, _context, scene) do
+    Logger.warn("Ignoring input: #{inspect(input)}")
+    {:noreply, scene}
+  end
 
   @impl Scenic.Scene
   def handle_event({:click, :btn_ban_album_art}, _from, scene) do

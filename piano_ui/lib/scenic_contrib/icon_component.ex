@@ -55,8 +55,9 @@ defmodule ScenicContrib.IconComponent do
   end
 
   @impl Scenic.Scene
+  # Press
   def handle_input(
-        {:cursor_button, {_, :press, _, _}},
+        {:cursor_button, {:btn_left, 1, _, _}},
         _context,
         %{assigns: %{state: %State{pressed_time: nil}}} = scene
       ) do
@@ -78,7 +79,8 @@ defmodule ScenicContrib.IconComponent do
     {:noreply, scene}
   end
 
-  def handle_input({:cursor_button, {_, :release, _, _}}, _context, scene) do
+  # Release
+  def handle_input({:cursor_button, {:btn_left, 0, _, _}}, _context, scene) do
     state = scene.assigns.state
 
     release_delay =
