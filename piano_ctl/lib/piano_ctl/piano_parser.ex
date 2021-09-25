@@ -81,6 +81,9 @@ defmodule PianoCtl.PianoParser do
 
         {key, val} when is_atom(key) ->
           Map.put(acc, key, val)
+
+        :ignore ->
+          acc
       end
     end)
   end
@@ -94,6 +97,10 @@ defmodule PianoCtl.PianoParser do
   defp parse_one_line("station" <> rest) do
     {station_number, "=" <> station_name} = Integer.parse(rest, 10)
     {:station, station_number, station_name}
+  end
+
+  defp parse_one_line(line) when line in ["stationfetchplaylist", "songfinish", "songstart"] do
+    :ignore
   end
 
   # TODO: Support usergetstations
