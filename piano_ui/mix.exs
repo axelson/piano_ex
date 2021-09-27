@@ -36,7 +36,7 @@ defmodule PianoUi.MixProject do
       dep(:scenic_driver_glfw, :github),
       dep(:scenic_live_reload, :path),
       {:dialyxir, "~> 1.1", only: :dev, runtime: false},
-      {:telemetry_metrics, "~> 0.4"},
+      {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 0.4"},
       {:ecto_sqlite3, "~> 0.5.4"}
     ]
