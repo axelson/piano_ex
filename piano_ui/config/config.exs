@@ -25,7 +25,7 @@ config :piano_ui, PianoUi.Repo,
 config :piano_ui, :viewport,
   name: :main_viewport,
   size: {800, 480},
-  default_scene: {PianoUi.Scene.Splash, []},
+  default_scene: {PianoUi.Scene.Dashboard, []},
   drivers: [
     [
       module: Scenic.Driver.Glfw,

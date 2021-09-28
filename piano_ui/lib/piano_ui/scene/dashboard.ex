@@ -1,4 +1,4 @@
-defmodule PianoUi.Scene.Splash do
+defmodule PianoUi.Scene.Dashboard do
   use Scenic.Scene
 
   @default_font_size 24

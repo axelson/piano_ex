@@ -8,6 +8,6 @@ defmodule PianoUi.Demo do
       title: "Journey To The Center"
     }
 
-    PianoUi.Scene.Splash.update_song(song)
+    PianoUi.Scene.Dashboard.update_song(song)
   end
 end
