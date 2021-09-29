@@ -11,6 +11,7 @@ defmodule PianoUi.Assets do
     otp_app: :piano_ui,
     sources: [
       "assets",
+      {:pomodoro, PomodoroUi.Assets.asset_path()},
       {:scenic, "deps/scenic/assets"}
     ],
     alias: [

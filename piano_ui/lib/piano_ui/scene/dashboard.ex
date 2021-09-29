@@ -65,7 +65,7 @@ defmodule PianoUi.Scene.Dashboard do
     line_height = @default_font_size * 1.2
 
     mini_timer_t = {595, 69}
-    semaphore_t = {212, 295}
+    semaphore_t = {212, 095}
 
     initial_graph =
       @graph
@@ -301,7 +301,7 @@ defmodule PianoUi.Scene.Dashboard do
 
   defp render_text(graph, text, attributes) do
     attributes = text_attributes(attributes)
-    Scenic.Primitives.text(graph, text, attributes)
+    Scenic.Primitives.text(graph, abridge_text(text, 420), attributes)
   end
 
   defp render_empty_icon(graph) do
@@ -336,4 +336,31 @@ defmodule PianoUi.Scene.Dashboard do
   defp schedule_refresh do
     Process.send_after(self(), :refresh, @refresh_rate)
   end
+
+  def abridge_text(text, max_width) do
+    {:ok, {_type, font_metrics}} = Scenic.Assets.Static.meta(:roboto)
+
+    if text_width(font_metrics, text) < max_width do
+      text
+    else
+      graphemes = String.graphemes(text) |> Enum.reverse()
+      do_abridge_text(font_metrics, graphemes, max_width)
+    end
+  end
+
+  defp do_abridge_text(font_metrics, graphemes, max_width) do
+    if text_width(font_metrics, ["..." | graphemes]) < max_width do
+      ["..." | graphemes]
+      |> Enum.reverse()
+      |> to_string()
+    else
+      do_abridge_text(font_metrics, tl(graphemes), max_width)
+    end
+  end
+
+  defp text_width(font_metrics, graphemes) when is_list(graphemes),
+    do: FontMetrics.width(to_string(graphemes), @default_font_size, font_metrics)
+
+  defp text_width(font_metrics, text) when is_binary(text),
+    do: FontMetrics.width(text, @default_font_size, font_metrics)
 end

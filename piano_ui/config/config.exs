@@ -35,6 +35,8 @@ config :piano_ui, :viewport,
     ]
   ]
 
+config :launcher, auto_refresh: true
+
 case Mix.env() do
   :dev ->
     config :exsync,
