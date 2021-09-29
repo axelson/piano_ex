@@ -18,6 +18,8 @@ defmodule PianoUi.Scene.MusicControls do
         [
           icon: Icons.icon(:stop),
           on_press_icon: Icons.icon(:stop_pressed),
+          width: 46,
+          height: 60,
           on_click: &on_stop/0
         ],
         id: :btn_stop,
@@ -27,6 +29,8 @@ defmodule PianoUi.Scene.MusicControls do
         [
           icon: Icons.icon(:play),
           on_press_icon: Icons.icon(:play_pressed),
+          width: 46,
+          height: 60,
           on_click: &on_play/0
         ],
         id: :btn_play,
@@ -36,6 +40,8 @@ defmodule PianoUi.Scene.MusicControls do
         [
           icon: Icons.icon(:next),
           on_press_icon: Icons.icon(:next_pressed),
+          width: 46,
+          height: 60,
           on_click: &on_next/0
         ],
         id: :btn_next,

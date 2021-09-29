@@ -3,7 +3,7 @@ defmodule PianoUi.Scene.Dashboard do
 
   @default_font_size 24
   @default_text_attributes [
-    font_size: @default_font_size,
+    font_size: 13,
     text_align: :left,
     text_base: :top,
     width: 100,
@@ -11,6 +11,9 @@ defmodule PianoUi.Scene.Dashboard do
   ]
 
   @album_art "album_art"
+  @album_art_width 500
+  @album_art_height 500
+  @album_art_translate {35, 35}
 
   @refresh_rate round(1_000 / 30)
 
@@ -33,48 +36,55 @@ defmodule PianoUi.Scene.Dashboard do
     Process.register(self(), __MODULE__)
     refresh = Keyword.get(opts, :refresh, false)
     pomodoro_timer_pid = Keyword.get(opts, :pomodoro_timer_pid)
+    %Scenic.ViewPort{size: {screen_width, screen_height}} = scene.viewport
 
     if refresh do
       schedule_refresh()
     end
 
-    %ViewPort{size: {width, _height}} = scene.viewport
-    label_width = 80
-    # FIXME: This should be 10 and still line up with the album art
-    left_padding = 15
-
     render_label = fn graph, text, id, height ->
       render_text(graph, text,
         id: id,
-        t: {left_padding, height},
+        t: {126, 35 + height},
+        font_size: 8,
+        text_align: :left,
+        text_base: :top
+      )
+    end
+
+    render_label_text = fn graph, text, id, height ->
+      render_text(graph, text,
+        id: id,
+        t: {165, 35 + height},
+        font_size: @default_font_size,
         text_align: :left,
         text_base: :top
       )
     end
 
     line_height = @default_font_size * 1.2
-    text_start = left_padding + label_width
 
-    mini_timer_t = {width - 110, 60}
-    semaphore_t = {width - 462, 165}
+    mini_timer_t = {595, 69}
+    semaphore_t = {212, 295}
 
     initial_graph =
       @graph
-      # Title
-      |> render_label.("Title: ", :title_label, line_height * 0)
-      |> render_text("", id: :title_text, t: {text_start, line_height * 0}, width: 100)
-      # Artist
-      |> render_label.("Artist: ", :artist_label, line_height * 1)
-      |> render_text("",
-        id: :artist_text,
-        t: {text_start, line_height * 1}
+      |> Scenic.Primitives.rect({screen_width, screen_height},
+        fill: {:image, {:piano_ui, "images/dashboard_background.png"}}
       )
-      |> render_label.("Album: ", :album_label, line_height * 2)
-      |> render_text("", id: :album_text, t: {text_start, line_height * 2}, width: 100)
+      # Title
+      |> render_label.("TITLE", :title_label, line_height * 0)
+      |> render_label_text.("", :title_text, line_height * 0)
+      # Artist
+      |> render_label.("ARTIST", :artist_label, line_height * 2)
+      |> render_label_text.("", :artist_text, line_height * 2)
+      # Album
+      |> render_label.("ALBUM", :album_label, line_height * 3)
+      |> render_label_text.("", :album_text, line_height * 3)
       |> render_empty_icon()
       |> PianoUi.Scene.MusicControls.add_to_graph(
-        t: {370, 365},
-        space_between: 130
+        t: {35, 168},
+        space_between: 58
       )
       |> PomodoroUi.Scene.MiniComponent.add_to_graph(
         [
@@ -173,18 +183,16 @@ defmodule PianoUi.Scene.Dashboard do
 
     with {:ok, img} <- Scenic.Assets.Stream.Image.from_binary(image_binary),
          :ok <- Scenic.Assets.Stream.put(@album_art, img) do
-      width = 500
-      height = 500
-
-      translate = {10, 117}
+      width = @album_art_width
+      height = @album_art_height
 
       graph =
         Scenic.Primitives.rect(graph, {width, height},
           id: :album_art,
           fill: {:stream, @album_art},
-          t: translate,
-          pin: translate,
-          s: 0.6
+          t: @album_art_translate,
+          pin: {1, 1},
+          s: 75 / @album_art_height
         )
         |> Graph.delete(:empty_icon)
 
@@ -302,13 +310,13 @@ defmodule PianoUi.Scene.Dashboard do
     |> ScenicContrib.IconComponent.add_to_graph(
       [
         icon: PianoUi.Icons.icon(:empty_song),
-        width: 500,
-        height: 500
+        width: @album_art_width,
+        height: @album_art_height
       ],
       id: :empty_icon,
-      t: {10, 160},
-      p: {10, 117},
-      s: 0.6
+      t: @album_art_translate,
+      p: {1, 1},
+      s: 75 / @album_art_height
     )
   end
 
