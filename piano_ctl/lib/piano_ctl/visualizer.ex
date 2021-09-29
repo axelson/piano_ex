@@ -10,7 +10,7 @@ defmodule PianoCtl.Visualizer do
   def show(%Song{} = song) do
     Node.list()
     |> Enum.each(fn node ->
-      Node.spawn(node, GenServer, :cast, [PianoUi.Scene.Splash, {:update_song, song}])
+      Node.spawn(node, GenServer, :cast, [PianoUi.Scene.Dashboard, {:update_song, song}])
     end)
   end
 end
