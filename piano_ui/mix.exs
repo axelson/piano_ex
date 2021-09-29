@@ -33,7 +33,7 @@ defmodule PianoUi.MixProject do
       dep(:launcher, :github),
       dep(:pomodoro, :github),
       dep(:scenic, :github),
-      dep(:scenic_driver_glfw, :github),
+      dep(:scenic_driver_local, :github),
       dep(:scenic_live_reload, :path),
       {:dialyxir, "~> 1.1", only: :dev, runtime: false},
       {:telemetry_metrics, "~> 0.6"},
@@ -55,12 +55,10 @@ defmodule PianoUi.MixProject do
 
   defp dep(:scenic, :path), do: {:scenic, path: "../forks/scenic", override: true}
 
-  defp dep(:scenic_driver_glfw, :hex), do: {:scenic_driver_glfw, "~> 0.10", only: :dev}
+  defp dep(:scenic_driver_local, :hex), do: {:scenic_driver_local, "~> 0.10", only: :dev}
 
-  defp dep(:scenic_driver_glfw, :github),
-    do:
-      {:scenic_driver_glfw,
-       github: "boydm/scenic_driver_glfw", branch: "v0.11", only: :dev, override: true}
+  defp dep(:scenic_driver_local, :github),
+    do: {:scenic_driver_local, github: "ScenicFramework/scenic_driver_local", only: :dev, override: true}
 
   defp dep(:scenic_driver_glfw, :path),
     do: {:scenic_driver_glfw, path: "../forks/scenic_driver_glfw", only: :dev, override: true}

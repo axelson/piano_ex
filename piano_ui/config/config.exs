@@ -28,10 +28,10 @@ config :piano_ui, :viewport,
   default_scene: {PianoUi.Scene.Dashboard, []},
   drivers: [
     [
-      module: Scenic.Driver.Glfw,
-      name: :glfw,
-      resizeable: false,
-      title: "Piano"
+      module: Scenic.Driver.Local,
+      window: [
+        title: "Dashboard"
+      ]
     ]
   ]
 
