@@ -13,9 +13,6 @@ defmodule PianoUi.Assets do
       "assets",
       {:pomodoro, PomodoroUi.Assets.asset_path()},
       {:scenic, "deps/scenic/assets"}
-    ],
-    alias: [
-      roboto: {:scenic, "fonts/roboto.ttf"}
     ]
 
   def asset_path, do: Path.join([__DIR__, "..", "..", "assets"]) |> Path.expand()
