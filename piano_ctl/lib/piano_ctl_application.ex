@@ -15,6 +15,7 @@ defmodule PianoCtlApplication do
       {Cluster.Supervisor, [topologies, [name: PianoCtl.ClusterSupervisor]]},
       PianoCtl.Initializer,
       PianoCtl.Server,
+      PianoCtl.Reconnector,
       PianoCtl.PianoInputReader
     ]
 
