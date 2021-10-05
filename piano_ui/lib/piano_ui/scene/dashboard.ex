@@ -104,13 +104,7 @@ defmodule PianoUi.Scene.Dashboard do
         nil
     end
 
-    state = %State{graph: initial_graph}
-
-    scene =
-      scene
-      |> assign(:state, state)
-      |> push_graph(initial_graph)
-
+    scene = assign_and_push_graph(scene, %State{}, initial_graph)
     {:ok, scene}
   end
 
@@ -165,13 +159,7 @@ defmodule PianoUi.Scene.Dashboard do
       |> Graph.modify(:artist_text, gen_render_text(song.artist))
       |> Graph.modify(:album_text, gen_render_text(song.album))
 
-    state = %{state | graph: graph}
-
-    scene =
-      scene
-      |> assign(:state, state)
-      |> push_graph(graph)
-
+    scene = assign_and_push_graph(scene, state, graph)
     {:noreply, scene}
   end
 
@@ -188,6 +176,7 @@ defmodule PianoUi.Scene.Dashboard do
       graph =
         Scenic.Primitives.rect(graph, {width, height},
           id: :album_art,
+          input: [:cursor_button],
           fill: {:stream, @album_art},
           t: @album_art_translate,
           pin: {1, 1},
@@ -197,11 +186,7 @@ defmodule PianoUi.Scene.Dashboard do
 
       state = %State{state | graph: graph}
 
-      scene =
-        scene
-        |> assign(:state, state)
-        |> push_graph(graph)
-
+      scene = assign_and_push_graph(scene, state, graph)
       {:noreply, scene}
     else
       error ->
@@ -218,6 +203,34 @@ defmodule PianoUi.Scene.Dashboard do
   end
 
   @impl Scenic.Scene
+  def handle_input({:cursor_button, {:btn_left, 1, _, _}}, :album_art, scene) do
+    state = scene.assigns.state
+    %State{graph: graph} = state
+
+    graph =
+      graph
+      |> Scenic.Primitives.rect({500, 500},
+        id: :album_art_zoomed_in,
+        input: [:cursor_button],
+        fill: {:stream, @album_art},
+        t: @album_art_translate,
+        pin: {1, 1},
+        s: 300 / @album_art_height
+      )
+
+    scene = assign_and_push_graph(scene, state, graph)
+    {:noreply, scene}
+  end
+
+  def handle_input({:cursor_button, {:btn_left, 1, _, _}}, :album_art_zoomed_in, scene) do
+    state = scene.assigns.state
+    %State{graph: graph} = state
+    graph = Graph.delete(graph, :album_art_zoomed_in)
+
+    scene = assign_and_push_graph(scene, state, graph)
+    {:noreply, scene}
+  end
+
   def handle_input({:cursor_button, {:btn_left, 1, _, _}}, %{id: :album_art}, scene) do
     state = scene.assigns.state
     %State{graph: graph} = state
@@ -242,6 +255,14 @@ defmodule PianoUi.Scene.Dashboard do
   def handle_input(input, _context, scene) do
     Logger.warn("Ignoring input: #{inspect(input)}")
     {:noreply, scene}
+  end
+
+  defp assign_and_push_graph(scene, state, graph) do
+    state = %State{state | graph: graph}
+
+    scene
+    |> assign(:state, state)
+    |> push_graph(graph)
   end
 
   @impl Scenic.Scene
