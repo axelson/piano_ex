@@ -20,7 +20,6 @@ defmodule PianoUi.Scene.Dashboard do
   require Logger
 
   alias Scenic.Graph
-  alias Scenic.ViewPort
   alias PianoCtl.Models.Song
   alias PianoUi.FileCache
 
