@@ -25,7 +25,7 @@ defmodule PianoUi.FileCache do
 
   defp file_path(file_name) do
     sha =
-      :crypto.hash(:sha, file_name)
+      :crypto.hash(:sha256, file_name)
       |> Base.encode16()
 
     Path.join([cache_dir(), sha])
