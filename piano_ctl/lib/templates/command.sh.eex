@@ -1,0 +1,20 @@
+#!/bin/sh
+
+CONFIG_DIR="${XDG_CONFIG_HOME:-~/.config}/pianobar"
+PID_FILE="${CONFIG_DIR}/piano_ctl_pid"
+PID=$(cat "$PID_FILE")
+
+#BEAM_NOTIFY=$(ls /srv/erlang/lib/beam_notify-*/priv/beam_notify)
+BEAM_NOTIFY=<%= BEAMNotify.bin_path() %>
+
+if ps "$PID" > /dev/null; then
+    INPUT=$(</dev/stdin)
+    echo "1: $1" >> /tmp/piano_ctl.log
+    echo "got input $INPUT" >> /tmp/piano_ctl.log
+    # $BEAM_NOTIFY -p /tmp/piano_ctl_beam_notify_socket -- "$1"
+    # $BEAM_NOTIFY -p /tmp/piano_ctl_beam_notify_socket -- "$INPUT"
+    $BEAM_NOTIFY -p /tmp/piano_ctl_beam_notify_socket -- "$1" "$INPUT"
+
+    # echo "$1" >> "$PIPE_FILE"
+    # echo "$(</dev/stdin)" >> "$PIPE_FILE"
+fi

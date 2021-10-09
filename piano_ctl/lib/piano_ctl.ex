@@ -11,7 +11,7 @@ defmodule PianoCtl do
   PianoCtl.CommandRunner -> pianobar ctl pipe -> pianobar
   """
 
-  use Boundary, deps: [], exports: [Models.Song]
+  use Boundary, deps: [], exports: [Models.Song, PianoInputReader]
 
   defdelegate cmd(command), to: PianoCtl.CommandRunner
 

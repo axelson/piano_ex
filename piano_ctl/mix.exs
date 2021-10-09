@@ -17,7 +17,7 @@ defmodule PianoCtl.MixProject do
   def application do
     [
       mod: {PianoCtlApplication, []},
-      extra_applications: [:logger]
+      extra_applications: [:logger, :eex]
     ]
   end
 
@@ -27,6 +27,7 @@ defmodule PianoCtl.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:beam_notify, "~> 0.2.1"},
       {:boundary, "~> 0.8", runtime: false},
       {:libcluster, "~> 3.3.0"},
       {:exsync, github: "falood/exsync", only: :dev},

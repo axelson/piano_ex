@@ -7,8 +7,8 @@ A simple Pandora player visualizer and controller.
 
 Rough diagram
 ```
-pianobar -> input.pipe <- PianoCtl.PianoInputReader
-                      reads         |
+pianobar -> command.sh -> PianoCtl.PianoInputReader
+                    beam_notify     |
                                     v
                                PianoCtl.Server -> PianoUi
 ```
@@ -17,14 +17,15 @@ To test:
 
     ./test-example.sh
 
+In IEx run `PianoCtl.Notifier.create_script` to create the command.sh script
+
 ## TODO
 
+- [ ] Clean up the parsing code (rather hacky right now)
 - [ ] Gracefully handle when the image cannot be downloaded (should have a placeholder)
 - [x] Cover art should be resized to fit
 - [ ] Extract text into a separate scene
-- [ ] Find a good name for the Splash scene
-- [ ] Use PianoCtl.PipeReader to avoid blocking input/output
-  - Will require re-writing some of the input parsing
+- [x] Find a good name for the Splash scene
 
 Done:
 - [x] Change PianoParser to be able to accurately detect events

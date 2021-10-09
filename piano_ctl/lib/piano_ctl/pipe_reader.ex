@@ -1,4 +1,5 @@
 # NOTE: Unused
+# Instead PianoCtl.PianoInputReader is used
 defmodule PianoCtl.PipeReader do
   @moduledoc """
   Proxy for Pipe IO operations.

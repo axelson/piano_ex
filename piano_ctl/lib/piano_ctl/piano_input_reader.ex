@@ -1,3 +1,5 @@
+# TODO: Cleanup
+# This is no longer run as a GenServer
 defmodule PianoCtl.PianoInputReader do
   @moduledoc """
   Reads from the input pipe and sends the message on
@@ -43,5 +45,12 @@ defmodule PianoCtl.PianoInputReader do
 
   defp schedule_work(delay) do
     Process.send_after(self(), :read_pipe, delay)
+  end
+
+  def notify(input, _env_vars) do
+    [event_name, input] = input
+
+    PianoCtl.Server.input("#{event_name}\n")
+    PianoCtl.Server.input("#{input}\n")
   end
 end
