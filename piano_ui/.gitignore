@@ -27,3 +27,5 @@ piano_ui-*.tar
 
 /priv/database.*
 /priv/__scenic
+
+/sample_data/private
