@@ -24,6 +24,7 @@ defmodule PianoUi.MixProject do
   defp deps do
     [
       {:boundary, "~> 0.8.0", runtime: false},
+      {:jax_utils, path: "~/dev/jax_utils"},
       {:libcluster, "~> 3.3.0"},
       {:finch, "~> 0.5"},
       {:piano_ctl, path: "../piano_ctl", runtime: false},
