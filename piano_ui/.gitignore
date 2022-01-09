@@ -26,6 +26,7 @@ piano_ui-*.tar
 .env
 
 /priv/database.*
+/priv/pomodoro_database.*
 /priv/__scenic
 
 /sample_data/private
