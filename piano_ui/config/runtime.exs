@@ -61,6 +61,14 @@ config :launcher, auto_refresh: true
 config :tzdata, :autoupdate, :disabled
 config :scenic, :assets, module: PianoUi.Assets
 
+config :logger, backends: [RingLogger]
+
+# You can also configure `RingLogger.Client` options to be used
+# with every client by default
+config :logger, RingLogger,
+  format: "[$level] $message\n",
+  level: :debug
+
 case Mix.env() do
   :dev ->
     config :exsync,

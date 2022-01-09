@@ -26,6 +26,8 @@ defmodule PianoUi.MixProject do
       {:boundary, "~> 0.8.0", runtime: false},
       {:jax_utils, path: "~/dev/jax_utils"},
       {:libcluster, "~> 3.3.0"},
+      # {:icalendar, "~> 1.1"},
+      {:icalendar, path: "~/dev/forks/icalendar"},
       {:finch, "~> 0.5"},
       {:piano_ctl, path: "../piano_ctl", runtime: false},
       # {:govee_semaphore, path: "~/dev/govee_semaphore"},
@@ -33,9 +35,12 @@ defmodule PianoUi.MixProject do
       {:font_metrics, "~> 0.5.0"},
       dep(:launcher, :github),
       dep(:pomodoro, :github),
+      dep(:ring_logger, :path),
       dep(:scenic, :github),
+      {:scenic_sensor, "~> 0.7.0"},
       dep(:scenic_driver_local, :github),
       dep(:scenic_live_reload, :path),
+      {:exsync, github: "falood/exsync", override: true},
       {:dialyxir, "~> 1.1", only: :dev, runtime: false},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 0.4"},
@@ -48,6 +53,9 @@ defmodule PianoUi.MixProject do
 
   defp dep(:pomodoro, :github), do: {:pomodoro, github: "axelson/pomodoro"}
   defp dep(:pomodoro, :path), do: {:pomodoro, path: "~/dev/pomodoro"}
+
+  defp dep(:ring_logger, :github), do: {:ring_logger, github: "axelson/ring_logger"}
+  defp dep(:ring_logger, :path), do: {:ring_logger, path: "~/dev/forks/ring_logger", override: true}
 
   defp dep(:scenic, :hex), do: {:scenic, "~> 0.10"}
 
