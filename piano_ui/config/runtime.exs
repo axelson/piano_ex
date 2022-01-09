@@ -26,8 +26,6 @@ config :piano_ui,
           "local_epmd" -> Cluster.Strategy.LocalEpmd
         end)
 
-config :piano_ui, ecto_repos: [PianoUi.Repo, Pomodoro.Repo]
-
 config :piano_ui, PianoUi.Repo,
   database: "priv/database.db",
   journal_mode: :wal,
@@ -44,7 +42,8 @@ config :piano_ui, :viewport,
       module: Scenic.Driver.Local,
       window: [
         title: "Dashboard"
-      ]
+      ],
+      on_close: :stop_system
     ]
   ]
 
@@ -55,6 +54,8 @@ config :pomodoro, Pomodoro.Repo,
   cache_size: -64000,
   temp_store: :memory,
   pool_size: 1
+
+config :pomodoro, sound_directory: "deps/pomodoro/priv/sounds"
 
 config :launcher, auto_refresh: true
 
