@@ -10,7 +10,7 @@ config :piano_ui, :calendar_urls, get_env("PIANO_UI_CALENDAR_URLS", :no_default,
 config :piano_ui, :calendar_fetcher_impl, PianoUi.CalendarFetcher.Impl
 
 ctl_node =
-  case System.get_env("CTL_NODE") do
+  case System.get_env("PIANO_UI_CTL_NODE") do
     nil -> nil
     node -> String.to_atom(node)
   end
@@ -18,6 +18,13 @@ ctl_node =
 config :piano_ui, :ctl_node, ctl_node
 config :piano_ui, libcluster_hosts: [ctl_node]
 config :piano_ui, :album_cache_dir, System.tmp_dir!() <> "/piano_ex_album_art/"
+
+config :piano_ui,
+       :libcluster_strategy,
+       (case System.get_env("PIANO_UI_LIBCLUSTER_STRATEGY", "epmd") do
+          "epmd" -> Cluster.Strategy.Epmd
+          "local_epmd" -> Cluster.Strategy.LocalEpmd
+        end)
 
 config :piano_ui, ecto_repos: [PianoUi.Repo, Pomodoro.Repo]
 
