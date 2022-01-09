@@ -23,12 +23,12 @@ defmodule PianoUi.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:boundary, "~> 0.8.0", runtime: false},
+      {:boundary, "~> 0.9.0", runtime: false},
       {:jax_utils, path: "~/dev/jax_utils"},
       {:libcluster, "~> 3.3.0"},
       # {:icalendar, "~> 1.1"},
       {:icalendar, path: "~/dev/forks/icalendar"},
-      {:finch, "~> 0.5"},
+      {:finch, "~> 0.10"},
       {:piano_ctl, path: "../piano_ctl", runtime: false},
       # {:govee_semaphore, path: "~/dev/govee_semaphore"},
       {:govee_semaphore, github: "axelson/govee_semaphore"},
@@ -43,8 +43,8 @@ defmodule PianoUi.MixProject do
       {:exsync, github: "falood/exsync", override: true},
       {:dialyxir, "~> 1.1", only: :dev, runtime: false},
       {:telemetry_metrics, "~> 0.6"},
-      {:telemetry_poller, "~> 0.4"},
-      {:ecto_sqlite3, "~> 0.5.4"}
+      {:telemetry_poller, "~> 0.4 or ~> 1.0"},
+      {:ecto_sqlite3, "~> 0.7"}
     ]
   end
 
@@ -59,8 +59,10 @@ defmodule PianoUi.MixProject do
 
   defp dep(:scenic, :hex), do: {:scenic, "~> 0.10"}
 
+  # defp dep(:scenic, :github),
+  #   do: {:scenic, github: "boydm/scenic", override: true}
   defp dep(:scenic, :github),
-    do: {:scenic, github: "boydm/scenic", branch: "v0.11", override: true}
+    do: {:scenic, github: "axelson/scenic", branch: "update-nimble-options-0.4", override: true}
 
   defp dep(:scenic, :path), do: {:scenic, path: "../forks/scenic", override: true}
 
