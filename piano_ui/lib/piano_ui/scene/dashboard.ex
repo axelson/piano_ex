@@ -31,8 +31,8 @@ defmodule PianoUi.Scene.Dashboard do
 
   @impl Scenic.Scene
   def init(scene, opts, _scenic_opts) do
-    # FIXME: This probably indicates a race condition and should instead happen via Scenic.PubSub
-    Process.register(self(), __MODULE__)
+    Phoenix.PubSub.subscribe(:piano_ui_pubsub, "dashboard")
+
     refresh = Keyword.get(opts, :refresh, false)
     pomodoro_timer_pid = Keyword.get(opts, :pomodoro_timer_pid)
     %Scenic.ViewPort{size: {screen_width, screen_height}} = scene.viewport
@@ -141,26 +141,7 @@ defmodule PianoUi.Scene.Dashboard do
   end
 
   def handle_cast({:update_song, song}, scene) do
-    state = scene.assigns.state
-    %State{graph: graph} = state
-
-    Logger.info("Displaying new song: #{inspect(song)}")
-
-    graph =
-      if PianoUi.AlbumArtBlacklist.banned?(song.album) do
-        render_empty_icon(graph)
-      else
-        start_download_cover_art(song)
-        graph
-      end
-
-    graph =
-      graph
-      |> Graph.modify(:title_text, gen_render_text(song.title))
-      |> Graph.modify(:artist_text, gen_render_text(song.artist))
-      |> Graph.modify(:album_text, gen_render_text(song.album))
-
-    scene = assign_and_push_graph(scene, state, graph)
+    scene = handle_update_song(song, scene)
     {:noreply, scene}
   end
 
@@ -200,6 +181,11 @@ defmodule PianoUi.Scene.Dashboard do
   def handle_info(:refresh, scene) do
     schedule_refresh()
     scene = push_graph(scene, scene.assigns.state.graph)
+    {:noreply, scene}
+  end
+
+  def handle_info({:update_song, song}, scene) do
+    scene = handle_update_song(song, scene)
     {:noreply, scene}
   end
 
@@ -348,6 +334,29 @@ defmodule PianoUi.Scene.Dashboard do
       t: {15, 410},
       button_font_size: @default_font_size
     )
+  end
+
+  defp handle_update_song(song, scene) do
+    state = scene.assigns.state
+    %State{graph: graph} = state
+
+    Logger.info("Displaying new song: #{inspect(song)}")
+
+    graph =
+      if PianoUi.AlbumArtBlacklist.banned?(song.album) do
+        render_empty_icon(graph)
+      else
+        start_download_cover_art(song)
+        graph
+      end
+
+    graph =
+      graph
+      |> Graph.modify(:title_text, gen_render_text(song.title))
+      |> Graph.modify(:artist_text, gen_render_text(song.artist))
+      |> Graph.modify(:album_text, gen_render_text(song.album))
+
+    assign_and_push_graph(scene, state, graph)
   end
 
   defp text_attributes(opts) do

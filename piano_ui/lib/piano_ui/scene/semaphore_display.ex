@@ -15,7 +15,6 @@ defmodule PianoUi.SemaphoreDisplay do
 
   @impl Scenic.Scene
   def init(scene, opts, _scenic_opts) do
-    Process.register(self(), __MODULE__)
     {base_x, base_y} = Keyword.get(opts, :t)
 
     text_t = {base_x, base_y + 70}
