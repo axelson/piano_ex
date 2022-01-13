@@ -8,16 +8,18 @@ defmodule PianoUiApplication do
 
     topologies = [
       example: [
-        strategy: Cluster.Strategy.Epmd,
+        strategy: Application.fetch_env!(:piano_ui, :libcluster_strategy),
         config: [hosts: Application.fetch_env!(:piano_ui, :libcluster_hosts)]
       ]
     ]
 
     children =
       [
-        {Finch, name: MyFinch},
+        {Finch, name: :piano_ui_finch},
         {Cluster.Supervisor, [topologies, [name: PianoUi.ClusterSupervisor]]},
         {DynamicSupervisor, name: PianoUi.MainSupervisor, strategy: :one_for_one},
+        {Scenic.Sensor, nil},
+        PianoUi.CalendarCache,
         PianoUi.Repo,
         PianoUi.Telemetry,
         maybe_start_scenic()

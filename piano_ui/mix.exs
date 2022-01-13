@@ -23,22 +23,31 @@ defmodule PianoUi.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:boundary, "~> 0.8.0", runtime: false},
+      {:boundary, "~> 0.9.0", runtime: false},
+      {:data_tracer, path: "~/dev/data_tracer", only: [:dev, :test]},
+      {:jax_utils, path: "~/dev/jax_utils"},
       {:libcluster, "~> 3.3.0"},
-      {:finch, "~> 0.5"},
+      # {:icalendar, "~> 1.1"},
+      {:icalendar, path: "~/dev/forks/icalendar"},
+      {:finch, "~> 0.10"},
       {:piano_ctl, path: "../piano_ctl", runtime: false},
       # {:govee_semaphore, path: "~/dev/govee_semaphore"},
       {:govee_semaphore, github: "axelson/govee_semaphore"},
       {:font_metrics, "~> 0.5.0"},
+      {:scenic_widget_contrib, github: "axelson/scenic-widget-contrib", branch: "add-wrap-and-shorten-util"},
       dep(:launcher, :github),
       dep(:pomodoro, :github),
+      dep(:ring_logger, :path),
       dep(:scenic, :github),
+      {:scenic_sensor, "~> 0.7.0"},
       dep(:scenic_driver_local, :github),
       dep(:scenic_live_reload, :path),
+      # {:exsync, github: "falood/exsync", override: true},
+      {:exsync, path: "~/dev/forks/exsync", override: true},
       {:dialyxir, "~> 1.1", only: :dev, runtime: false},
       {:telemetry_metrics, "~> 0.6"},
-      {:telemetry_poller, "~> 0.4"},
-      {:ecto_sqlite3, "~> 0.5.4"}
+      {:telemetry_poller, "~> 0.4 or ~> 1.0"},
+      {:ecto_sqlite3, "~> 0.7"}
     ]
   end
 
@@ -48,10 +57,15 @@ defmodule PianoUi.MixProject do
   defp dep(:pomodoro, :github), do: {:pomodoro, github: "axelson/pomodoro"}
   defp dep(:pomodoro, :path), do: {:pomodoro, path: "~/dev/pomodoro"}
 
+  defp dep(:ring_logger, :github), do: {:ring_logger, github: "axelson/ring_logger"}
+  defp dep(:ring_logger, :path), do: {:ring_logger, path: "~/dev/forks/ring_logger", override: true}
+
   defp dep(:scenic, :hex), do: {:scenic, "~> 0.10"}
 
+  # defp dep(:scenic, :github),
+  #   do: {:scenic, github: "boydm/scenic", override: true}
   defp dep(:scenic, :github),
-    do: {:scenic, github: "boydm/scenic", branch: "v0.11", override: true}
+    do: {:scenic, github: "axelson/scenic", branch: "update-nimble-options-0.4", override: true}
 
   defp dep(:scenic, :path), do: {:scenic, path: "../forks/scenic", override: true}
 

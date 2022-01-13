@@ -1,3 +1,3 @@
 defmodule ScenicContrib do
-  use Boundary, deps: [], exports: [IconComponent]
+  use Boundary, deps: [], exports: []
 end
