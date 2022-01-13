@@ -64,7 +64,7 @@ defmodule PianoUi.Scene.Dashboard do
     line_height = @default_font_size * 1.2
 
     mini_timer_t = {595, 69}
-    semaphore_t = {212, 095}
+    semaphore_t = {312, 095}
 
     initial_graph =
       @graph
@@ -94,6 +94,7 @@ defmodule PianoUi.Scene.Dashboard do
         pin: mini_timer_t
       )
       |> PianoUi.SemaphoreDisplay.add_to_graph(t: semaphore_t)
+      |> PianoUi.Scene.CalendarDisplay.add_to_graph([], t: {17, 264})
       |> Launcher.HiddenHomeButton.add_to_graph([])
 
     case get_current_song() do
@@ -297,7 +298,7 @@ defmodule PianoUi.Scene.Dashboard do
       Task.start_link(fn ->
         Logger.debug("downloading: #{inspect(cover_art_url)}")
 
-        case Finch.build(:get, cover_art_url) |> Finch.request(MyFinch) do
+        case Finch.build(:get, cover_art_url) |> Finch.request(:piano_ui_finch) do
           {:ok, %Finch.Response{status: 200, body: body}} ->
             Logger.info("Successfully downloaded cover art for #{cover_art_url}")
             send(parent, {:downloaded_cover_art, body})

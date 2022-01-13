@@ -15,9 +15,11 @@ defmodule PianoUiApplication do
 
     children =
       [
-        {Finch, name: MyFinch},
+        {Finch, name: :piano_ui_finch},
         {Cluster.Supervisor, [topologies, [name: PianoUi.ClusterSupervisor]]},
         {DynamicSupervisor, name: PianoUi.MainSupervisor, strategy: :one_for_one},
+        {Scenic.Sensor, nil},
+        PianoUi.CalendarCache,
         PianoUi.Repo,
         PianoUi.Telemetry,
         maybe_start_scenic()

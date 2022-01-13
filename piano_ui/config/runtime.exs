@@ -73,7 +73,7 @@ config :logger, RingLogger,
 case Mix.env() do
   :dev ->
     config :exsync,
-      reload_timeout: 100,
+      reload_timeout: 200,
       reload_callback: {ScenicLiveReload, :reload_current_scene, []}
 
   :test ->

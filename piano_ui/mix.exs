@@ -24,6 +24,7 @@ defmodule PianoUi.MixProject do
   defp deps do
     [
       {:boundary, "~> 0.9.0", runtime: false},
+      {:data_tracer, path: "~/dev/data_tracer", only: [:dev, :test]},
       {:jax_utils, path: "~/dev/jax_utils"},
       {:libcluster, "~> 3.3.0"},
       # {:icalendar, "~> 1.1"},
@@ -33,6 +34,7 @@ defmodule PianoUi.MixProject do
       # {:govee_semaphore, path: "~/dev/govee_semaphore"},
       {:govee_semaphore, github: "axelson/govee_semaphore"},
       {:font_metrics, "~> 0.5.0"},
+      {:scenic_widget_contrib, github: "axelson/scenic-widget-contrib", branch: "add-wrap-and-shorten-util"},
       dep(:launcher, :github),
       dep(:pomodoro, :github),
       dep(:ring_logger, :path),
@@ -40,7 +42,8 @@ defmodule PianoUi.MixProject do
       {:scenic_sensor, "~> 0.7.0"},
       dep(:scenic_driver_local, :github),
       dep(:scenic_live_reload, :path),
-      {:exsync, github: "falood/exsync", override: true},
+      # {:exsync, github: "falood/exsync", override: true},
+      {:exsync, path: "~/dev/forks/exsync", override: true},
       {:dialyxir, "~> 1.1", only: :dev, runtime: false},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 0.4 or ~> 1.0"},
