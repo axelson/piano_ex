@@ -3,7 +3,8 @@ defmodule PianoUi.CalendarFetcher do
 
   def read_calendars(calendar_urls), do: impl().read_calendars(calendar_urls)
 
-  defp impl, do: Application.fetch_env!(:piano_ui, :calendar_fetcher_impl)
+  defp impl,
+    do: Application.get_env(:piano_ui, :calendar_fetcher_impl, PianoUi.CalendarFetcher.Impl)
 end
 
 defmodule PianoUi.CalendarFetcher.Impl do
