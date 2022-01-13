@@ -25,7 +25,7 @@ defmodule PianoUi.MixProject do
     [
       {:boundary, "~> 0.9.0", runtime: false},
       {:data_tracer, path: "~/dev/data_tracer", only: [:dev, :test]},
-      {:jax_utils, path: "~/dev/jax_utils"},
+      {:jax_utils, github: "axelson/jax_utils"},
       {:libcluster, "~> 3.3.0"},
       dep(:icalendar, :github),
       {:finch, "~> 0.10"},
