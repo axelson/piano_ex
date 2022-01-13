@@ -8,7 +8,7 @@ defmodule PianoUi.Demo do
       title: "Journey To The Center"
     }
 
-    PianoUi.Scene.Dashboard.update_song(song)
+    update_song(song)
   end
 
   def display_song_long do
@@ -20,6 +20,10 @@ defmodule PianoUi.Demo do
       title: "Journey To The Center, Journey To The Center, Journey To The Center, Journey To The Center, Journey To The Center, Journey To The Center, Journey To The Center, Journey To The Center, Journey To The Center"
     }
 
-    PianoUi.Scene.Dashboard.update_song(song)
+    update_song(song)
+  end
+
+  defp update_song(song) do
+    Phoenix.PubSub.broadcast(:piano_ui_pubsub, "dashboard", {:update_song, song})
   end
 end
