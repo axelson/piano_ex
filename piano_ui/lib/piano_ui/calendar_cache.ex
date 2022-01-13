@@ -90,7 +90,7 @@ defmodule PianoUi.CalendarCache do
     Enum.find(state.events, fn event ->
       DateTime.compare(event.dtstart, now) == :gt
     end)
-    |> DataTracer.store(key: "event", log?: false)
+    # |> DataTracer.store(key: "event", log?: false)
   end
 
   defp maybe_first_publish(%State{published: true} = state), do: state
