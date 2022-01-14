@@ -1,5 +1,5 @@
 %{
-  "beam_notify": {:hex, :beam_notify, "0.2.1", "64f94f5b486b4cc96ef10a633188560cdd6ae2fccaf6fd746851cdc12b85d5f1", [:make, :mix], [{:elixir_make, "~> 0.6", [hex: :elixir_make, repo: "hexpm", optional: false]}], "hexpm", "d1b3a8d280867c43c2c53e61556ca5ad87e0907ad25797d2c753bac5d8b3dc44"},
+  "beam_notify": {:hex, :beam_notify, "0.2.2", "5c6cc0d12ef0f08aa063704c11f7c0ffd77123ccae5bd6f6827e704a4c860868", [:make, :mix], [{:elixir_make, "~> 0.6", [hex: :elixir_make, repo: "hexpm", optional: false]}], "hexpm", "75c5606bf772c26340e0afacfb435f8265e8ad22ef270d492ff7b07d9b74260b"},
   "blue_heron": {:git, "https://github.com/blue-heron/blue_heron.git", "6b331ad8d1cd92c0eaaa0a1ca51e152a5302f23a", [branch: "main"]},
   "boundary": {:hex, :boundary, "0.9.0", "743a88b06e22f2901ed13deb90b699e0381b5be06ab6fde1a18bab50a52de56c", [:mix], [], "hexpm", "4a2c669d2bc4dc4d52fe1727626b7a72f1826175114d54915e949fa0673cc2d3"},
   "castore": {:hex, :castore, "0.1.14", "3f6d7c7c1574c402fef29559d3f1a7389ba3524bc6a090a5e9e6abc3af65dcca", [:mix], [], "hexpm", "b34af542eadb727e6c8b37fdf73e18b2e02eb483a4ea0b52fd500bc23f052b7b"},

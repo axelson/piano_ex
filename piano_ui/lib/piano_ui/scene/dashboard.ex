@@ -332,7 +332,9 @@ defmodule PianoUi.Scene.Dashboard do
     |> Scenic.Components.button("Ban",
       id: :btn_ban_album_art,
       t: {15, 410},
-      button_font_size: @default_font_size
+      styles: [
+        font_size: @default_font_size
+      ]
     )
   end
 

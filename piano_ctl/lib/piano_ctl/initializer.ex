@@ -13,7 +13,7 @@ defmodule PianoCtl.Initializer do
   def init([]) do
     _ = make_input_fifo()
     _ = make_control_fifo()
-    add_event_command!()
+    PianoCtl.Notifier.create_script()
 
     {:ok, []}
   end
@@ -24,11 +24,5 @@ defmodule PianoCtl.Initializer do
 
   def make_control_fifo do
     System.cmd("mkfifo", [PianoCtl.Config.control_pipe_path()], stderr_to_stdout: true)
-  end
-
-  def add_event_command! do
-    source = Path.join([__DIR__, "../../command.sh"])
-    dest = PianoCtl.Config.event_command_path()
-    File.cp!(source, dest)
   end
 end
