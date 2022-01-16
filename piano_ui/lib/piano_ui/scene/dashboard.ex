@@ -116,7 +116,7 @@ defmodule PianoUi.Scene.Dashboard do
   end
 
   def update_song(server \\ __MODULE__, song) do
-    GenServer.cast(server, {:update_song, song})
+    Phoenix.PubSub.broadcast(:piano_ui_pubsub, "dashboard", {:update_song, song})
   end
 
   defp get_current_song do
@@ -133,16 +133,6 @@ defmodule PianoUi.Scene.Dashboard do
         _ -> {:cont, nil}
       end
     end)
-  end
-
-  @impl GenServer
-  def handle_cast({:update_song, nil}, scene) do
-    {:noreply, scene}
-  end
-
-  def handle_cast({:update_song, song}, scene) do
-    scene = handle_update_song(song, scene)
-    {:noreply, scene}
   end
 
   @impl GenServer
