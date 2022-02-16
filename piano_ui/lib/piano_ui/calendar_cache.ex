@@ -84,7 +84,6 @@ defmodule PianoUi.CalendarCache do
   end
 
   defp get_next_event(state) do
-    Logger.info("Getting next event!")
     now = DateTime.utc_now()
 
     Enum.find(state.events, fn event ->
