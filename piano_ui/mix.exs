@@ -71,7 +71,7 @@ defmodule PianoUi.MixProject do
   # defp dep(:scenic, :github),
   #   do: {:scenic, github: "boydm/scenic", override: true}
   defp dep(:scenic, :github),
-    do: {:scenic, github: "axelson/scenic", branch: "update-nimble-options-0.4", override: true}
+    do: {:scenic, github: "boydm/scenic", override: true}
 
   defp dep(:scenic, :path), do: {:scenic, path: "../forks/scenic", override: true}
 

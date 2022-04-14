@@ -45,7 +45,7 @@
   "phoenix_pubsub": {:hex, :phoenix_pubsub, "2.0.0", "a1ae76717bb168cdeb10ec9d92d1480fec99e3080f011402c0a2d68d47395ffb", [:mix], [], "hexpm", "c52d948c4f261577b9c6fa804be91884b381a7f8f18450c5045975435350f771"},
   "pid_file": {:hex, :pid_file, "0.1.1", "66eb4dc73c15852405d99ccf0982f8fdac8fa7084b8ec82057c2b3391e8e6b0d", [:mix], [], "hexpm", "10bc02c6fde8a51e6c0c8404703fdc63e035dea41d5bc97d518135dd0fa10266"},
   "pomodoro": {:git, "https://github.com/axelson/pomodoro.git", "5421cfb84bebc4c3b8898100380463a8c3ad174c", []},
-  "scenic": {:git, "https://github.com/axelson/scenic.git", "f904f7da6907bcdd5e522cb13f51152935f3b13a", [branch: "update-nimble-options-0.4"]},
+  "scenic": {:git, "https://github.com/boydm/scenic.git", "7759cbc5ba18eccc279630b076763d8958e9a647", []},
   "scenic_driver_local": {:git, "https://github.com/ScenicFramework/scenic_driver_local.git", "2a40c21dd7eac94f2251bc28f22f8fd24c049bf4", []},
   "scenic_live_reload": {:hex, :scenic_live_reload, "0.2.0", "9eb0ed039fd021ee70c27de4c1196bee421294014b88e418654fa759e62c516a", [:mix], [{:exsync, "~> 0.2", [hex: :exsync, repo: "hexpm", optional: false]}, {:scenic, "~> 0.10", [hex: :scenic, repo: "hexpm", optional: false]}], "hexpm", "f711d2e254404527793b715bef5d0fccca0001547305f9166000f1022279cb33"},
   "scenic_sensor": {:hex, :scenic_sensor, "0.7.0", "a12aed7596fbab025a535f912325da5a087ff704e96f7acb274c3034d832f9ce", [:mix], [], "hexpm", "424b0663b7b2e2ea309231e384f321e35b1a693397f8b49913330405d36ab558"},

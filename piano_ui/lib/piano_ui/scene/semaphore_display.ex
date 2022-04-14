@@ -122,12 +122,12 @@ defmodule PianoUi.SemaphoreDisplay do
   end
 
   defp start_meeting do
-    send(__MODULE__, :start_meeting)
+    send(self(), :start_meeting)
     GoveeSemaphore.start_meeting()
   end
 
   defp finish_meeting do
-    send(__MODULE__, :finish_meeting)
+    send(self(), :finish_meeting)
     GoveeSemaphore.finish_meeting()
   end
 end
