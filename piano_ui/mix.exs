@@ -41,7 +41,7 @@ defmodule PianoUi.MixProject do
       dep(:scenic, :github),
       {:scenic_sensor, "~> 0.7.0"},
       dep(:scenic_driver_local, :github),
-      dep(:scenic_live_reload, :path),
+      # dep(:scenic_live_reload, :path),
       # {:exsync, github: "falood/exsync", override: true},
       {:exsync, path: "~/dev/forks/exsync", override: true, only: [:dev, :test]},
       {:dialyxir, "~> 1.1", only: :dev, runtime: false},

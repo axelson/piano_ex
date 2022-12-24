@@ -6,6 +6,7 @@ if Config.config_env() == :dev do
   DotenvParser.load_file(".env")
 end
 
+# TODO: Make this not required
 config :piano_ui, :calendar_urls, get_env("PIANO_UI_CALENDAR_URLS", :no_default, :csv)
 config :piano_ui, :calendar_fetcher_impl, PianoUi.CalendarFetcher.Impl
 
