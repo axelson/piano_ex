@@ -40,7 +40,7 @@ defmodule PianoUi.MixProject do
       dep(:ring_logger, :path),
       dep(:scenic, :github),
       {:scenic_sensor, "~> 0.7.0"},
-      dep(:scenic_driver_local, :github),
+      dep(:scenic_driver_local, :hex),
       # dep(:scenic_live_reload, :path),
       # {:exsync, github: "falood/exsync", override: true},
       {:exsync, path: "~/dev/forks/exsync", override: true, only: [:dev, :test]},
