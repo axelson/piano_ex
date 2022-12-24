@@ -74,11 +74,8 @@ config :logger, RingLogger,
 case Mix.env() do
   :dev ->
     config :exsync,
-      reload_timeout: 200,
-      reload_callback: {ScenicLiveReload, :reload_current_scene, []}
-
-  :test ->
-    config :piano_ui, libcluster_hosts: []
+      reload_timeout: 150,
+      reload_callback: {ScenicLiveReload, :reload_current_scenes, []}
 
   _ ->
     nil

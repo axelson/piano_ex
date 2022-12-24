@@ -33,7 +33,9 @@ defmodule PianoUi.MixProject do
       # {:govee_semaphore, path: "~/dev/govee_semaphore"},
       {:govee_semaphore, github: "axelson/govee_semaphore"},
       {:font_metrics, "~> 0.5.0"},
-      {:scenic_widget_contrib, github: "scenic-contrib/scenic-widget-contrib"},
+      # {:scenic_widget_contrib, github: "scenic-contrib/scenic-widget-contrib"},
+      {:scenic_widget_contrib, github: "axelson/scenic-widget-contrib", branch: "add_wrap_and_shorten_text"},
+      # {:scenic_widget_contrib, path: "~/dev/forks/scenic-widget-contrib"},
       {:phoenix_pubsub, "~> 2.0"},
       dep(:launcher, :github),
       dep(:pomodoro, :github),
@@ -41,7 +43,7 @@ defmodule PianoUi.MixProject do
       dep(:scenic, :github),
       {:scenic_sensor, "~> 0.7.0"},
       dep(:scenic_driver_local, :hex),
-      # dep(:scenic_live_reload, :path),
+      dep(:scenic_live_reload, :hex),
       # {:exsync, github: "falood/exsync", override: true},
       {:exsync, path: "~/dev/forks/exsync", override: true, only: [:dev, :test]},
       {:dialyxir, "~> 1.1", only: :dev, runtime: false},
@@ -85,7 +87,7 @@ defmodule PianoUi.MixProject do
   defp dep(:scenic_driver_glfw, :path),
     do: {:scenic_driver_glfw, path: "../forks/scenic_driver_glfw", only: :dev, override: true}
 
-  defp dep(:scenic_live_reload, :hex), do: {:scenic_live_reload, "~> 0.2.0", only: :dev}
+  defp dep(:scenic_live_reload, :hex), do: {:scenic_live_reload, "~> 0.3.0", only: :dev}
 
   defp dep(:scenic_live_reload, :path),
     do: {:scenic_live_reload, path: "~/dev/scenic_live_reload", only: :dev}

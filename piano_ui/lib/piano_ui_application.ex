@@ -38,8 +38,7 @@ defmodule PianoUiApplication do
 
       if main_viewport_config do
         [
-          {Scenic, [main_viewport_config]},
-          {ScenicLiveReload, viewports: [main_viewport_config]}
+          {Scenic, [main_viewport_config]}
         ]
         |> List.flatten()
       else
