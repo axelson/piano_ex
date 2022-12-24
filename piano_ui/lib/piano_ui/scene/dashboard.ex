@@ -93,6 +93,7 @@ defmodule PianoUi.Scene.Dashboard do
         scale: 1.0,
         pin: mini_timer_t
       )
+      # Meeting controller
       |> PianoUi.SemaphoreDisplay.add_to_graph(t: semaphore_t)
       |> PianoUi.Scene.CalendarDisplay.add_to_graph([], t: {17, 264})
       |> Launcher.HiddenHomeButton.add_to_graph([])

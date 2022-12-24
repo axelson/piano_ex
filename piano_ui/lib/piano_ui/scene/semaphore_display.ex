@@ -123,11 +123,18 @@ defmodule PianoUi.SemaphoreDisplay do
 
   defp start_meeting do
     send(self(), :start_meeting)
-    GoveeSemaphore.start_meeting()
+
+    with mod when not is_nil(mod) <- Application.get_env(:piano_ui, :meeting_module) do
+      Logger.info("mod: #{inspect(mod, pretty: true)}")
+      mod.start_meeting()
+    end
   end
 
   defp finish_meeting do
     send(self(), :finish_meeting)
-    GoveeSemaphore.finish_meeting()
+
+    with mod when not is_nil(mod) <- Application.get_env(:piano_ui, :meeting_module) do
+      mod.finish_meeting()
+    end
   end
 end
