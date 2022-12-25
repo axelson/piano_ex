@@ -51,7 +51,7 @@ defmodule PianoUi.Scene.CalendarDisplay do
 
     title_text = ScenicWidgets.Utils.wrap_and_shorten_text(event.summary, line_width, num_lines, @font_size, font_metrics)
 
-    Logger.info("Shortened title text: #{inspect(title_text)}")
+    # Logger.info("Shortened title text: #{inspect(title_text)}")
 
     minutes_until_start =
       DateTime.diff(event.dtstart, DateTime.utc_now(), :second)

@@ -37,7 +37,8 @@ defmodule PianoUi.SemaphoreDisplay do
           on_press_icon: {:piano_ui, "images/mtg_on_select.png"},
           width: 53,
           height: 44,
-          on_click: &start_meeting/0
+          parent_pid: self(),
+          on_click: &start_meeting/1
         ],
         id: :btn_start_meeting,
         t: {249, 385}
@@ -48,7 +49,8 @@ defmodule PianoUi.SemaphoreDisplay do
           on_press_icon: {:piano_ui, "images/mtg_off_select.png"},
           width: 53,
           height: 44,
-          on_click: &finish_meeting/0
+          parent_pid: self(),
+          on_click: &finish_meeting/1
         ],
         id: :btn_finish_meeting,
         t: {309, 385}
@@ -121,8 +123,8 @@ defmodule PianoUi.SemaphoreDisplay do
     )
   end
 
-  defp start_meeting do
-    send(self(), :start_meeting)
+  defp start_meeting(self) do
+    send(self, :start_meeting)
 
     with mod when not is_nil(mod) <- Application.get_env(:piano_ui, :meeting_module) do
       Logger.info("mod: #{inspect(mod, pretty: true)}")
@@ -130,8 +132,8 @@ defmodule PianoUi.SemaphoreDisplay do
     end
   end
 
-  defp finish_meeting do
-    send(self(), :finish_meeting)
+  defp finish_meeting(self) do
+    send(self, :finish_meeting)
 
     with mod when not is_nil(mod) <- Application.get_env(:piano_ui, :meeting_module) do
       mod.finish_meeting()
