@@ -7,12 +7,13 @@ defmodule PianoUi.KeylightScene do
   alias ScenicWidgets.GraphTools
 
   defmodule State do
-    defstruct [:graph, :brightness, :temperature]
+    defstruct [:graph, :brightness, :temperature, :previous_scene]
   end
 
   @impl Scenic.Scene
-  def init(scene, _opts, _scenic_opts) do
+  def init(scene, opts, _scenic_opts) do
     Logger.info("keylight scene startup5!!!")
+    previous_scene = Keyword.get(opts, :previous_scene)
 
     keylight_status =
       with mod when not is_nil(mod) <- Application.get_env(:piano_ui, :keylight_module) do
@@ -83,6 +84,7 @@ defmodule PianoUi.KeylightScene do
         id: :btn_turn_off,
         t: {115, 15}
       )
+      |> Scenic.Components.button("Back", id: :btn_back, t: {370, 15})
       # Temperature sligder
       |> Primitives.text("Warmth", t: {15, 110}, font_size: 25, fill: :white)
       |> Scenic.Components.slider({{145, 344}, initial_warmth}, id: :warmth_slider, t: {15, 120})
@@ -102,7 +104,8 @@ defmodule PianoUi.KeylightScene do
     initial_state = %State{
       graph: graph,
       temperature: initial_warmth,
-      brightness: initial_brightness
+      brightness: initial_brightness,
+      previous_scene: previous_scene
     }
 
     scene =
@@ -134,6 +137,17 @@ defmodule PianoUi.KeylightScene do
     {:noreply, scene}
   end
 
+  def handle_event({:click, :btn_back}, _, scene) do
+    Logger.info("back!")
+
+    case scene.assigns.state.previous_scene do
+      nil -> Launcher.switch_to_launcher(scene.viewport)
+      {previous_scene, args} -> Scenic.ViewPort.set_root(scene.viewport, previous_scene, args)
+    end
+
+    {:noreply, scene}
+  end
+
   def handle_event(event, _, scene) do
     Logger.info("Keylight Scene unhandled event: #{inspect(event, pretty: true)}")
     {:noreply, scene}
@@ -151,10 +165,18 @@ defmodule PianoUi.KeylightScene do
       GraphState.update_graph(scene, fn graph ->
         graph
         |> GraphTools.upsert(:btn_turn_off, fn g ->
-          ScenicContrib.IconComponent.upsert(g, %{}, icon: {:piano_ui, "images/mtg_off_none.png"})
+          ScenicContrib.IconComponent.upsert(
+            g,
+            %{icon: {:piano_ui, "images/mtg_off_none.png"}},
+            []
+          )
         end)
         |> GraphTools.upsert(:btn_turn_on, fn g ->
-          ScenicContrib.IconComponent.upsert(g, %{}, icon: {:piano_ui, "images/mtg_on_rest.png"})
+          ScenicContrib.IconComponent.upsert(
+            g,
+            %{icon: {:piano_ui, "images/mtg_on_rest.png"}},
+            []
+          )
         end)
       end)
 
@@ -173,10 +195,18 @@ defmodule PianoUi.KeylightScene do
       GraphState.update_graph(scene, fn graph ->
         graph
         |> GraphTools.upsert(:btn_turn_off, fn g ->
-          ScenicContrib.IconComponent.upsert(g, %{}, icon: {:piano_ui, "images/mtg_off_rest.png"})
+          ScenicContrib.IconComponent.upsert(
+            g,
+            %{icon: {:piano_ui, "images/mtg_off_rest.png"}},
+            []
+          )
         end)
         |> GraphTools.upsert(:btn_turn_on, fn g ->
-          ScenicContrib.IconComponent.upsert(g, %{}, icon: {:piano_ui, "images/mtg_on_none.png"})
+          ScenicContrib.IconComponent.upsert(
+            g,
+            %{icon: {:piano_ui, "images/mtg_on_none.png"}},
+            []
+          )
         end)
       end)
 
