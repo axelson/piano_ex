@@ -20,7 +20,7 @@ defmodule PianoUi.Scene.MusicControls do
           on_press_icon: Icons.icon(:stop_pressed),
           width: 46,
           height: 60,
-          on_click: &on_stop/0
+          on_click: &on_stop/1
         ],
         id: :btn_stop,
         t: {base_x, base_y}
@@ -31,7 +31,7 @@ defmodule PianoUi.Scene.MusicControls do
           on_press_icon: Icons.icon(:play_pressed),
           width: 46,
           height: 60,
-          on_click: &on_play/0
+          on_click: &on_play/1
         ],
         id: :btn_play,
         t: {base_x + space_between, base_y}
@@ -42,7 +42,7 @@ defmodule PianoUi.Scene.MusicControls do
           on_press_icon: Icons.icon(:next_pressed),
           width: 46,
           height: 60,
-          on_click: &on_next/0
+          on_click: &on_next/1
         ],
         id: :btn_next,
         t: {base_x + space_between * 2, base_y}
@@ -53,7 +53,7 @@ defmodule PianoUi.Scene.MusicControls do
     {:ok, scene}
   end
 
-  defp on_play, do: PianoUi.remote_cmd(:play)
-  defp on_stop, do: PianoUi.remote_cmd(:stop)
-  defp on_next, do: PianoUi.remote_cmd(:next)
+  defp on_play(_self), do: PianoUi.remote_cmd(:play)
+  defp on_stop(_self), do: PianoUi.remote_cmd(:stop)
+  defp on_next(_self), do: PianoUi.remote_cmd(:next)
 end
