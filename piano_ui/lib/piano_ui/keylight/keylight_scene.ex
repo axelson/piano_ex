@@ -84,7 +84,7 @@ defmodule PianoUi.KeylightScene do
         id: :btn_turn_off,
         t: {115, 15}
       )
-      |> Scenic.Components.button("Back", id: :btn_back, t: {370, 15})
+      |> Scenic.Components.button("Back", id: :btn_back, t: {15, 325})
       # Temperature sligder
       |> Primitives.text("Warmth", t: {15, 110}, font_size: 25, fill: :white)
       |> Scenic.Components.slider({{145, 344}, initial_warmth}, id: :warmth_slider, t: {15, 120})
