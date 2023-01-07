@@ -12,7 +12,8 @@ defmodule PianoUi.KeylightScene do
 
   @impl Scenic.Scene
   def init(scene, opts, _scenic_opts) do
-    Logger.info("keylight scene startup5!!!")
+    Logger.info("keylight scene startup!")
+    Phoenix.PubSub.subscribe(:piano_ui_pubsub, "keylight")
     previous_scene = Keyword.get(opts, :previous_scene)
 
     keylight_status =
@@ -86,6 +87,12 @@ defmodule PianoUi.KeylightScene do
       )
       |> Scenic.Components.button("Back", id: :btn_back, t: {15, 325})
       |> Scenic.Components.button("Reset", id: :btn_reset, t: {225, 325})
+      |> Primitives.text("connected: unknown",
+        id: :text_connected,
+        t: {15, 310},
+        font_size: 15,
+        fill: :white
+      )
       # Temperature sligder
       |> Primitives.text("Warmth", t: {15, 110}, font_size: 25, fill: :white)
       |> Scenic.Components.slider({{145, 344}, initial_warmth}, id: :warmth_slider, t: {15, 120})
@@ -217,6 +224,30 @@ defmodule PianoUi.KeylightScene do
         end)
       end)
 
+    {:noreply, scene}
+  end
+
+  def handle_info({:connected?, connected?}, scene) do
+    Logger.info("KeylightScene got connected: #{inspect(connected?)}")
+
+    scene =
+      GraphState.update_graph(scene, fn graph ->
+        graph
+        |> GraphTools.upsert(:text_connected, fn g ->
+          Primitives.text(g, "connected: #{connected?}",
+            id: :text_connected,
+            t: {15, 310},
+            font_size: 15,
+            fill: :white
+          )
+        end)
+      end)
+
+    {:noreply, scene}
+  end
+
+  def handle_info(msg, scene) do
+    Logger.debug("#{__MODULE__} ignoring unrecognized message: #{inspect(msg)}")
     {:noreply, scene}
   end
 end
