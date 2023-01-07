@@ -85,6 +85,7 @@ defmodule PianoUi.KeylightScene do
         t: {115, 15}
       )
       |> Scenic.Components.button("Back", id: :btn_back, t: {15, 325})
+      |> Scenic.Components.button("Reset", id: :btn_reset, t: {225, 325})
       # Temperature sligder
       |> Primitives.text("Warmth", t: {15, 110}, font_size: 25, fill: :white)
       |> Scenic.Components.slider({{145, 344}, initial_warmth}, id: :warmth_slider, t: {15, 120})
@@ -138,11 +139,17 @@ defmodule PianoUi.KeylightScene do
   end
 
   def handle_event({:click, :btn_back}, _, scene) do
-    Logger.info("back!")
-
     case scene.assigns.state.previous_scene do
       nil -> Launcher.switch_to_launcher(scene.viewport)
       {previous_scene, args} -> Scenic.ViewPort.set_root(scene.viewport, previous_scene, args)
+    end
+
+    {:noreply, scene}
+  end
+
+  def handle_event({:click, :btn_reset}, _, scene) do
+    with mod when not is_nil(mod) <- Application.get_env(:piano_ui, :keylight_module) do
+      mod.reset()
     end
 
     {:noreply, scene}

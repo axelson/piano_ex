@@ -6,6 +6,7 @@ end
 defmodule PianoUi.KeylightBehaviour do
   @callback on() :: any()
   @callback off() :: any()
+  @callback reset() :: any()
 
   # Brightness goes from 0 to 100 (values outside of the range are ignored and 0 appears to turn the light off)
   # Temperature goes from 145 to 344
