@@ -8,6 +8,6 @@
   "file_system": {:hex, :file_system, "0.2.10", "fb082005a9cd1711c05b5248710f8826b02d7d1784e7c3451f9c1231d4fc162d", [:mix], [], "hexpm", "41195edbfb562a593726eda3b3e8b103a309b733ad25f3d642ba49696bf715dc"},
   "jason": {:hex, :jason, "1.4.0", "e855647bc964a44e2f67df589ccf49105ae039d4179db7f6271dfd3843dc27e6", [:mix], [{:decimal, "~> 1.0 or ~> 2.0", [hex: :decimal, repo: "hexpm", optional: true]}], "hexpm", "79a3791085b2a0f743ca04cec0f7be26443738779d09302e01318f97bdb82121"},
   "libcluster": {:hex, :libcluster, "3.3.1", "e7a4875cd1290cee7a693d6bd46076863e9e433708b01339783de6eff5b7f0aa", [:mix], [{:jason, "~> 1.1", [hex: :jason, repo: "hexpm", optional: false]}], "hexpm", "b575ca63c1cd84e01f3fa0fc45e6eb945c1ee7ae8d441d33def999075e9e5398"},
-  "pid_file": {:hex, :pid_file, "0.1.1", "66eb4dc73c15852405d99ccf0982f8fdac8fa7084b8ec82057c2b3391e8e6b0d", [:mix], [], "hexpm", "10bc02c6fde8a51e6c0c8404703fdc63e035dea41d5bc97d518135dd0fa10266"},
+  "pid_file": {:hex, :pid_file, "0.2.0", "d310005231c8cb733b608d4cb13a582209d9f8c1c399c5ee2a114da66406efbb", [:mix], [], "hexpm", "07799345f1cb90de300a16b392e6542f881f7a29effd572e997b15b7ad8ab610"},
   "typed_struct": {:hex, :typed_struct, "0.2.1", "e1993414c371f09ff25231393b6430bd89d780e2a499ae3b2d2b00852f593d97", [:mix], [], "hexpm", "8f5218c35ec38262f627b2c522542f1eae41f625f92649c0af701a6fab2e11b3"},
 }

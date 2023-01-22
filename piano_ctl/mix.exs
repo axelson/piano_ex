@@ -32,7 +32,7 @@ defmodule PianoCtl.MixProject do
       {:libcluster, "~> 3.3.0"},
       {:exsync, github: "falood/exsync", only: :dev},
       {:dialyxir, "~> 1.1", only: :dev, runtime: false},
-      {:pid_file, "~> 0.1.1"},
+      {:pid_file, "~> 0.2.0"},
       {:typed_struct, "~> 0.2.0"}
     ]
   end
