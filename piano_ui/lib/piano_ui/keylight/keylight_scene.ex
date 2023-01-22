@@ -121,6 +121,17 @@ defmodule PianoUi.KeylightScene do
       |> assign(state: initial_state)
       |> push_graph(graph)
 
+    self = self()
+
+    Task.start(fn ->
+      connected? =
+        with mod when not is_nil(mod) <- Application.get_env(:piano_ui, :keylight_module) do
+          mod.connected?()
+        end
+
+      send(self, {:connected?, connected?})
+    end)
+
     {:ok, scene}
   end
 
