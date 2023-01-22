@@ -20,7 +20,6 @@ defmodule PianoUi.SemaphoreDisplay do
     text_t = {base_x, base_y + 70}
 
     :ok = GoveeSemaphore.subscribe()
-    note = GoveeSemaphore.get_note()
 
     keylight_status =
       with mod when not is_nil(mod) <- Application.get_env(:piano_ui, :keylight_module) do
@@ -36,13 +35,6 @@ defmodule PianoUi.SemaphoreDisplay do
 
     graph =
       Graph.build()
-      |> Primitives.text(note || "",
-        id: :semaphore_note,
-        t: text_t,
-        fill: :white,
-        text_align: :left,
-        font_size: 30
-      )
       |> ScenicContrib.IconComponent.add_to_graph(
         [
           icon: meeting_btn_on_fill(on),
@@ -97,17 +89,6 @@ defmodule PianoUi.SemaphoreDisplay do
       # HACK: It's weird for SemaphoreDisplay to know how to start the Dashboard
       previous_scene: {PianoUi.Scene.Dashboard, [pomodoro_timer_pid: Pomodoro.PomodoroTimer]}
     )
-
-    {:noreply, scene}
-  end
-
-  def handle_info({:govee_semaphore, :submit_note, note}, scene) do
-    note = note || ""
-
-    scene =
-      update_and_render(scene, fn graph ->
-        Graph.modify(graph, :semaphore_note, &Primitives.text(&1, note))
-      end)
 
     {:noreply, scene}
   end
