@@ -41,7 +41,7 @@ defmodule PianoUi.MixProject do
       dep(:launcher, :github),
       dep(:pomodoro, :github),
       dep(:ring_logger, :path),
-      dep(:scenic, :github),
+      dep(:scenic, :hex),
       {:scenic_sensor, "~> 0.7.0"},
       dep(:scenic_driver_local, :hex),
       dep(:scenic_live_reload, :hex),
@@ -69,7 +69,7 @@ defmodule PianoUi.MixProject do
   defp dep(:icalendar, :github), do: {:icalendar, github: "axelson/icalendar", branch: "my-fork"}
   defp dep(:icalendar, :path), do: {:icalendar, path: "~/dev/forks/icalendar"}
 
-  defp dep(:scenic, :hex), do: {:scenic, "~> 0.10"}
+  defp dep(:scenic, :hex), do: {:scenic, "~> 0.11"}
 
   # defp dep(:scenic, :github),
   #   do: {:scenic, github: "boydm/scenic", override: true}
@@ -78,7 +78,7 @@ defmodule PianoUi.MixProject do
 
   defp dep(:scenic, :path), do: {:scenic, path: "../forks/scenic", override: true}
 
-  defp dep(:scenic_driver_local, :hex), do: {:scenic_driver_local, "~> 0.10", only: :dev}
+  defp dep(:scenic_driver_local, :hex), do: {:scenic_driver_local, "~> 0.11", only: :dev}
 
   defp dep(:scenic_driver_local, :github),
     do:
