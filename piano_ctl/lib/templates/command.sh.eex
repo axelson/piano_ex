@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 CONFIG_DIR="${XDG_CONFIG_HOME:-~/.config}/pianobar"
 PID_FILE="${CONFIG_DIR}/piano_ctl_pid"
