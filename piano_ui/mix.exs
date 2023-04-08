@@ -40,7 +40,7 @@ defmodule PianoUi.MixProject do
       {:phoenix_pubsub, "~> 2.0"},
       dep(:launcher, :github),
       dep(:pomodoro, :github),
-      dep(:ring_logger, :path),
+      dep(:ring_logger, :github),
       dep(:scenic, :hex),
       {:scenic_sensor, "~> 0.7.0"},
       dep(:scenic_driver_local, :hex),
