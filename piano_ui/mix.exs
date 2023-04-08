@@ -24,13 +24,14 @@ defmodule PianoUi.MixProject do
   defp deps do
     [
       {:boundary, "~> 0.9.0", runtime: false},
-      {:data_tracer, path: "~/dev/data_tracer", only: [:dev, :test]},
+      {:data_tracer, path: "~/dev/data_tracer"},
       {:jax_utils, github: "axelson/jax_utils"},
       {:libcluster, "~> 3.3.0"},
       dep(:icalendar, :github),
       {:finch, "~> 0.10"},
       {:piano_ctl, path: "../piano_ctl", runtime: false},
       # {:govee_semaphore, path: "~/dev/govee_semaphore"},
+      {:govee_phx, github: "axelson/govee_phx"},
       {:govee_semaphore, github: "axelson/govee_semaphore"},
       {:font_metrics, "~> 0.5.0"},
       # {:scenic_widget_contrib, github: "scenic-contrib/scenic-widget-contrib"},
@@ -78,7 +79,7 @@ defmodule PianoUi.MixProject do
 
   defp dep(:scenic, :path), do: {:scenic, path: "../forks/scenic", override: true}
 
-  defp dep(:scenic_driver_local, :hex), do: {:scenic_driver_local, "~> 0.11", only: :dev}
+  defp dep(:scenic_driver_local, :hex), do: {:scenic_driver_local, "~> 0.11"}
 
   defp dep(:scenic_driver_local, :github),
     do:

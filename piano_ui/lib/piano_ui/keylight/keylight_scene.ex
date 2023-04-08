@@ -115,6 +115,8 @@ defmodule PianoUi.KeylightScene do
         id: :btn_light_turn_off,
         t: {500, 40}
       )
+      |> Scenic.Components.button("Party", id: :btn_party, t: {400, 180})
+      |> Scenic.Components.button("No Party", id: :btn_no_party, t: {520, 180})
       |> Scenic.Components.button("Back", id: :btn_back, t: {15, 430})
       |> Scenic.Components.button("Reset", id: :btn_reset, t: {225, 430})
       |> Primitives.text("connected: unknown",
@@ -199,6 +201,18 @@ defmodule PianoUi.KeylightScene do
     with mod when not is_nil(mod) <- Application.get_env(:piano_ui, :keylight_module) do
       mod.reset()
     end
+
+    {:noreply, scene}
+  end
+
+  def handle_event({:click, :btn_party}, _, scene) do
+    GoveePhx.party_mode()
+
+    {:noreply, scene}
+  end
+
+  def handle_event({:click, :btn_no_party}, _, scene) do
+    GoveePhx.all_off()
 
     {:noreply, scene}
   end
