@@ -10,6 +10,8 @@ defmodule PianoUi.KeylightScene do
     defstruct [:graph, :brightness, :temperature, :previous_scene]
   end
 
+  @type meeting_status :: :on | :off
+
   @impl Scenic.Scene
   def init(scene, opts, _scenic_opts) do
     Logger.info("keylight scene startup!")
@@ -59,6 +61,7 @@ defmodule PianoUi.KeylightScene do
 
     graph =
       Graph.build()
+      |> Primitives.text("Meeting", t: {5, 25})
       |> ScenicContrib.IconComponent.add_to_graph(
         [
           icon: on_icon,
@@ -66,11 +69,11 @@ defmodule PianoUi.KeylightScene do
           width: 53,
           height: 44,
           parent_pid: self(),
-          on_click: fn self -> send(self, :turn_on) end
+          on_click: fn self -> send(self, :meeting_start) end
         ],
         scale: 1.25,
-        id: :btn_turn_on,
-        t: {15, 15}
+        id: :btn_meeting_on,
+        t: {15, 40}
       )
       |> ScenicContrib.IconComponent.add_to_graph(
         [
@@ -79,14 +82,41 @@ defmodule PianoUi.KeylightScene do
           width: 53,
           height: 44,
           parent_pid: self(),
-          on_click: fn self -> send(self, :turn_off) end
+          on_click: fn self -> send(self, :meeting_stop) end
         ],
         scale: 1.25,
-        id: :btn_turn_off,
-        t: {115, 15}
+        id: :btn_meeting_off,
+        t: {115, 40}
       )
-      |> Scenic.Components.button("Back", id: :btn_back, t: {15, 325})
-      |> Scenic.Components.button("Reset", id: :btn_reset, t: {225, 325})
+      |> Primitives.text("Light", t: {400, 25})
+      |> ScenicContrib.IconComponent.add_to_graph(
+        [
+          icon: on_icon,
+          on_press_icon: {:piano_ui, "images/mtg_on_select.png"},
+          width: 53,
+          height: 44,
+          parent_pid: self(),
+          on_click: fn self -> send(self, :light_on) end
+        ],
+        scale: 1.25,
+        id: :btn_light_turn_on,
+        t: {400, 40}
+      )
+      |> ScenicContrib.IconComponent.add_to_graph(
+        [
+          icon: off_icon,
+          on_press_icon: {:piano_ui, "images/mtg_off_select.png"},
+          width: 53,
+          height: 44,
+          parent_pid: self(),
+          on_click: fn self -> send(self, :light_off) end
+        ],
+        scale: 1.25,
+        id: :btn_light_turn_off,
+        t: {500, 40}
+      )
+      |> Scenic.Components.button("Back", id: :btn_back, t: {15, 430})
+      |> Scenic.Components.button("Reset", id: :btn_reset, t: {225, 430})
       |> Primitives.text("connected: unknown",
         id: :text_connected,
         t: {15, 310},
@@ -94,18 +124,18 @@ defmodule PianoUi.KeylightScene do
         fill: :white
       )
       # Temperature sligder
-      |> Primitives.text("Warmth", t: {15, 110}, font_size: 25, fill: :white)
-      |> Scenic.Components.slider({{145, 344}, initial_warmth}, id: :warmth_slider, t: {15, 120})
-      |> Primitives.text("cool", t: {15, 155}, font_size: 18, fill: :white)
-      |> Primitives.text("warm", t: {315, 155}, font_size: 18, fill: :white, text_align: :right)
+      |> Primitives.text("Warmth", t: {15, 130}, font_size: 25, fill: :white)
+      |> Scenic.Components.slider({{145, 344}, initial_warmth}, id: :warmth_slider, t: {15, 140})
+      |> Primitives.text("cool", t: {15, 175}, font_size: 18, fill: :white)
+      |> Primitives.text("warm", t: {315, 175}, font_size: 18, fill: :white, text_align: :right)
       # Brightness slider
-      |> Primitives.text("Brightness", t: {15, 210}, font_size: 25, fill: :white)
-      |> Scenic.Components.slider({{0, 100}, initial_brightness},
+      |> Primitives.text("Brightness", t: {15, 220}, font_size: 25, fill: :white)
+      |> Scenic.Components.slider({{0, 120}, initial_brightness},
         id: :brightness_slider,
-        t: {15, 220}
+        t: {15, 240}
       )
-      |> Primitives.text("low", t: {15, 255}, font_size: 18, fill: :white)
-      |> Primitives.text("high", t: {315, 255}, font_size: 18, fill: :white, text_align: :right)
+      |> Primitives.text("low", t: {15, 275}, font_size: 18, fill: :white)
+      |> Primitives.text("high", t: {315, 275}, font_size: 18, fill: :white, text_align: :right)
       # Needs to be last
       |> Launcher.HiddenHomeButton.add_to_graph([])
 
@@ -179,64 +209,64 @@ defmodule PianoUi.KeylightScene do
   end
 
   @impl GenServer
-  def handle_info(:turn_off, scene) do
-    Logger.info("turn off!")
+  def handle_info(:meeting_stop, scene) do
+    Logger.info("Meeting stopping")
 
-    with mod when not is_nil(mod) <- Application.get_env(:piano_ui, :keylight_module) do
-      mod.off()
-    end
+    PianoUi.finish_meeting()
+    keylight_off()
 
     scene =
-      GraphState.update_graph(scene, fn graph ->
-        graph
-        |> GraphTools.upsert(:btn_turn_off, fn g ->
-          ScenicContrib.IconComponent.upsert(
-            g,
-            %{icon: {:piano_ui, "images/mtg_off_none.png"}},
-            []
-          )
-        end)
-        |> GraphTools.upsert(:btn_turn_on, fn g ->
-          ScenicContrib.IconComponent.upsert(
-            g,
-            %{icon: {:piano_ui, "images/mtg_on_rest.png"}},
-            []
-          )
-        end)
-      end)
+      scene
+      |> update_btn_meeting_off(:off)
+      |> update_btn_meeting_on(:off)
+      |> update_btn_light_turn_off(:off)
+      |> update_btn_light_turn_on(:off)
 
     {:noreply, scene}
   end
 
-  def handle_info(:turn_on, scene) do
-    Logger.info("turn on!")
+  def handle_info(:meeting_start, scene) do
+    Logger.info("Meeting starting")
 
-    with mod when not is_nil(mod) <- Application.get_env(:piano_ui, :keylight_module) do
-      %State{temperature: temperature, brightness: brightness} = scene.assigns.state
-      mod.set(on: 1, temperature: temperature, brightness: brightness)
-    end
+    PianoUi.start_meeting()
+    keylight_on(scene)
 
     scene =
-      GraphState.update_graph(scene, fn graph ->
-        graph
-        |> GraphTools.upsert(:btn_turn_off, fn g ->
-          ScenicContrib.IconComponent.upsert(
-            g,
-            %{icon: {:piano_ui, "images/mtg_off_rest.png"}},
-            []
-          )
-        end)
-        |> GraphTools.upsert(:btn_turn_on, fn g ->
-          ScenicContrib.IconComponent.upsert(
-            g,
-            %{icon: {:piano_ui, "images/mtg_on_none.png"}},
-            []
-          )
-        end)
-      end)
+      scene
+      |> update_btn_meeting_off(:on)
+      |> update_btn_meeting_on(:on)
+      |> update_btn_light_turn_off(:on)
+      |> update_btn_light_turn_on(:on)
 
     {:noreply, scene}
   end
+
+  def handle_info(:light_off, scene) do
+    Logger.info("Turning light off")
+
+    keylight_off()
+
+    scene =
+      scene
+      |> update_btn_light_turn_off(:off)
+      |> update_btn_light_turn_on(:off)
+
+    {:noreply, scene}
+  end
+
+  def handle_info(:light_on, scene) do
+    Logger.info("Keylight on")
+
+    keylight_on(scene)
+
+    scene =
+      scene
+      |> update_btn_light_turn_off(:on)
+      |> update_btn_light_turn_on(:on)
+
+    {:noreply, scene}
+  end
+
 
   def handle_info({:connected?, connected?}, scene) do
     Logger.info("KeylightScene got connected: #{inspect(connected?)}")
@@ -260,5 +290,94 @@ defmodule PianoUi.KeylightScene do
   def handle_info(msg, scene) do
     Logger.debug("#{__MODULE__} ignoring unrecognized message: #{inspect(msg)}")
     {:noreply, scene}
+  end
+
+  defp update_btn_meeting_off(scene, meeting_status) do
+    icon =
+      case meeting_status do
+        :off -> {:piano_ui, "images/mtg_off_none.png"}
+        :on -> {:piano_ui, "images/mtg_off_rest.png"}
+      end
+
+    GraphState.update_graph(scene, fn graph ->
+      graph
+      |> GraphTools.upsert(:btn_meeting_off, fn g ->
+        ScenicContrib.IconComponent.upsert(
+          g,
+          %{icon: icon},
+          []
+        )
+      end)
+    end)
+  end
+
+  defp update_btn_meeting_on(scene, meeting_status) do
+    icon =
+      case meeting_status do
+        :off -> {:piano_ui, "images/mtg_on_rest.png"}
+        :on -> {:piano_ui, "images/mtg_on_none.png"}
+      end
+
+    GraphState.update_graph(scene, fn graph ->
+      graph
+      |> GraphTools.upsert(:btn_meeting_on, fn g ->
+        ScenicContrib.IconComponent.upsert(
+          g,
+          %{icon: icon},
+          []
+        )
+      end)
+    end)
+  end
+
+  defp update_btn_light_turn_off(scene, meeting_status) do
+    icon =
+      case meeting_status do
+        :off -> {:piano_ui, "images/mtg_off_none.png"}
+        :on -> {:piano_ui, "images/mtg_off_rest.png"}
+      end
+
+    GraphState.update_graph(scene, fn graph ->
+      graph
+      |> GraphTools.upsert(:btn_light_turn_off, fn g ->
+        ScenicContrib.IconComponent.upsert(
+          g,
+          %{icon: icon},
+          []
+        )
+      end)
+    end)
+  end
+
+  defp update_btn_light_turn_on(scene, meeting_status) do
+    icon =
+      case meeting_status do
+        :off -> {:piano_ui, "images/mtg_on_rest.png"}
+        :on -> {:piano_ui, "images/mtg_on_none.png"}
+      end
+
+    GraphState.update_graph(scene, fn graph ->
+      graph
+      |> GraphTools.upsert(:btn_light_turn_on, fn g ->
+        ScenicContrib.IconComponent.upsert(
+          g,
+          %{icon: icon},
+          []
+        )
+      end)
+    end)
+  end
+
+  def keylight_off do
+    with mod when not is_nil(mod) <- Application.get_env(:piano_ui, :keylight_module) do
+      mod.off()
+    end
+  end
+
+  def keylight_on(scene) do
+    with mod when not is_nil(mod) <- Application.get_env(:piano_ui, :keylight_module) do
+      %State{temperature: temperature, brightness: brightness} = scene.assigns.state
+      mod.set(on: 1, temperature: temperature, brightness: brightness)
+    end
   end
 end
