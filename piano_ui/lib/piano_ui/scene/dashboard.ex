@@ -180,6 +180,11 @@ defmodule PianoUi.Scene.Dashboard do
     {:noreply, scene}
   end
 
+  def handle_info(msg, scene) do
+    Logger.warn("Ignoring unexpected message: #{inspect msg}")
+    {:noreply, scene}
+  end
+
   @impl Scenic.Scene
   def handle_input({:cursor_button, {:btn_left, 1, _, _}}, :album_art, scene) do
     state = scene.assigns.state
@@ -229,36 +234,6 @@ defmodule PianoUi.Scene.Dashboard do
     {:noreply, scene}
   end
 
-  # temp keypad
-  def handle_input({:key, {:key_kp1, 1, _}}, _context, scene) do
-    PianoUi.remote_cmd(:stop)
-    {:noreply, scene}
-  end
-
-  def handle_input({:key, {:key_kp2, 1, _}}, _context, scene) do
-    PianoUi.remote_cmd(:play)
-    {:noreply, scene}
-  end
-
-  def handle_input({:key, {:key_kp3, 1, _}}, _context, scene) do
-    PianoUi.remote_cmd(:next)
-    {:noreply, scene}
-  end
-
-  def handle_input({:key, {:key_kp4, 1, _}}, _context, scene) do
-    Phoenix.PubSub.broadcast(:piano_ui_pubsub, "dashboard", :finish_meeting)
-    PianoUi.finish_meeting()
-    {:noreply, scene}
-  end
-
-  def handle_input({:key, {:key_kp5, 1, _}}, _context, scene) do
-    Phoenix.PubSub.broadcast(:piano_ui_pubsub, "dashboard", :start_meeting)
-    PianoUi.start_meeting()
-    {:noreply, scene}
-  end
-
-
-  # def handle_input(_input, _context, scene), do: {:noreply, scene}
   def handle_input(input, _context, scene) do
     Logger.warn("Ignoring input: #{inspect(input)}")
     {:noreply, scene}

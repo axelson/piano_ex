@@ -23,6 +23,7 @@ defmodule PianoUiApplication do
         PianoUi.CalendarCache,
         PianoUi.Repo,
         PianoUi.Telemetry,
+        PianoUi.KeypadHandler,
         maybe_start_scenic()
       ]
       |> List.flatten()
