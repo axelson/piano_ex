@@ -38,6 +38,9 @@ defmodule PianoUi.KeypadHandler do
       :key_kp5 ->
         Phoenix.PubSub.broadcast(:piano_ui_pubsub, "dashboard", :start_meeting)
         PianoUi.start_meeting()
+
+      :key_kp6 ->
+        Pomodoro.PomodoroTimer.next()
     end
 
     {:noreply, scene}
