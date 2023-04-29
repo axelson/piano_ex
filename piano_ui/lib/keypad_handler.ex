@@ -41,6 +41,15 @@ defmodule PianoUi.KeypadHandler do
 
       :key_kp6 ->
         Pomodoro.PomodoroTimer.next()
+
+      :key_kp7 ->
+        GoveePhx.all_off()
+
+      :key_kp8 ->
+        GoveePhx.party_mode()
+
+      :key_escape ->
+        Launcher.LauncherConfig.sleep_all_module().sleep_all()
     end
 
     {:noreply, scene}
