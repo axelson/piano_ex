@@ -4,7 +4,6 @@ defmodule PianoUi.SemaphoreDisplay do
   require Logger
 
   alias Scenic.Graph
-  alias Scenic.Primitives
 
   defmodule State do
     defstruct [:graph]
@@ -16,6 +15,7 @@ defmodule PianoUi.SemaphoreDisplay do
   @impl Scenic.Scene
   def init(scene, opts, _scenic_opts) do
     {base_x, base_y} = Keyword.get(opts, :t)
+    Phoenix.PubSub.subscribe(:piano_ui_pubsub, "dashboard")
 
     text_t = {base_x, base_y + 70}
 
@@ -126,6 +126,11 @@ defmodule PianoUi.SemaphoreDisplay do
         end)
       end)
 
+    {:noreply, scene}
+  end
+
+  def handle_info(msg, scene) do
+    Logger.warn("Ignoring unexpected message: #{inspect msg}")
     {:noreply, scene}
   end
 
