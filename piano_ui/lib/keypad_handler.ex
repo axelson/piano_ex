@@ -48,8 +48,26 @@ defmodule PianoUi.KeypadHandler do
       :key_kp8 ->
         GoveePhx.party_mode()
 
-      :key_escape ->
-        Launcher.LauncherConfig.sleep_all_module().sleep_all()
+      :key_kpminus ->
+        Logger.info("kp minus pressed! Switching monitor to dock")
+        PianoUi.monitor_switch_to_dock()
+
+      :key_kp9 ->
+        Logger.info("kp9 pressed! Switch monitor to desktop")
+        PianoUi.monitor_switch_to_desktop()
+
+      :key_kpasterisk ->
+        Logger.info("kp* pressed! Turn on gaming desktop monitor")
+        PianoUi.monitor_gaming_desktop_turn_on()
+
+      :key_backspace ->
+        Logger.info("kp_back pressed! Turn off gaming desktop monitor")
+        PianoUi.monitor_gaming_desktop_turn_off()
+
+      :key_esc ->
+        Phoenix.PubSub.broadcast(:piano_ui_pubsub, "dashboard", :sleep_all)
+        # Launcher.LauncherConfig.sleep_all_module().sleep_all()
+        # apply(Fw.SleepAll, :sleep_all, [])
     end
 
     {:noreply, scene}
@@ -61,7 +79,7 @@ defmodule PianoUi.KeypadHandler do
   end
 
   def handle_info(msg, state) do
-    Logger.warn("Unhandled msg: #{inspect(msg)}")
+    Logger.warning("Unhandled msg: #{inspect(msg)}")
     {:noreply, state}
   end
 end
