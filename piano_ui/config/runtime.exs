@@ -37,7 +37,8 @@ config :piano_ui, PianoUi.Repo,
 config :piano_ui, :viewport,
   name: :main_viewport,
   size: {800, 480},
-  default_scene: {PianoUi.Scene.Dashboard, []},
+  # default_scene: {PianoUi.Scene.Dashboard, []},
+  default_scene: {PianoUi.KeylightScene, []},
   drivers: [
     [
       module: Scenic.Driver.Local,
