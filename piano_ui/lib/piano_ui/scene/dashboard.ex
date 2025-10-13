@@ -347,6 +347,8 @@ defmodule PianoUi.Scene.Dashboard do
         graph
       end
 
+    Logger.info("song: #{inspect(song, pretty: true)}")
+
     graph =
       graph
       |> Graph.modify(:title_text, gen_render_text(song.title))
