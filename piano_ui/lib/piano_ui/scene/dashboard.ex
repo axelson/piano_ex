@@ -181,7 +181,7 @@ defmodule PianoUi.Scene.Dashboard do
   end
 
   def handle_info(msg, scene) do
-    Logger.warn("Ignoring unexpected message: #{inspect msg}")
+    Logger.warning("Ignoring unexpected message: #{inspect msg}")
     {:noreply, scene}
   end
 
@@ -235,7 +235,7 @@ defmodule PianoUi.Scene.Dashboard do
   end
 
   def handle_input(input, _context, scene) do
-    Logger.warn("Ignoring input: #{inspect(input)}")
+    Logger.warning("Ignoring input: #{inspect(input)}")
     {:noreply, scene}
   end
 
@@ -251,7 +251,7 @@ defmodule PianoUi.Scene.Dashboard do
   def handle_event({:click, :btn_ban_album_art}, _from, scene) do
     case get_current_song() do
       {:ok, song} ->
-        Logger.warn("Banned! #{song.album}")
+        Logger.warning("Banned! #{song.album}")
 
         PianoUi.AlbumArtBlacklist.ban(song.album)
 
