@@ -42,6 +42,9 @@ defmodule PianoUi.KeypadHandler do
       :key_kp6 ->
         Pomodoro.PomodoroTimer.next()
 
+      :key_kpdot ->
+        Pomodoro.PomodoroTimer.rest()
+
       :key_kp7 ->
         GoveePhx.all_off()
 
