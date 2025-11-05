@@ -21,6 +21,8 @@ defmodule PianoUi.KeypadHandler do
   @impl GenServer
   # handle keydown
   def handle_info({:input_event, _dev, [_info, {:ev_key, key, 1}]}, scene) do
+    fully_node = Application.get_env(:piano_ui, :fully_node)
+
     case key do
       :key_kp1 ->
         PianoUi.remote_cmd(:stop)
@@ -35,8 +37,17 @@ defmodule PianoUi.KeypadHandler do
         Phoenix.PubSub.broadcast(:piano_ui_pubsub, "dashboard", :finish_meeting)
         PianoUi.finish_meeting()
 
+        Task.start(fn ->
+          :rpc.call(fully_node, Fully, :move_to_position, [:pos1])
+        end)
+
       :key_kp5 ->
         Phoenix.PubSub.broadcast(:piano_ui_pubsub, "dashboard", :start_meeting)
+
+        Task.start(fn ->
+          :rpc.call(fully_node, Fully, :move_to_position, [:pos3])
+        end)
+
         PianoUi.start_meeting()
 
       :key_kp6 ->
@@ -52,20 +63,34 @@ defmodule PianoUi.KeypadHandler do
         GoveePhx.party_mode()
 
       :key_kpminus ->
-        Logger.info("kp minus pressed! Switching monitor to dock")
-        PianoUi.monitor_switch_to_dock()
-
-      :key_kp9 ->
-        Logger.info("kp9 pressed! Switch monitor to desktop")
+        Logger.info("kp minus pressed! Switching monitor to desktop")
         PianoUi.monitor_switch_to_desktop()
 
+      :key_kp9 ->
+        Logger.info("kp9 pressed! Switch monitor to dock")
+        PianoUi.monitor_switch_to_dock()
+
       :key_kpasterisk ->
-        Logger.info("kp* pressed! Turn on gaming desktop monitor")
-        PianoUi.monitor_gaming_desktop_turn_on()
+        Logger.info("kp* pressed! Turn off gaming desktop monitor")
+        PianoUi.monitor_gaming_desktop_turn_off()
 
       :key_backspace ->
-        Logger.info("kp_back pressed! Turn off gaming desktop monitor")
-        PianoUi.monitor_gaming_desktop_turn_off()
+        Logger.info("kp_back pressed! Turn on gaming desktop monitor")
+        PianoUi.monitor_gaming_desktop_turn_on()
+
+      :key_tab ->
+        Logger.info("key_tab pressed! Lowering desk")
+
+        Task.start(fn ->
+          :rpc.call(fully_node, Fully, :move_to_position, [:pos1])
+        end)
+
+      :key_equal ->
+        Logger.info("key_equal pressed! Raising desk")
+
+        Task.start(fn ->
+          :rpc.call(fully_node, Fully, :move_to_position, [:pos3])
+        end)
 
       :key_esc ->
         Phoenix.PubSub.broadcast(:piano_ui_pubsub, "dashboard", :sleep_all)
