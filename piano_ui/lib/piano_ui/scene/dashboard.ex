@@ -121,19 +121,7 @@ defmodule PianoUi.Scene.Dashboard do
   end
 
   defp get_current_song do
-    Node.list()
-    |> Enum.reduce_while(nil, fn node, _acc ->
-      Logger.info("Getting song from node #{inspect(node)}")
-
-      try do
-        case :rpc.call(node, PianoCtl, :get_current_song, []) do
-          nil -> {:cont, nil}
-          {:ok, song} -> {:halt, {:ok, song}}
-        end
-      rescue
-        _ -> {:cont, nil}
-      end
-    end)
+    PianoCtl.get_current_song()
   end
 
   @impl GenServer
