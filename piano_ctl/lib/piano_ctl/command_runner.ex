@@ -34,6 +34,6 @@ defmodule PianoCtl.CommandRunner do
   end
 
   def pianobar_running? do
-    :os.cmd('ps -u $(id -u) -o comm | grep -q "^pianobar$"; echo $?') == '0\n'
+    :os.cmd(~c"ps | grep pianobar | grep -v grep > /dev/null 2>&1; echo $?") == ~c"0\n"
   end
 end

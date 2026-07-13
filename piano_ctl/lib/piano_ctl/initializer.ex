@@ -19,10 +19,21 @@ defmodule PianoCtl.Initializer do
   end
 
   def make_input_fifo do
-    System.cmd("mkfifo", [PianoCtl.Config.input_pipe_path()], stderr_to_stdout: true)
+    make_fifo(PianoCtl.Config.input_pipe_path())
   end
 
   def make_control_fifo do
-    System.cmd("mkfifo", [PianoCtl.Config.control_pipe_path()], stderr_to_stdout: true)
+    make_fifo(PianoCtl.Config.control_pipe_path())
+  end
+
+  defp make_fifo(path) do
+    if File.exists?(path) do
+      {:already_exists, path}
+    else
+      case System.find_executable("mkfifo") do
+        nil -> System.cmd("mknod", [path, "p"], stderr_to_stdout: true)
+        _ -> System.cmd("mkfifo", [path], stderr_to_stdout: true)
+      end
+    end
   end
 end

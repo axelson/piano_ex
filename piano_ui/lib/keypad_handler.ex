@@ -6,7 +6,6 @@ defmodule PianoUi.KeypadHandler do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
   end
 
-  @impl GenServer
   def init(_opts) do
     InputEvent.enumerate()
     |> Enum.filter(fn {_dev, %{name: name}} ->
@@ -18,8 +17,6 @@ defmodule PianoUi.KeypadHandler do
     {:ok, []}
   end
 
-  @impl GenServer
-  # handle keydown
   def handle_info({:input_event, _dev, [_info, {:ev_key, key, 1}]}, scene) do
     fully_node = Application.get_env(:piano_ui, :fully_node)
 
