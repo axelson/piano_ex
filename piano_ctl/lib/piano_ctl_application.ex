@@ -15,6 +15,7 @@ defmodule PianoCtlApplication do
       {Cluster.Supervisor, [topologies, [name: PianoCtl.ClusterSupervisor]]},
       {BEAMNotify, name: "any name", path: "/tmp/piano_ctl_beam_notify_socket", dispatcher: &PianoCtl.PianoInputReader.notify/2},
       PianoCtl.Initializer,
+      PianoCtl.CommandRunner,
       PianoCtl.Server,
       PianoCtl.Reconnector,
     ]
