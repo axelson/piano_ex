@@ -48,7 +48,7 @@ defmodule PianoCtl.PipeReader do
   end
 
   def terminate(_, state) do
-    Logger.warn("PipeWorker #{state.pipe_name} exit")
+    Logger.warning("PipeWorker #{state.pipe_name} exit")
     :erlang.port_close(state.pipe)
     # File.rm!(state.pipe_name)
   end
