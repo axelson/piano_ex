@@ -16,4 +16,10 @@ defmodule PianoCtl do
   defdelegate cmd(command), to: PianoCtl.CommandRunner
 
   defdelegate get_current_song, to: PianoCtl.Server
+  defdelegate list_stations, to: PianoCtl.Server
+
+  def print_stations do
+    list_stations()
+    |> Enum.each(fn {n, name} -> IO.puts("#{n} - #{name}") end)
+  end
 end

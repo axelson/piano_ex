@@ -16,6 +16,7 @@ defmodule PianoCtl.Server do
       field :parser_state, PianoParser.state(), default: :empty
       field :current_song, Models.Song.t()
       field :updated_at, NaiveDateTime.t()
+      field :stations, [{integer(), String.t()}], default: []
     end
   end
 
@@ -33,6 +34,10 @@ defmodule PianoCtl.Server do
 
   def get_current_song(server \\ __MODULE__) do
     GenServer.call(server, :get_current_song)
+  end
+
+  def list_stations(server \\ __MODULE__) do
+    GenServer.call(server, :list_stations)
   end
 
   @impl GenServer
@@ -65,6 +70,10 @@ defmodule PianoCtl.Server do
     {:reply, do_get_current_song(state), state}
   end
 
+  def handle_call(:list_stations, _from, state) do
+    {:reply, state.stations, state}
+  end
+
   def handle_call({:cmd, command}, _from, state) do
     result = PianoCtl.cmd(command)
     {:reply, result, state}
@@ -75,6 +84,11 @@ defmodule PianoCtl.Server do
     now = NaiveDateTime.utc_now()
 
     %State{state | current_song: song, updated_at: now}
+  end
+
+  defp update_state_for_event(state, %PianoParser.Event{stations: stations})
+       when is_list(stations) and stations != [] do
+    %State{state | stations: Enum.sort_by(stations, &elem(&1, 0))}
   end
 
   defp update_state_for_event(state, %PianoParser.Event{}), do: state
