@@ -17,7 +17,7 @@ defmodule PianoPhx.Router do
   scope "/", PianoPhx do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", DashboardLive
   end
 
   # Other scopes may use custom stacks.

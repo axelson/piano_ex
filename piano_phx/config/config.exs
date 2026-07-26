@@ -10,6 +10,11 @@ import Config
 config :piano_phx,
   generators: [timestamp_type: :utc_datetime]
 
+config :piano_ctl,
+  pubsub: PianoPhx.PubSub,
+  song_topic: "piano:now_playing",
+  libcluster_hosts: []
+
 # Configure the endpoint
 config :piano_phx, PianoPhx.Endpoint,
   url: [host: "localhost"],

@@ -6,6 +6,8 @@ defmodule PianoCtl.Visualizer do
   alias PianoCtl.Models.Song
 
   def show(%Song{} = song) do
-    PianoUi.Scene.Dashboard.update_song(song)
+    pubsub = Application.fetch_env!(:piano_ctl, :pubsub)
+    topic = Application.fetch_env!(:piano_ctl, :song_topic)
+    Phoenix.PubSub.broadcast(pubsub, topic, {:song_started, song})
   end
 end
