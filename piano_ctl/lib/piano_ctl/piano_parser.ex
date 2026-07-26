@@ -98,7 +98,9 @@ defmodule PianoCtl.PianoParser do
       end)
 
     case Map.get(result, :next_songs) do
-      nil -> result
+      nil ->
+        result
+
       next_songs_map ->
         sorted = next_songs_map |> Enum.sort_by(&elem(&1, 0)) |> Enum.map(&elem(&1, 1))
         Map.put(result, :next_songs, sorted)
@@ -112,7 +114,9 @@ defmodule PianoCtl.PianoParser do
   for attr <- @next_song_attributes do
     defp parse_one_line(unquote(attr) <> "Next" <> rest) do
       {index, "=" <> value} = Integer.parse(rest, 10)
-      {:next_song, index, unquote(@attributes[attr] || String.to_atom(Macro.underscore(attr))), value}
+
+      {:next_song, index, unquote(@attributes[attr] || String.to_atom(Macro.underscore(attr))),
+       value}
     end
   end
 

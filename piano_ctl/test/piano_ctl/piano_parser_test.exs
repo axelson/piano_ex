@@ -1,4 +1,4 @@
-defmodule PianoCtl.PianoParserTest do
+defmodule PianoCtlTest.PianoParserTest do
   use ExUnit.Case
 
   alias PianoCtl.PianoParser

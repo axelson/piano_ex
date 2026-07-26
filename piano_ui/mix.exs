@@ -8,6 +8,7 @@ defmodule PianoUi.MixProject do
       elixir: "~> 1.7",
       compilers: [:boundary] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
+      aliases: aliases(),
       deps: deps()
     ]
   end
@@ -56,41 +57,65 @@ defmodule PianoUi.MixProject do
   end
 
   defp dep(:launcher, :github), do: {:launcher, github: "axelson/scenic_launcher"}
-  defp dep(:launcher, :path), do: {:launcher, path: "~/dev/launcher", override: true}
+  # defp dep(:launcher, :path), do: {:launcher, path: "~/dev/launcher", override: true}
 
   defp dep(:pomodoro, :github), do: {:pomodoro, github: "axelson/pomodoro"}
-  defp dep(:pomodoro, :path), do: {:pomodoro, path: "~/dev/pomodoro"}
+  # defp dep(:pomodoro, :path), do: {:pomodoro, path: "~/dev/pomodoro"}
 
   defp dep(:ring_logger, :github), do: {:ring_logger, github: "axelson/ring_logger"}
 
-  defp dep(:ring_logger, :path),
-    do: {:ring_logger, path: "~/dev/forks/ring_logger", override: true}
+  # defp dep(:ring_logger, :path),
+  #   do: {:ring_logger, path: "~/dev/forks/ring_logger", override: true}
 
-  defp dep(:icalendar, :hex), do: {:icalendar, "~> 1.1"}
+  # defp dep(:icalendar, :hex), do: {:icalendar, "~> 1.1"}
   defp dep(:icalendar, :github), do: {:icalendar, github: "axelson/icalendar", branch: "my-fork"}
-  defp dep(:icalendar, :path), do: {:icalendar, path: "~/dev/forks/icalendar"}
+  # defp dep(:icalendar, :path), do: {:icalendar, path: "~/dev/forks/icalendar"}
 
   defp dep(:scenic, :hex), do: {:scenic, "~> 0.11"}
 
   # defp dep(:scenic, :github),
   #   do: {:scenic, github: "boydm/scenic", override: true}
-  defp dep(:scenic, :github),
-    do: {:scenic, github: "boydm/scenic", override: true}
+  # defp dep(:scenic, :github),
+  #   do: {:scenic, github: "boydm/scenic", override: true}
 
-  defp dep(:scenic, :path), do: {:scenic, path: "../forks/scenic", override: true}
+  # defp dep(:scenic, :path), do: {:scenic, path: "../forks/scenic", override: true}
 
   defp dep(:scenic_driver_local, :hex), do: {:scenic_driver_local, "~> 0.11"}
 
-  defp dep(:scenic_driver_local, :github),
-    do:
-      {:scenic_driver_local,
-       github: "ScenicFramework/scenic_driver_local", only: :dev, override: true}
+  # defp dep(:scenic_driver_local, :github),
+  #   do:
+  #     {:scenic_driver_local,
+  #      github: "ScenicFramework/scenic_driver_local", only: :dev, override: true}
 
-  defp dep(:scenic_driver_glfw, :path),
-    do: {:scenic_driver_glfw, path: "../forks/scenic_driver_glfw", only: :dev, override: true}
+  # defp dep(:scenic_driver_glfw, :path),
+  #   do: {:scenic_driver_glfw, path: "../forks/scenic_driver_glfw", only: :dev, override: true}
 
   defp dep(:scenic_live_reload, :hex), do: {:scenic_live_reload, "~> 0.3.0", only: :dev}
 
-  defp dep(:scenic_live_reload, :path),
-    do: {:scenic_live_reload, path: "~/dev/scenic_live_reload", only: :dev}
+  # defp dep(:scenic_live_reload, :path),
+  #   do: {:scenic_live_reload, path: "~/dev/scenic_live_reload", only: :dev}
+
+  def cli do
+    [
+      preferred_envs: [precommit: :test, check: :test]
+    ]
+  end
+
+  defp aliases do
+    [
+      precommit: [
+        "compile --warnings-as-errors",
+        "deps.unlock --unused",
+        "format",
+        "test"
+      ],
+      check: [
+        "compile --warnings-as-errors",
+        "deps.unlock --unused",
+        "format",
+        "test",
+        "dialyzer"
+      ]
+    ]
+  end
 end

@@ -9,6 +9,7 @@ defmodule PianoCtl.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:boundary] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
+      aliases: aliases(),
       deps: deps()
     ]
   end
@@ -18,6 +19,12 @@ defmodule PianoCtl.MixProject do
     [
       mod: {PianoCtlApplication, []},
       extra_applications: [:logger, :eex]
+    ]
+  end
+
+  def cli do
+    [
+      preferred_envs: [precommit: :test, check: :test]
     ]
   end
 
@@ -35,6 +42,24 @@ defmodule PianoCtl.MixProject do
       {:pid_file, "~> 0.2.0"},
       {:typed_struct, "~> 0.3.0"},
       {:phoenix_pubsub, "~> 2.0"}
+    ]
+  end
+
+  defp aliases do
+    [
+      precommit: [
+        "compile --warnings-as-errors",
+        "deps.unlock --unused",
+        "format",
+        "test"
+      ],
+      check: [
+        "compile --warnings-as-errors",
+        "deps.unlock --unused",
+        "format",
+        "test",
+        "dialyzer"
+      ]
     ]
   end
 end

@@ -27,7 +27,7 @@ defmodule PianoPhx.MixProject do
 
   def cli do
     [
-      preferred_envs: [precommit: :test]
+      preferred_envs: [precommit: :test, check: :test]
     ]
   end
 
@@ -67,7 +67,8 @@ defmodule PianoPhx.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.2.0"},
       {:bandit, "~> 1.5"},
-      {:piano_ctl, path: "../piano_ctl"}
+      {:piano_ctl, path: "../piano_ctl"},
+      {:dialyxir, "~> 1.4", only: :dev, runtime: false}
     ]
   end
 
@@ -87,7 +88,14 @@ defmodule PianoPhx.MixProject do
         "esbuild piano_phx --minify",
         "phx.digest"
       ],
-      precommit: ["compile --warnings-as-errors", "deps.unlock --unused", "format", "test"]
+      precommit: ["compile --warnings-as-errors", "deps.unlock --unused", "format", "test"],
+      check: [
+        "compile --warnings-as-errors",
+        "deps.unlock --unused",
+        "format",
+        "test",
+        "dialyzer"
+      ]
     ]
   end
 end

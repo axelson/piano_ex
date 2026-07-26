@@ -46,9 +46,7 @@ defmodule PianoCtl.Server do
   end
 
   @impl GenServer
-  def handle_cast({:input, input}, state) do
-    %State{parser_state: parser_state} = state
-
+  def handle_cast({:input, input}, %State{parser_state: parser_state} = state) do
     case PianoParser.parse(parser_state, input) do
       {:ok, :event, event, parser_state} ->
         notify_ui(event)
@@ -79,19 +77,22 @@ defmodule PianoCtl.Server do
     {:reply, result, state}
   end
 
-  defp update_state_for_event(state, %PianoParser.Event{event_name: "songstart"} = event) do
+  defp update_state_for_event(
+         %State{} = state,
+         %PianoParser.Event{event_name: "songstart"} = event
+       ) do
     song = Models.Song.from_event(event)
     now = NaiveDateTime.utc_now()
 
     %State{state | current_song: song, updated_at: now}
   end
 
-  defp update_state_for_event(state, %PianoParser.Event{stations: stations})
+  defp update_state_for_event(%State{} = state, %PianoParser.Event{stations: stations})
        when is_list(stations) and stations != [] do
     %State{state | stations: Enum.sort_by(stations, &elem(&1, 0))}
   end
 
-  defp update_state_for_event(state, %PianoParser.Event{}), do: state
+  defp update_state_for_event(%State{} = state, %PianoParser.Event{}), do: state
 
   defp do_get_current_song(%State{updated_at: nil}), do: nil
 
