@@ -8,13 +8,13 @@ defmodule PianoPhx.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      PianoPhxWeb.Telemetry,
+      PianoPhx.Telemetry,
       {DNSCluster, query: Application.get_env(:piano_phx, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: PianoPhx.PubSub},
       # Start a worker by calling: PianoPhx.Worker.start_link(arg)
       # {PianoPhx.Worker, arg},
       # Start to serve requests, typically the last entry
-      PianoPhxWeb.Endpoint
+      PianoPhx.Endpoint
     ]
 
     # See https://elixir.hexdocs.pm/Supervisor.html
@@ -27,7 +27,7 @@ defmodule PianoPhx.Application do
   # whenever the application is updated.
   @impl true
   def config_change(changed, _new, removed) do
-    PianoPhxWeb.Endpoint.config_change(changed, removed)
+    PianoPhx.Endpoint.config_change(changed, removed)
     :ok
   end
 end

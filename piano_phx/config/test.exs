@@ -2,7 +2,7 @@ import Config
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
-config :piano_phx, PianoPhxWeb.Endpoint,
+config :piano_phx, PianoPhx.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   secret_key_base: "e8KorFfUxO81zD8d9JEu20bNwEzYvmEZgopCB8jVCjfNMmG5cQA4KKF2T68/W6hY",
   server: false

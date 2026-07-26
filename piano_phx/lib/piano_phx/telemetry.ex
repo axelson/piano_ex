@@ -1,4 +1,4 @@
-defmodule PianoPhxWeb.Telemetry do
+defmodule PianoPhx.Telemetry do
   use Supervisor
   import Telemetry.Metrics
 
@@ -64,7 +64,7 @@ defmodule PianoPhxWeb.Telemetry do
     [
       # A module, function and arguments to be invoked periodically.
       # This function must call :telemetry.execute/3 and a metric must be added above.
-      # {PianoPhxWeb, :count_users, []}
+      # {PianoPhx, :count_users, []}
     ]
   end
 end

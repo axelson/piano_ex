@@ -1,11 +1,11 @@
-defmodule PianoPhxWeb.Router do
-  use PianoPhxWeb, :router
+defmodule PianoPhx.Router do
+  use PianoPhx, :router
 
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
-    plug :put_root_layout, html: {PianoPhxWeb.Layouts, :root}
+    plug :put_root_layout, html: {PianoPhx.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
@@ -14,14 +14,14 @@ defmodule PianoPhxWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", PianoPhxWeb do
+  scope "/", PianoPhx do
     pipe_through :browser
 
     get "/", PageController, :home
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", PianoPhxWeb do
+  # scope "/api", PianoPhx do
   #   pipe_through :api
   # end
 end

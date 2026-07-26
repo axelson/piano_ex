@@ -11,11 +11,11 @@ config :piano_phx,
   generators: [timestamp_type: :utc_datetime]
 
 # Configure the endpoint
-config :piano_phx, PianoPhxWeb.Endpoint,
+config :piano_phx, PianoPhx.Endpoint,
   url: [host: "localhost"],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
-    formats: [html: PianoPhxWeb.ErrorHTML, json: PianoPhxWeb.ErrorJSON],
+    formats: [html: PianoPhx.ErrorHTML, json: PianoPhx.ErrorJSON],
     layout: false
   ],
   pubsub_server: PianoPhx.PubSub,

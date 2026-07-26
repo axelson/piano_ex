@@ -17,15 +17,15 @@ import Config
 # Alternatively, you can use `mix phx.gen.release` to generate a `bin/server`
 # script that automatically sets the env var above.
 if System.get_env("PHX_SERVER") do
-  config :piano_phx, PianoPhxWeb.Endpoint, server: true
+  config :piano_phx, PianoPhx.Endpoint, server: true
 end
 
-config :piano_phx, PianoPhxWeb.Endpoint,
+config :piano_phx, PianoPhx.Endpoint,
   http: [port: String.to_integer(System.get_env("PORT", "4000"))]
 
 if config_env() == :dev do
   # Reload browser tabs when matching files change.
-  config :piano_phx, PianoPhxWeb.Endpoint,
+  config :piano_phx, PianoPhx.Endpoint,
     live_reload: [
       web_console_logger: true,
       patterns: [
@@ -34,8 +34,8 @@ if config_env() == :dev do
         # Gettext translations
         ~r"priv/gettext/.*\.po$",
         # Router, Controllers, LiveViews and LiveComponents
-        ~r"lib/piano_phx_web/router\.ex$",
-        ~r"lib/piano_phx_web/(controllers|live|components)/.*\.(ex|heex)$"
+        ~r"lib/piano_phx/router\.ex$",
+        ~r"lib/piano_phx/(controllers|live|components)/.*\.(ex|heex)$"
       ]
     ]
 end
@@ -57,7 +57,7 @@ if config_env() == :prod do
 
   config :piano_phx, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
 
-  config :piano_phx, PianoPhxWeb.Endpoint,
+  config :piano_phx, PianoPhx.Endpoint,
     url: [host: host, port: 443, scheme: "https"],
     http: [
       # Enable IPv6 and bind on all interfaces.
@@ -73,7 +73,7 @@ if config_env() == :prod do
   # To get SSL working, you will need to add the `https` key
   # to your endpoint configuration:
   #
-  #     config :piano_phx, PianoPhxWeb.Endpoint,
+  #     config :piano_phx, PianoPhx.Endpoint,
   #       https: [
   #         ...,
   #         port: 443,
@@ -95,7 +95,7 @@ if config_env() == :prod do
   # We also recommend setting `force_ssl` in your config/prod.exs,
   # ensuring no data is ever sent via http, always redirecting to https:
   #
-  #     config :piano_phx, PianoPhxWeb.Endpoint,
+  #     config :piano_phx, PianoPhx.Endpoint,
   #       force_ssl: [hsts: true]
   #
   # Check `Plug.SSL` for all available options in `force_ssl`.

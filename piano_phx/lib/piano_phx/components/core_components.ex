@@ -1,4 +1,4 @@
-defmodule PianoPhxWeb.CoreComponents do
+defmodule PianoPhx.CoreComponents do
   @moduledoc """
   Provides core UI components.
 
@@ -27,7 +27,7 @@ defmodule PianoPhxWeb.CoreComponents do
 
   """
   use Phoenix.Component
-  use Gettext, backend: PianoPhxWeb.Gettext
+  use Gettext, backend: PianoPhx.Gettext
 
   alias Phoenix.LiveView.JS
 
@@ -490,9 +490,9 @@ defmodule PianoPhxWeb.CoreComponents do
     # with our gettext backend as first argument. Translations are
     # available in the errors.po file (as we use the "errors" domain).
     if count = opts[:count] do
-      Gettext.dngettext(PianoPhxWeb.Gettext, "errors", msg, msg, count, opts)
+      Gettext.dngettext(PianoPhx.Gettext, "errors", msg, msg, count, opts)
     else
-      Gettext.dgettext(PianoPhxWeb.Gettext, "errors", msg, opts)
+      Gettext.dgettext(PianoPhx.Gettext, "errors", msg, opts)
     end
   end
 

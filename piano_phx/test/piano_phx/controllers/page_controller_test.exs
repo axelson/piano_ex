@@ -1,5 +1,5 @@
-defmodule PianoPhxWeb.PageControllerTest do
-  use PianoPhxWeb.ConnCase
+defmodule PianoPhx.PageControllerTest do
+  use PianoPhx.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get(conn, ~p"/")

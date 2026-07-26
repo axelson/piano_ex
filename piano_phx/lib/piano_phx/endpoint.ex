@@ -1,4 +1,4 @@
-defmodule PianoPhxWeb.Endpoint do
+defmodule PianoPhx.Endpoint do
   use Phoenix.Endpoint, otp_app: :piano_phx
 
   # The session will be stored in the cookie and signed,
@@ -24,7 +24,7 @@ defmodule PianoPhxWeb.Endpoint do
     at: "/",
     from: :piano_phx,
     gzip: not code_reloading?,
-    only: PianoPhxWeb.static_paths(),
+    only: PianoPhx.static_paths(),
     raise_on_missing_only: code_reloading?
 
   # Code reloading can be explicitly enabled under the
@@ -46,5 +46,5 @@ defmodule PianoPhxWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
-  plug PianoPhxWeb.Router
+  plug PianoPhx.Router
 end
