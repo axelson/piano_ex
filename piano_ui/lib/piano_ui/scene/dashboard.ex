@@ -116,7 +116,7 @@ defmodule PianoUi.Scene.Dashboard do
     Keyword.put(opts, :pomodoro_timer_pid, pomodoro_timer_pid)
   end
 
-  def update_song(server \\ __MODULE__, song) do
+  def update_song(_server \\ __MODULE__, song) do
     Phoenix.PubSub.broadcast(:piano_ui_pubsub, "dashboard", {:update_song, song})
   end
 
@@ -126,8 +126,7 @@ defmodule PianoUi.Scene.Dashboard do
 
   @impl GenServer
   def handle_info({:downloaded_cover_art, image_binary}, scene) do
-    state = scene.assigns.state
-    %State{graph: graph} = state
+    %State{graph: graph} = state = scene.assigns.state
 
     with {:ok, img} <- Scenic.Assets.Stream.Image.from_binary(image_binary),
          :ok <- Scenic.Assets.Stream.put(@album_art, img) do
@@ -169,14 +168,13 @@ defmodule PianoUi.Scene.Dashboard do
   end
 
   def handle_info(msg, scene) do
-    Logger.warning("Ignoring unexpected message: #{inspect msg}")
+    Logger.warning("Ignoring unexpected message: #{inspect(msg)}")
     {:noreply, scene}
   end
 
   @impl Scenic.Scene
   def handle_input({:cursor_button, {:btn_left, 1, _, _}}, :album_art, scene) do
-    state = scene.assigns.state
-    %State{graph: graph} = state
+    %State{graph: graph} = state = scene.assigns.state
 
     graph =
       graph
@@ -203,8 +201,7 @@ defmodule PianoUi.Scene.Dashboard do
   end
 
   def handle_input({:cursor_button, {:btn_left, 1, _, _}}, %{id: :album_art}, scene) do
-    state = scene.assigns.state
-    %State{graph: graph} = state
+    %State{graph: graph} = state = scene.assigns.state
 
     graph =
       graph
@@ -227,7 +224,7 @@ defmodule PianoUi.Scene.Dashboard do
     {:noreply, scene}
   end
 
-  defp assign_and_push_graph(scene, state, graph) do
+  defp assign_and_push_graph(scene, %State{} = state, graph) do
     state = %State{state | graph: graph}
 
     scene

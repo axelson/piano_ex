@@ -45,7 +45,7 @@ defmodule PianoUi.CalendarCache do
   end
 
   @impl GenServer
-  def handle_info(:fetch_calendar, state) do
+  def handle_info(:fetch_calendar, %State{} = state) do
     events =
       PianoUi.CalendarFetcher.read_calendars(calendar_urls())
       |> Enum.sort_by(& &1.dtstart, DateTime)
@@ -89,6 +89,7 @@ defmodule PianoUi.CalendarCache do
     Enum.find(state.events, fn event ->
       DateTime.compare(event.dtstart, now) == :gt
     end)
+
     # |> DataTracer.store(key: "event", log?: false)
   end
 

@@ -13,9 +13,12 @@ defmodule PianoUi.KeylightBehaviour do
   @type set_opts :: [{:brightness, non_neg_integer()} | {:temperature, non_neg_integer()}]
   @callback set(opts :: set_opts) :: any()
 
-  @callback status() :: {:ok, %{
-              brightness: non_neg_integer(),
-              temperature: non_neg_integer(),
-              on: integer()
-            }} | {:error, any()}
+  @callback status() ::
+              {:ok,
+               %{
+                 brightness: non_neg_integer(),
+                 temperature: non_neg_integer(),
+                 on: integer()
+               }}
+              | {:error, any()}
 end

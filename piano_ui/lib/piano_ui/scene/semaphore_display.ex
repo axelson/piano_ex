@@ -17,7 +17,7 @@ defmodule PianoUi.SemaphoreDisplay do
     {base_x, base_y} = Keyword.get(opts, :t)
     Phoenix.PubSub.subscribe(:piano_ui_pubsub, "dashboard")
 
-    text_t = {base_x, base_y + 70}
+    _text_t = {base_x, base_y + 70}
 
     :ok = GoveeSemaphore.subscribe()
 
@@ -130,12 +130,12 @@ defmodule PianoUi.SemaphoreDisplay do
   end
 
   def handle_info(msg, scene) do
-    Logger.warning("Ignoring unexpected message: #{inspect msg}")
+    Logger.warning("Ignoring unexpected message: #{inspect(msg)}")
     {:noreply, scene}
   end
 
   defp update_and_render(scene, fun) when is_function(fun, 1) do
-    state = scene.assigns.state
+    %State{} = state = scene.assigns.state
     graph = fun.(state.graph)
     state = %State{state | graph: graph}
 

@@ -49,7 +49,14 @@ defmodule PianoUi.Scene.CalendarDisplay do
     line_width = 190
     num_lines = 3
 
-    title_text = ScenicWidgets.Utils.wrap_and_shorten_text(event.summary, line_width, num_lines, @font_size, font_metrics)
+    title_text =
+      ScenicWidgets.Utils.wrap_and_shorten_text(
+        event.summary,
+        line_width,
+        num_lines,
+        @font_size,
+        font_metrics
+      )
 
     # Logger.info("Shortened title text: #{inspect(title_text)}")
 

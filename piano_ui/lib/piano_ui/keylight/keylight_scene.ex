@@ -173,7 +173,8 @@ defmodule PianoUi.KeylightScene do
       mod.set(temperature: value)
     end
 
-    scene = GraphState.update_state(scene, fn state -> %State{state | temperature: value} end)
+    scene =
+      GraphState.update_state(scene, fn %State{} = state -> %State{state | temperature: value} end)
 
     {:noreply, scene}
   end
@@ -183,7 +184,8 @@ defmodule PianoUi.KeylightScene do
       mod.set(brightness: value)
     end
 
-    scene = GraphState.update_state(scene, fn state -> %State{state | brightness: value} end)
+    scene =
+      GraphState.update_state(scene, fn %State{} = state -> %State{state | brightness: value} end)
 
     {:noreply, scene}
   end
@@ -280,7 +282,6 @@ defmodule PianoUi.KeylightScene do
 
     {:noreply, scene}
   end
-
 
   def handle_info({:connected?, connected?}, scene) do
     Logger.info("KeylightScene got connected: #{inspect(connected?)}")

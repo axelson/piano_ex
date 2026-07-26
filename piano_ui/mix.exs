@@ -52,7 +52,8 @@ defmodule PianoUi.MixProject do
       {:dialyxir, "~> 1.1", only: :dev, runtime: false},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 0.4 or ~> 1.0"},
-      {:ecto_sqlite3, "~> 0.7"}
+      {:ecto_sqlite3, "~> 0.24"},
+      {:elixir_make, "~> 0.8", override: true}
     ]
   end
 
@@ -107,13 +108,13 @@ defmodule PianoUi.MixProject do
         "compile --warnings-as-errors",
         "deps.unlock --unused",
         "format",
-        "test"
+        "test --no-start"
       ],
       check: [
         "compile --warnings-as-errors",
         "deps.unlock --unused",
         "format",
-        "test",
+        "test --no-start",
         "dialyzer"
       ]
     ]
