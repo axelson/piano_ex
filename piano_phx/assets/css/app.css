@@ -5,7 +5,7 @@
 @import "phoenix-colocated/piano_phx/colocated.css";
 @source "../css";
 @source "../js";
-@source "../../lib/piano_phx_web";
+@source "../../lib/piano_phx";
 /* Required for Tailwind to automatically pick up changes in colocated CSS files in dev */
 @source "../../_build/dev/phoenix-colocated/piano_phx/*/";
 

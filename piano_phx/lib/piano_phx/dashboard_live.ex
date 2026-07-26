@@ -17,42 +17,40 @@ defmodule PianoPhx.DashboardLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="flex flex-col items-center gap-6 p-8">
-      <div class="flex items-start gap-6">
-        <div class="w-48 h-48 shrink-0">
-          <img
-            :if={@song && @song.cover_art_url}
-            src={@song.cover_art_url}
-            class="w-full h-full object-cover rounded-lg"
-          />
-          <div
-            :if={!@song || !@song.cover_art_url}
-            class="w-full h-full bg-base-300 rounded-lg flex items-center justify-center"
-          >
-            <span class="text-base-content/50 text-4xl">♪</span>
-          </div>
-        </div>
-
-        <div :if={@song} class="flex flex-col gap-1">
-          <h2 class="text-xl font-bold">{@song.title}</h2>
-          <p class="text-base-content/70">{@song.artist}</p>
-          <p class="text-base-content/50 text-sm">{@song.album}</p>
-        </div>
-
-        <div :if={!@song} class="flex flex-col gap-1">
-          <p class="text-base-content/50">No song playing</p>
+    <div class="flex flex-col items-center gap-6">
+      <div class="w-[300px] h-[300px] shrink-0">
+        <img
+          :if={@song && @song.cover_art_url}
+          src={@song.cover_art_url}
+          class="w-full h-full object-cover rounded-lg shadow-lg"
+        />
+        <div
+          :if={!@song || !@song.cover_art_url}
+          class="w-full h-full bg-base-300 rounded-lg flex items-center justify-center"
+        >
+          <span class="text-base-content/50 text-6xl">♪</span>
         </div>
       </div>
 
-      <div class="flex gap-4">
-        <button phx-click="stop" class="btn btn-circle btn-lg">
-          <.icon name="hero-stop-solid" class="w-6 h-6" />
+      <div :if={@song} class="text-center space-y-1">
+        <h2 class="text-2xl font-bold">{@song.title}</h2>
+        <p class="text-lg text-base-content/70">{@song.artist}</p>
+        <p class="text-sm text-base-content/50">{@song.album}</p>
+      </div>
+
+      <div :if={!@song} class="text-center">
+        <p class="text-base-content/50">No song playing</p>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <button phx-click="stop" class="btn btn-circle btn-lg" aria-label="Stop">
+          <.icon name="hero-stop-solid" class="size-6" />
         </button>
-        <button phx-click="play" class="btn btn-circle btn-lg btn-primary">
-          <.icon name="hero-play-solid" class="w-6 h-6" />
+        <button phx-click="play" class="btn btn-circle btn-xl btn-primary" aria-label="Play">
+          <.icon name="hero-play-solid" class="size-8" />
         </button>
-        <button phx-click="next" class="btn btn-circle btn-lg">
-          <.icon name="hero-forward-solid" class="w-6 h-6" />
+        <button phx-click="next" class="btn btn-circle btn-lg" aria-label="Next">
+          <.icon name="hero-forward-solid" class="size-6" />
         </button>
       </div>
     </div>
