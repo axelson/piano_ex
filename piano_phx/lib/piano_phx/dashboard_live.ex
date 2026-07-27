@@ -55,8 +55,7 @@ defmodule PianoPhx.DashboardLive do
       </div>
 
       <button phx-click="toggle_stations" class="btn btn-outline btn-sm">
-        <.icon name="hero-radio" class="size-4" />
-        Change Station
+        <.icon name="hero-radio" class="size-4" /> Change Station
       </button>
 
       <div :if={@show_stations} class="w-full max-w-sm">
