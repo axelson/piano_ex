@@ -50,7 +50,7 @@ defmodule PianoUi.MixProject do
       # {:exsync, github: "falood/exsync", override: true},
       {:exsync, path: "~/dev/forks/exsync", override: true, only: [:dev, :test]},
       {:dialyxir, "~> 1.1", only: :dev, runtime: false},
-      {:telemetry_metrics, "~> 0.6"},
+      {:telemetry_metrics, "~> 0.6 or ~> 1.0"},
       {:telemetry_poller, "~> 0.4 or ~> 1.0"},
       {:ecto_sqlite3, "~> 0.24"},
       {:elixir_make, "~> 0.8", override: true}
