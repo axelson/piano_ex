@@ -14,6 +14,7 @@ defmodule PianoCtl do
   use Boundary, deps: [], exports: [Models.Song, PianoInputReader]
 
   defdelegate cmd(command), to: PianoCtl.CommandRunner
+  defdelegate change_station(station_number), to: PianoCtl.CommandRunner
 
   defdelegate get_current_song, to: PianoCtl.Server
   defdelegate list_stations, to: PianoCtl.Server

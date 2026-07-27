@@ -27,12 +27,31 @@ defmodule PianoCtl.CommandRunner do
     GenServer.call(__MODULE__, {:cmd, command})
   end
 
+  def change_station(station_number) do
+    GenServer.call(__MODULE__, {:change_station, station_number})
+  end
+
   @impl GenServer
   def init(_opts) do
     {:ok, %{fd: nil}}
   end
 
   @impl GenServer
+  def handle_call({:change_station, station_number}, _from, state) do
+    command_string = "s#{station_number}\n"
+    Logger.info("Changing to station #{station_number}")
+
+    case Application.get_env(:piano_ctl, :stdin_sender) do
+      {mod, fun} ->
+        apply(mod, fun, [command_string])
+        {:reply, :ok, state}
+
+      nil ->
+        {result, state} = write_to_fifo(state, command_string)
+        {:reply, result, state}
+    end
+  end
+
   def handle_call({:cmd, command}, _from, state) do
     case Map.get(@commands, command) do
       nil ->

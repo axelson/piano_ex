@@ -11,7 +11,7 @@ defmodule PianoPhx.DashboardLive do
 
     song = if connected?(socket), do: fetch_current_song(), else: nil
 
-    {:ok, assign(socket, song: song)}
+    {:ok, assign(socket, song: song, show_stations: false, stations: [])}
   end
 
   @impl true
@@ -53,6 +53,22 @@ defmodule PianoPhx.DashboardLive do
           <.icon name="hero-forward-solid" class="size-6" />
         </button>
       </div>
+
+      <button phx-click="toggle_stations" class="btn btn-outline btn-sm">
+        <.icon name="hero-radio" class="size-4" />
+        Change Station
+      </button>
+
+      <div :if={@show_stations} class="w-full max-w-sm">
+        <ul class="menu menu-sm bg-base-200 rounded-box max-h-64 overflow-y-auto">
+          <li :for={{number, name} <- @stations}>
+            <button phx-click="select_station" phx-value-number={number}>{name}</button>
+          </li>
+          <li :if={@stations == []}>
+            <span class="text-base-content/50">No stations available yet</span>
+          </li>
+        </ul>
+      </div>
     </div>
     """
   end
@@ -71,6 +87,20 @@ defmodule PianoPhx.DashboardLive do
   def handle_event("next", _params, socket) do
     PianoCtl.Server.cmd(:next)
     {:noreply, socket}
+  end
+
+  def handle_event("toggle_stations", _params, socket) do
+    if socket.assigns.show_stations do
+      {:noreply, assign(socket, show_stations: false)}
+    else
+      stations = PianoCtl.list_stations()
+      {:noreply, assign(socket, show_stations: true, stations: stations)}
+    end
+  end
+
+  def handle_event("select_station", %{"number" => number}, socket) do
+    PianoCtl.change_station(number)
+    {:noreply, assign(socket, show_stations: false)}
   end
 
   @impl true
