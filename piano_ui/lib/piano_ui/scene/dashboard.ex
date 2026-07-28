@@ -32,6 +32,8 @@ defmodule PianoUi.Scene.Dashboard do
   @impl Scenic.Scene
   def init(scene, opts, _scenic_opts) do
     Phoenix.PubSub.subscribe(:piano_ui_pubsub, "dashboard")
+    song_topic = Application.get_env(:piano_ctl, :song_topic, "piano:now_playing")
+    Phoenix.PubSub.subscribe(PianoCtl.PubSub, song_topic)
 
     refresh = Keyword.get(opts, :refresh, false)
     pomodoro_timer_pid = Keyword.get(opts, :pomodoro_timer_pid)
@@ -159,6 +161,11 @@ defmodule PianoUi.Scene.Dashboard do
   def handle_info(:refresh, scene) do
     schedule_refresh()
     scene = push_graph(scene, scene.assigns.state.graph)
+    {:noreply, scene}
+  end
+
+  def handle_info({:song_started, song}, scene) do
+    scene = handle_update_song(song, scene)
     {:noreply, scene}
   end
 

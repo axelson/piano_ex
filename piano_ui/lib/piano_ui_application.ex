@@ -16,6 +16,7 @@ defmodule PianoUiApplication do
     children =
       [
         {Phoenix.PubSub, name: :piano_ui_pubsub},
+        {Phoenix.PubSub, name: PianoCtl.PubSub},
         {Finch, name: :piano_ui_finch},
         {Cluster.Supervisor, [topologies, [name: PianoUi.ClusterSupervisor]]},
         {DynamicSupervisor, name: PianoUi.MainSupervisor, strategy: :one_for_one},

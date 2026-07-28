@@ -12,6 +12,7 @@ defmodule PianoCtlApplication do
     ]
 
     children = [
+      {Phoenix.PubSub, name: PianoCtl.PubSub},
       {Cluster.Supervisor, [topologies, [name: PianoCtl.ClusterSupervisor]]},
       {BEAMNotify,
        name: "any name",
